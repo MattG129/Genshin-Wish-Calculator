@@ -7,7 +7,7 @@
 // TODO: Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
 // TODO: Try to make this analytic instead of numeric.
 
-let NumberOfTrials = 1000000;
+let NumberOfTrials = 100000;
 
 let Today = new Date();
 Today.setHours(0,0,0,0);
@@ -60,7 +60,15 @@ const WishConfig = {
         CharacterGoal: [
             'Shenhe',
             'Kinich',
+            'Xianyun(C1)',
+            'Xianyun(C2)',
+            // 'Mavuika',
+            // 'Murata',
+            // 'Murata(C1)',
+            // 'Murata(C2)',
             'Capitano',
+            // 'Madame Ping',
+            // 'Tsaritsa',
         ],
 
         WeaponGoal: [
@@ -313,11 +321,15 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
     let Finished = 0;
     let transitions;
     var NextChar;
+
+    var time = Date.now();
+
+    console.log(time);
+
+    var KeyArray = [];
     for (let i = 0; i < 180*WishConfig.CharacterGoal.length; i++) {
         transitions = {}
         transitions['ID'] = i
-
-        // console.log((Math.floor(i/180) + 1), WishConfig.CharacterGoal.length - 1);
 
         if ( (Math.floor(i/180) + 1) < WishConfig.CharacterGoal.length) {
             NextChar = WishConfig.CharacterGoal[Math.floor(i/180)+1]
@@ -325,8 +337,6 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
         else{
             NextChar = 'Finished'
         }
-
-        // console.log(NextChar);
 
         if (i >= 180*WishConfig.CharacterGoal.length - 1) {
             // Finished = 1
@@ -348,11 +358,10 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
     }
 
     Key = `${WishConfig.CharacterGoal[Math.floor(i/180)]}-${i % 90}-${Math.floor( ((i+1)/90) % 2 )}`
-    states['Finished-0-0'] =  {'ID': 540, 'Finished-0-0': 1}
+    states['Finished-0-0'] =  {'ID': `${180*WishConfig.CharacterGoal.length}`, 'Finished-0-0': 1}
 
-    console.log('States Generated');
-
-    // console.log(states);
+    console.log(`States Generated: ${Date.now() - time}\n`);
+    time = Date.now();
 
     let stateTransformations = [];
     let rowTransformations;
@@ -360,57 +369,50 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
     let iterKey;
     var Char;
 
-
     for (const [key, value] of Object.entries(states)) {
-        // rowTransformations = [];
-        rowTransformations = new Array(len).fill(0);;
-        for (var i = 0; i < Object.keys(states).length; i++) {    
-            if ( Math.floor(i/180) < WishConfig.CharacterGoal.length  ) {
-                Char = WishConfig.CharacterGoal[Math.floor(i/180)]
-            } 
-            else{
-                Char = 'Finished'
-            }
+        rowTransformations = new Array(Object.keys(states).length).fill(0)
 
-            iterKey = `${Char}-${i % 90}-${Math.floor( (i/90) % 2)}`
-            if (iterKey in value) {
-                TransationProbability = value[iterKey]
-            } else {
-                TransationProbability = 0
+        for (const [SubKey, SubValue] of Object.entries(value)) {
+            if (SubKey != 'ID') {
+                rowTransformations[states[SubKey].ID] = SubValue
             }
-            rowTransformations.push(TransationProbability);
-         }
-         stateTransformations.push(rowTransformations)
+        }
+
+        stateTransformations.push(rowTransformations)
     };
 
-    console.log('Transition Matrix Generated')
 
-    // console.log(stateTransformations)
+    console.log(`Transition Matrix Generated: ${Date.now() - time}\n`)
+    time = Date.now();
 
-    var stateTransformationsMatrix = math.matrix(stateTransformations)
-
-    var stateTransformationsMatrixPowers = {};
-    stateTransformationsMatrixPowers['0'] = stateTransformationsMatrix;
-    
-
+ 
+    var stateTransformationsMatrix = math.matrix(stateTransformations, 'sparse')
+  
     let MaxNumberOfWishesBin = (MaxNumberOfWishes >>> 0).toString(2);
     let ReverseMaxNumberOfWishesBin = MaxNumberOfWishesBin.split('').reverse().join('');
     
-    console.log(`Matrix Power: 1`);
-    for (var i = 1; i < MaxNumberOfWishesBin.length; i++) {
-        console.log(`Matrix Power: ${Math.pow(2, i)}`);
-        stateTransformationsMatrixPowers[`${i}`] = math.multiply(stateTransformationsMatrixPowers[`${i-1}`], stateTransformationsMatrixPowers[`${i-1}`])
-    }
+    console.log(`Matrix Power 1: ${Date.now() - time}\n`);
+    time = Date.now();
 
-    let FinalStateTransformationMatrix = math.identity(Object.keys(states).length);
+    var FinalStateTransformationMatrix = math.identity(Object.keys(states).length);
+    var newMat = stateTransformationsMatrix;
     for (var i = 0; i < MaxNumberOfWishesBin.length ; i++) {
+        console.log(`Matrix Power ${Math.pow(2, i)}: ${Date.now() - time}\n`);
+        time = Date.now();
+        
         if(ReverseMaxNumberOfWishesBin[i] == '1') {
-            FinalStateTransformationMatrix = math.multiply(FinalStateTransformationMatrix, stateTransformationsMatrixPowers[`${i}`])
+
+            FinalStateTransformationMatrix = math.multiply(FinalStateTransformationMatrix, newMat);
+        }
+
+        if (i < MaxNumberOfWishesBin.length - 1) {
+            newMat = math.multiply(newMat, newMat);
         }
     };
 
-     console.log(`${(math.subset(FinalStateTransformationMatrix, math.index(WishConfig.CharacterPity, Object.keys(states).length-1))*100).toFixed(2)}%`)
-     // console.log(FinalStateTransformationMatrix)
+    console.log(`Finished: ${Date.now() - time}`);
+    
+    console.log(`${(math.subset(FinalStateTransformationMatrix, math.index(WishConfig.CharacterPity, Object.keys(states).length-1))*100).toFixed(2)}%`);
 
 }
 
@@ -426,9 +428,9 @@ function WishCalcs(WishConfig) {
     }
 
     // const MaxNumberOfWishes = SavingsCalculator(WishConfig);
-    const MaxNumberOfWishes = 120;
+    const MaxNumberOfWishes = 500;
 
-    WishConfig.CharacterPity = 42+90;
+    WishConfig.CharacterPity = 0;
 
     if (typeof MaxNumberOfWishes !== 'number') {
         return;
