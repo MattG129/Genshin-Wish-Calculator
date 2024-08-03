@@ -7,50 +7,49 @@
 // TODO: Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
 // TODO: Try to make this analytic instead of numeric.
 
-let NumberOfTrials = 100000;
+let NumberOfTrials = 1000000;
 
 let Today = new Date();
 Today.setHours(0,0,0,0);
 
 const WishConfig = {
     Matthew: {
-        CurrentPrimos: 0,
+        CurrentPrimos: 43461,
         CurrentIntertwinedFates: 0,
-        Stardust: 0,
+        Stardust: 1440,
         
-        UsingStarglitterForWishes: false,
-        Starglitter: 0,
+        UsingStarglitterForWishes: true,
+        Starglitter: 502,
         MissingFourStars: 1,
         
         // TODO: This should take in the expected number of stars per floor and calculate the expected number of primos based on that, rather than having the user run the numbers.
         Abyss: {
-            Unlocked: false,
+            Unlocked: true,
             ExpectedPrimos: 800,
             CurrentCycleCompleted: true
         },
 
         // TODO: This should take in the expected number of acts completed and calculate the expected number of primos based on that, rather than having the user run the numbers.
         ImaginariumTheater: {
-            Unlocked: false,
+            Unlocked: true,
             ExpectedPrimos: 620,
             CurrentCycleCompleted: true
         },
         
         BattlePass: {
-            Purchased: false,
-            Level: 19
+            Purchased: true,
+            Level: 31
             // Since wish related rewards are only given every ten levels you only need to make sure the tens-place digit is correct. 
             // For example, 40 and 45 are effectively the same while 40 and 50 are not.
         },
 
-        HasWelkin: false,
+        HasWelkin: true,
 
         // The patch and phase that you need to make your wishes by.
-        EndPatch: 4.8,
+        EndPatch: 5.3,
         EndPhase: 1,
 
-        // CharacterPity: 12,
-        CharacterPity: 0,
+        CharacterPity: 22,
         CharacterGuarantee: 0,
 
         WeaponPity: 42,
@@ -58,22 +57,38 @@ const WishConfig = {
         FatePoints: 0,
 
         CharacterGoal: [
+            // 'Kinich',
             'Shenhe',
-            'Kinich',
             'Xianyun(C1)',
             'Xianyun(C2)',
-            // 'Mavuika',
-            // 'Murata',
-            // 'Murata(C1)',
-            // 'Murata(C2)',
+            // 'Xilonen',
             'Capitano',
             // 'Madame Ping',
+            
             // 'Tsaritsa',
+
+            // 'Baizhu',
+            // 'Childe',
+
         ],
 
         WeaponGoal: [
-            // 'Cashflow Supervision',
-            // 'Staff of Homa'
+            'Cashflow Supervision',
+            'Staff of Homa',
+
+            // 'Redhorn Stonethresher',
+            
+            // 'Key Of Khaj-Nisut',
+
+            // 'Engulfing Lightning',
+            
+            // 'Light of Foliar Incision',
+            // `Tulaytullah's Remembrance`,
+            // 'Absolution',
+
+            // 'Elegy for the End',
+            // 'Mistsplitter Reforged',
+
         ],
     }
 };
@@ -180,7 +195,7 @@ function SavingsCalculator(WishConfig) {
     // TODO: Could maybe go a bit more in depth.
     if (WishConfig.UsingStarglitterForWishes) {
         IntertwinedFates += Math.floor(WishConfig.Starglitter / 5);
-        Starglitter = WishConfig.Starglitter % 5;
+        var Starglitter = WishConfig.Starglitter % 5;
     }
 
     // TODO: Could maybe go a bit more in depth.
@@ -301,10 +316,7 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
     return ((Successes / NumberOfTrials)*100).toFixed(2);
 }
 
-
-import * as math from 'mathjs'
-
-
+// Stub function
 function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
     // TODO: Add comments.
 
@@ -324,10 +336,10 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
 
     var time = Date.now();
 
-    console.log(time);
+    // console.log(time);
 
     var KeyArray = [];
-    for (let i = 0; i < 180*WishConfig.CharacterGoal.length; i++) {
+    for (var i = 0; i < 180*WishConfig.CharacterGoal.length; i++) {
         transitions = {}
         transitions['ID'] = i
 
@@ -360,7 +372,7 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
     Key = `${WishConfig.CharacterGoal[Math.floor(i/180)]}-${i % 90}-${Math.floor( ((i+1)/90) % 2 )}`
     states['Finished-0-0'] =  {'ID': `${180*WishConfig.CharacterGoal.length}`, 'Finished-0-0': 1}
 
-    console.log(`States Generated: ${Date.now() - time}\n`);
+    console.log(`States Generated: ${((Date.now() - time)/1000).toFixed(4)}\n`);
     time = Date.now();
 
     let stateTransformations = [];
@@ -382,7 +394,7 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
     };
 
 
-    console.log(`Transition Matrix Generated: ${Date.now() - time}\n`)
+    console.log(`Transition Matrix Generated: ${((Date.now() - time)/1000).toFixed(4)}\n`)
     time = Date.now();
 
  
@@ -391,13 +403,13 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
     let MaxNumberOfWishesBin = (MaxNumberOfWishes >>> 0).toString(2);
     let ReverseMaxNumberOfWishesBin = MaxNumberOfWishesBin.split('').reverse().join('');
     
-    console.log(`Matrix Power 1: ${Date.now() - time}\n`);
+    console.log(`Matrix Power 1: ${((Date.now() - time)/1000).toFixed(4)}\n`);
     time = Date.now();
 
     var FinalStateTransformationMatrix = math.identity(Object.keys(states).length);
     var newMat = stateTransformationsMatrix;
     for (var i = 0; i < MaxNumberOfWishesBin.length ; i++) {
-        console.log(`Matrix Power ${Math.pow(2, i)}: ${Date.now() - time}\n`);
+        console.log(`Matrix Power ${Math.pow(2, i)}: ${((Date.now() - time)/1000).toFixed(4)}\n`);
         time = Date.now();
         
         if(ReverseMaxNumberOfWishesBin[i] == '1') {
@@ -410,8 +422,8 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
         }
     };
 
-    console.log(`Finished: ${Date.now() - time}`);
-    
+    console.log(`Finished: ${((Date.now() - time)/1000).toFixed(4)}`);
+
     console.log(`${(math.subset(FinalStateTransformationMatrix, math.index(WishConfig.CharacterPity, Object.keys(states).length-1))*100).toFixed(2)}%`);
 
 }
@@ -427,8 +439,7 @@ function WishCalcs(WishConfig) {
         return '';
     }
 
-    // const MaxNumberOfWishes = SavingsCalculator(WishConfig);
-    const MaxNumberOfWishes = 500;
+    const MaxNumberOfWishes = SavingsCalculator(WishConfig);
 
     WishConfig.CharacterPity = 0;
 
@@ -450,9 +461,6 @@ function WishCalcs(WishConfig) {
         console.log(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig, MaxNumberOfWishes)}%\n`);
     }
 
-    AnalyticWishCalculations(WishConfig, MaxNumberOfWishes)
-
-    // return 'Banana'
 }
 
 WishCalcs(WishConfig.Matthew);
