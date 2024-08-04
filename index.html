@@ -39,7 +39,7 @@
       font-size: 50px;
     }
 
-    #loading {
+    #LoadingSpinner {
       width: 50px;
       height: 50px;
       border: 3px solid rgba(255,255,255,.3);
@@ -59,33 +59,38 @@
   
   <div class="header">Genshin Wish And Gacha Calculator</div>
 
-  <form>
-    <label for="firstName" class="form-label">First name:</label><br>
-    <input type="text" class="form-control" name="firstName" value="John"><br>
-    <label for="lastName" class="form-label">Last name:</label><br>
-    <input type="text" class="form-control" name="lastName" value="Doe"><br>
-    <label for="email" class="form-label">Email:</label><br>
-    <input type="email" class="form-control" name="email" value="example@example.com"><br>
-    <label for="phone" class="form-label">Phone:</label><br>
-    <input type="tel" class="form-control" name="phone" value="555-555-5555"><br>
-    <label for="company" class="form-label">Company:</label><br>
-    <input type="text" class="form-control" name="company" value="XYZ Co."><br>
-    <label for="industry" class="form-label">Industry:</label><br>
-    <select class="form-select" name="industry">
-      <option value="" selected disabled hidden>-- Select one --</option>
-      <option value="industry 1">Industry 1</option>
-      <option value="industry 2">Industry 2</option>
-      <option value="industry 3">Industry 3</option>
-    </select><br>
-    <label for="message" class="form-label">Message:</label><br>
-    <textarea class="form-control" name="message"></textarea><br>
+  <div>
+    <form>
+      <label for="firstName" class="form-label">First name:</label><br>
+      <input type="text" class="form-control" name="firstName" value="John"><br>
+      <label for="lastName" class="form-label">Last name:</label><br>
+      <input type="text" class="form-control" name="lastName" value="Doe"><br>
+      <label for="email" class="form-label">Email:</label><br>
+      <input type="email" class="form-control" name="email" value="example@example.com"><br>
+      <label for="phone" class="form-label">Phone:</label><br>
+      <input type="tel" class="form-control" name="phone" value="555-555-5555"><br>
+      <label for="company" class="form-label">Company:</label><br>
+      <input type="text" class="form-control" name="company" value="XYZ Co."><br>
+      <label for="industry" class="form-label">Industry:</label><br>
+      <select class="form-select" name="industry">
+        <option value="" selected disabled hidden>-- Select one --</option>
+        <option value="industry 1">Industry 1</option>
+        <option value="industry 2">Industry 2</option>
+        <option value="industry 3">Industry 3</option>
+      </select><br>
+      <label for="message" class="form-label">Message:</label><br>
+      <textarea class="form-control" name="message"></textarea><br>
 
-    <center><a id="Calculate" class="btn btn-primary" style="border-width: 1px; border-color: black;"> Calculate </a></center>
-  </form>
+      <center><a id="Calculate" class="btn btn-primary" style="border-width: 1px; border-color: black;"> Calculate </a></center>
+    </form>
+  </div>
 
   <div>
     <center>
-      <div id="loading" style="display: none;"></div>
+      <div id="LoadingGroup" style="display: none;">
+        <div id="LoadingSpinner" style="margin: 30px;"></div>
+        <span id="LoadingText"></span>
+      </div>
 
       <div id="WishEndDate" style="display: none;"></div>
 
@@ -168,11 +173,25 @@
       };
     })(jQuery);
 
+    var ResultsLoaded = false;
+
     $("#Calculate").on('click', function() {
-      $('#loading').show();
+      $('#LoadingGroup').show();
+
+      if (ResultsLoaded) {
+        $('#LoadingText').html('Recalculating...');
+      }
+      else{
+        $('#LoadingText').html('Loading...');
+      }
 
       $( document ).ready(function() {
         WishCalcs(WishConfig.Matthew);
+
+        ResultsLoaded = true
+
+        $('#LoadingGroup').hide();
+
       })
     })
   </script>
