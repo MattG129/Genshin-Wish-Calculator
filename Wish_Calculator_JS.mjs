@@ -441,12 +441,6 @@ function WishCalcs(WishConfig) {
 
     const MaxNumberOfWishes = SavingsCalculator(WishConfig);
 
-    WishConfig.CharacterPity = 0;
-
-    if (typeof MaxNumberOfWishes !== 'number') {
-        return;
-    }
-
     console.log(`Max Number of Wishes: ${MaxNumberOfWishes}\n`);
 
     if (WishConfig.CharacterGoal.length > 0) {
