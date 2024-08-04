@@ -7,7 +7,7 @@
 // TODO: Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
 // TODO: Try to make this analytic instead of numeric.
 
-let NumberOfTrials = 1000000;
+let Trials = 100000;
 
 let Today = new Date();
 Today.setHours(0,0,0,0);
@@ -57,18 +57,18 @@ const WishConfig = {
         FatePoints: 0,
 
         CharacterGoal: [
-            // 'Kinich',
+            'Kinich',
             'Shenhe',
             'Xianyun(C1)',
             'Xianyun(C2)',
-            // 'Xilonen',
+            'Xilonen',
             'Capitano',
-            // 'Madame Ping',
+            'Madame Ping',
             
-            // 'Tsaritsa',
+            'Tsaritsa',
 
-            // 'Baizhu',
-            // 'Childe',
+            'Baizhu',
+            'Childe',
 
         ],
 
@@ -76,18 +76,18 @@ const WishConfig = {
             'Cashflow Supervision',
             'Staff of Homa',
 
-            // 'Redhorn Stonethresher',
+            'Redhorn Stonethresher',
             
-            // 'Key Of Khaj-Nisut',
+            'Key Of Khaj-Nisut',
 
-            // 'Engulfing Lightning',
+            'Engulfing Lightning',
             
-            // 'Light of Foliar Incision',
-            // `Tulaytullah's Remembrance`,
-            // 'Absolution',
+            'Light of Foliar Incision',
+            `Tulaytullah's Remembrance`,
+            'Absolution',
 
-            // 'Elegy for the End',
-            // 'Mistsplitter Reforged',
+            'Elegy for the End',
+            'Mistsplitter Reforged',
 
         ],
     }
@@ -244,7 +244,7 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
     const WeaponGoalCount = WishConfig.WeaponGoal.length;
 
     let Successes = 0;
-    for (let i = 0; i < NumberOfTrials; i++) {
+    for (let TrialCount = 0; TrialCount < Trials; TrialCount++) {
         let Wishes = 0;
 
         let Pity = WishConfig.CharacterPity;
@@ -313,7 +313,7 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
     }
 
     // See if there is a built in function for this.
-    return ((Successes / NumberOfTrials)*100).toFixed(2);
+    return ((Successes / Trials)*100).toFixed(2);
 }
 
 // Stub function
@@ -456,7 +456,7 @@ function WishCalcs(WishConfig) {
     if (WishConfig.WeaponGoal.length > 0) {
         console.log(`Weapon Goals: ${WishConfig.WeaponGoal.join(", ")}\n`);
     }
-
+    
     if (WishConfig.CharacterGoal.length + WishConfig.WeaponGoal.length > 0) {
         console.log(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig, MaxNumberOfWishes)}%\n`);
     }
