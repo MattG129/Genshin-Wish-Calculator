@@ -396,8 +396,6 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
 
 function WishCalcs(WishConfig, WishConfig2) {
 
-    console.log(WishConfig2);
-
     Object.assign(WishConfig, PatchAndDateCalculator(WishConfig));
 
     // TODO: See if we can add back in a leading zero for single digit numbers.
