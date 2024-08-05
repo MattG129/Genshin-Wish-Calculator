@@ -56,40 +56,9 @@ const WishConfig = {
         WeaponGuarantee: 0,
         FatePoints: 0,
 
-        CharacterGoal: [
-            'Kinich',
-            'Shenhe',
-            'Xianyun(C1)',
-            'Xianyun(C2)',
-            'Xilonen',
-            'Capitano',
-            'Madame Ping',
-            
-            'Tsaritsa',
+        CharacterGoal: 7,
 
-            'Baizhu',
-            'Childe',
-
-        ],
-
-        WeaponGoal: [
-            'Cashflow Supervision',
-            'Staff of Homa',
-
-            'Redhorn Stonethresher',
-            
-            'Key Of Khaj-Nisut',
-
-            'Engulfing Lightning',
-            
-            'Light of Foliar Incision',
-            `Tulaytullah's Remembrance`,
-            'Absolution',
-
-            'Elegy for the End',
-            'Mistsplitter Reforged',
-
-        ],
+        WeaponGoal: 0,
     }
 };
 
@@ -240,9 +209,6 @@ function SavingsCalculator(WishConfig) {
 function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
     // TODO: Add comments.
 
-    const CharacterGoalCount = WishConfig.CharacterGoal.length;
-    const WeaponGoalCount = WishConfig.WeaponGoal.length;
-
     let Successes = 0;
     for (let TrialCount = 0; TrialCount < Trials; TrialCount++) {
         let Wishes = 0;
@@ -252,7 +218,7 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
         let Characters = 0;
         let p = 0.006;
 
-        while (Characters < CharacterGoalCount && Wishes < MaxNumberOfWishes) {
+        while (Characters < WishConfig.CharacterGoal && Wishes < MaxNumberOfWishes) {
             Wishes++;
             Pity++;
 
@@ -279,7 +245,7 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
         let Weapons = 0;
         p = 0.007;
 
-        while (Weapons < WeaponGoalCount && Wishes < MaxNumberOfWishes) {
+        while (Weapons < WishConfig.WeaponGoal && Wishes < MaxNumberOfWishes) {
             Wishes++;
             Pity++;
 
@@ -307,7 +273,7 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
             }
         }
 
-        if (Characters >= CharacterGoalCount && Weapons >= WeaponGoalCount) {
+        if (Characters >= WishConfig.CharacterGoal && Weapons >= WishConfig.WeaponGoal) {
             Successes++;
         }
     }
@@ -320,8 +286,8 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
 function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
     // TODO: Add comments.
 
-    const CharacterGoalCount = WishConfig.CharacterGoal.length;
-    const WeaponGoalCount = WishConfig.WeaponGoal.length;
+    const CharacterGoal = WishConfig.CharacterGoal;
+    const WeaponGoal = WishConfig.WeaponGoal;
 
     let Successes = 0;
     var states = {};
@@ -339,18 +305,18 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
     // console.log(time);
 
     var KeyArray = [];
-    for (var i = 0; i < 180*WishConfig.CharacterGoal.length; i++) {
+    for (var i = 0; i < 180*WishConfig.CharacterGoal; i++) {
         transitions = {}
         transitions['ID'] = i
 
-        if ( (Math.floor(i/180) + 1) < WishConfig.CharacterGoal.length) {
+        if ( (Math.floor(i/180) + 1) < WishConfig.CharacterGoal) {
             NextChar = WishConfig.CharacterGoal[Math.floor(i/180)+1]
         } 
         else{
             NextChar = 'Finished'
         }
 
-        if (i >= 180*WishConfig.CharacterGoal.length - 1) {
+        if (i >= 180*WishConfig.CharacterGoal - 1) {
             // Finished = 1
             transitions['Finished-0-0'] = 1
         } else {
@@ -370,7 +336,7 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
     }
 
     Key = `${WishConfig.CharacterGoal[Math.floor(i/180)]}-${i % 90}-${Math.floor( ((i+1)/90) % 2 )}`
-    states['Finished-0-0'] =  {'ID': `${180*WishConfig.CharacterGoal.length}`, 'Finished-0-0': 1}
+    states['Finished-0-0'] =  {'ID': `${180*WishConfig.CharacterGoal}`, 'Finished-0-0': 1}
 
     console.log(`States Generated: ${((Date.now() - time)/1000).toFixed(4)}\n`);
     time = Date.now();
@@ -428,7 +394,9 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
 
 }
 
-function WishCalcs(WishConfig) {
+function WishCalcs(WishConfig, WishConfig2) {
+
+    console.log(WishConfig2);
 
     Object.assign(WishConfig, PatchAndDateCalculator(WishConfig));
 
@@ -446,30 +414,30 @@ function WishCalcs(WishConfig) {
 
     var WishingFor = 'Wishing for ';
 
-    if (WishConfig.CharacterGoal.length > 1) {
-        WishingFor += `${WishConfig.CharacterGoal.length} characters`
+    if (WishConfig.CharacterGoal > 1) {
+        WishingFor += `${WishConfig.CharacterGoal} characters`
     }
-    else if (WishConfig.CharacterGoal.length > 0) {
-        WishingFor += `${WishConfig.CharacterGoal.length} character`
+    else if (WishConfig.CharacterGoal > 0) {
+        WishingFor += `${WishConfig.CharacterGoal} character`
     }
 
-    if (WishConfig.CharacterGoal.length > 0 && WishConfig.WeaponGoal.length > 0) {
+    if (WishConfig.CharacterGoal > 0 && WishConfig.WeaponGoal > 0) {
         WishingFor += ' and '
     }
-    else if (WishConfig.WeaponGoal.length == 0){
+    else if (WishConfig.WeaponGoal == 0){
         WishingFor += '.'
     }
 
-    if (WishConfig.WeaponGoal.length > 1) {
-        WishingFor += `${WishConfig.WeaponGoal.length} weapons.`
+    if (WishConfig.WeaponGoal > 1) {
+        WishingFor += `${WishConfig.WeaponGoal} weapons.`
     }
-    else if (WishConfig.WeaponGoal.length > 0) {
-        WishingFor += `${WishConfig.WeaponGoal.length} weapon.`
+    else if (WishConfig.WeaponGoal > 0) {
+        WishingFor += `${WishConfig.WeaponGoal} weapon.`
     }
 
     $('#WishingGoals').show().html(WishingFor);
     
-    if (WishConfig.CharacterGoal.length + WishConfig.WeaponGoal.length > 0) {
+    if (WishConfig.CharacterGoal + WishConfig.WeaponGoal > 0) {
         $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig, MaxNumberOfWishes)}%`);
     }
 }
