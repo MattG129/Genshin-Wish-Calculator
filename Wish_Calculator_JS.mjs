@@ -429,32 +429,47 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
 }
 
 function WishCalcs(WishConfig) {
+
     Object.assign(WishConfig, PatchAndDateCalculator(WishConfig));
 
     // TODO: See if we can add back in a leading zero for single digit numbers.
-    console.log(`Wishing End Date: ${WishConfig.WishingEndDate.toLocaleDateString("en-US")}\n`);
+    $('#WishEndDate').show().html(`Wishing End Date: ${WishConfig.WishingEndDate.toLocaleDateString("en-US")}`);
 
     if (WishConfig.WishingEndDate < Today) {
-        console.log("Banner has already ended.\n");
-        return '';
+        $('#BannerEnded').show().html('Banner has already ended.');
+        return ''
     }
 
-    const MaxNumberOfWishes = SavingsCalculator(WishConfig);
+    var MaxNumberOfWishes = SavingsCalculator(WishConfig);
 
-    console.log(`Max Number of Wishes: ${MaxNumberOfWishes}\n`);
+    $('#MaxWishes').show().html(`Max Number of Wishes: ${MaxNumberOfWishes}`);
 
-    if (WishConfig.CharacterGoal.length > 0) {
-        console.log(`Character Goals: ${WishConfig.CharacterGoal.join(", ")}\n`);
+    var WishingFor = 'Wishing for ';
+
+    if (WishConfig.CharacterGoal.length > 1) {
+        WishingFor += `${WishConfig.CharacterGoal.length} characters`
+    }
+    else if (WishConfig.CharacterGoal.length > 0) {
+        WishingFor += `${WishConfig.CharacterGoal.length} character`
     }
 
-    if (WishConfig.WeaponGoal.length > 0) {
-        console.log(`Weapon Goals: ${WishConfig.WeaponGoal.join(", ")}\n`);
+    if (WishConfig.CharacterGoal.length > 0 && WishConfig.WeaponGoal.length > 0) {
+        WishingFor += ' and '
     }
+    else if (WishConfig.WeaponGoal.length == 0){
+        WishingFor += '.'
+    }
+
+    if (WishConfig.WeaponGoal.length > 1) {
+        WishingFor += `${WishConfig.WeaponGoal.length} weapons.`
+    }
+    else if (WishConfig.WeaponGoal.length > 0) {
+        WishingFor += `${WishConfig.WeaponGoal.length} weapon.`
+    }
+
+    $('#WishingGoals').show().html(WishingFor);
     
     if (WishConfig.CharacterGoal.length + WishConfig.WeaponGoal.length > 0) {
-        console.log(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig, MaxNumberOfWishes)}%\n`);
+        $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig, MaxNumberOfWishes)}%`);
     }
-
 }
-
-WishCalcs(WishConfig.Matthew);
