@@ -21,6 +21,7 @@ const WishConfig = {
         UsingStarglitter: true,
         Starglitter: 502,
         MissingFourStars: 1,
+        MissingFiveStars: 0,
         
         // TODO: This should take in the expected number of stars per floor and calculate the expected number of primos based on that, rather than having the user run the numbers.
         Abyss: {
@@ -210,7 +211,9 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
     // TODO: Add comments.
 
     let Successes = 0;
+    var DynamicMaxWishes;
     for (let TrialCount = 0; TrialCount < Trials; TrialCount++) {
+        DynamicMaxWishes = MaxNumberOfWishes
         let Wishes = 0;
 
         let Pity = WishConfig.CharacterPity;
@@ -218,7 +221,7 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
         let Characters = 0;
         let p = 0.006;
 
-        while (Characters < WishConfig.CharacterGoal && Wishes < MaxNumberOfWishes) {
+        while (Characters < WishConfig.CharacterGoal && Wishes < DynamicMaxWishes) {
             Wishes++;
             Pity++;
 
@@ -235,6 +238,15 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
                     Guarantee = 0;
                 } else {
                     Guarantee = 1;
+                    
+                    if (WishConfig.UsingStarglitter) {
+                        if (WishConfig.MissingFiveStars == 0){
+                            DynamicMaxWishes += 2
+                        }
+                        else {
+                            WishConfig.MissingFiveStars--
+                        }
+                    }
                 }
             }
         }
@@ -245,7 +257,7 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
         let Weapons = 0;
         p = 0.007;
 
-        while (Weapons < WishConfig.WeaponGoal && Wishes < MaxNumberOfWishes) {
+        while (Weapons < WishConfig.WeaponGoal && Wishes < DynamicMaxWishes) {
             Wishes++;
             Pity++;
 
@@ -256,6 +268,11 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
             if (Math.random() <= p) {
                 p = 0.007;
                 Pity = 0;
+                
+                if (WishConfig.UsingStarglitter) {
+                    DynamicMaxWishes += 2
+                }
+
                 // TODO: What is r?
                 let r = Math.random();
 
@@ -406,7 +423,7 @@ function WishCalcs(WishConfig, WishConfig2) {
         return ''
     }
 
-    var MaxNumberOfWishes = SavingsCalculator(WishConfig);
+    const MaxNumberOfWishes = SavingsCalculator(WishConfig);
 
     $('#MaxWishes').show().html(`Max Number of Wishes: ${MaxNumberOfWishes}`);
 
