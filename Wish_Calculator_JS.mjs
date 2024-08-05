@@ -18,7 +18,7 @@ const WishConfig = {
         CurrentIntertwinedFates: 0,
         Stardust: 1440,
         
-        UsingStarglitterForWishes: true,
+        UsingStarglitter: true,
         Starglitter: 502,
         MissingFourStars: 1,
         
@@ -162,7 +162,7 @@ function SavingsCalculator(WishConfig) {
     IntertwinedFates += Math.min(5 * WishConfig.MonthDiff, Math.floor(WishConfig.Stardust / 75));
 
     // TODO: Could maybe go a bit more in depth.
-    if (WishConfig.UsingStarglitterForWishes) {
+    if (WishConfig.UsingStarglitter) {
         IntertwinedFates += Math.floor(WishConfig.Starglitter / 5);
         var Starglitter = WishConfig.Starglitter % 5;
     }
@@ -182,7 +182,7 @@ function SavingsCalculator(WishConfig) {
     let WishesMade = Math.floor(Primos/160) + IntertwinedFates;
 
     // TODO: Could maybe go a bit more in depth.
-    if (WishConfig.UsingStarglitterForWishes) {
+    if (WishConfig.UsingStarglitter) {
         let FourStars = Math.floor(WishesMade / 10);
         let FourStarPity = WishesMade % 10;
         // TODO: Add a comment regarding why this doesn't differentiate for on banner and off banner four stars.
