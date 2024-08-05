@@ -237,7 +237,9 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
 
     let Successes = 0;
     var DynamicMaxWishes;
+    var Lost5050s;
     for (let TrialCount = 0; TrialCount < Trials; TrialCount++) {
+        Lost5050s = 0
         DynamicMaxWishes = MaxWishes
         let Wishes = 0;
 
@@ -263,14 +265,10 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
                     Guarantee = 0;
                 } else {
                     Guarantee = 1;
-                    
-                    if (WishConfig.UsingStarglitter) {
-                        if (WishConfig.MissingFiveStars == 0){
-                            DynamicMaxWishes += 2
-                        }
-                        else {
-                            WishConfig.MissingFiveStars--
-                        }
+                    Lost5050s++;
+
+                    if ( WishConfig.UsingStarglitter && (WishConfig.MissingFiveStars - Lost5050s <= 0) ){
+                        DynamicMaxWishes += 2
                     }
                 }
             }
