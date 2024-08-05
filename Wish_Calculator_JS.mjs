@@ -21,19 +21,22 @@ const WishConfig = {
         UsingStarglitter: true,
         Starglitter: 502,
         MissingFourStars: 1,
-        MissingFiveStars: 0,
+        MissingFiveStars: 999,
         
         // TODO: This should take in the expected number of stars per floor and calculate the expected number of primos based on that, rather than having the user run the numbers.
         Abyss: {
-            Unlocked: true,
-            ExpectedPrimos: 800,
+            ExpectedStars: {
+                F9: 9,
+                F10: 9,
+                F11: 9,
+                F12: 9,
+            },
             CurrentCycleCompleted: true
         },
 
         // TODO: This should take in the expected number of acts completed and calculate the expected number of primos based on that, rather than having the user run the numbers.
-        ImaginariumTheater: {
-            Unlocked: true,
-            ExpectedPrimos: 620,
+        Theater: {
+            ExpectedAct: 8,
             CurrentCycleCompleted: true
         },
         
@@ -119,26 +122,48 @@ function SavingsCalculator(WishConfig) {
     var DateDiff = Math.floor((WishConfig.WishingEndDate - Today) / (1000* 60 * 60 * 24));
 
     Primos += DateDiff * (60 + (WishConfig.HasWelkin ? 90 : 0)); // 60 primos for dailies plus 90 for welkin, if purchased.
+
+    var ExpectedAbyssPrimos = 0
+
+    for (const [Key, Value] of Object.entries(WishConfig.Abyss.ExpectedStars)) {
+        if (Value == 9) {
+            ExpectedAbyssPrimos += 200;
+        }
+        else if (Value >= 6) {
+            ExpectedAbyssPrimos += 100;
+        }
+        else if (Value >= 3) {
+            ExpectedAbyssPrimos += 50;
+        }
+    }
     
-    if (WishConfig.Abyss.Unlocked) {
-        // TODO: Might want to add a comment here explaining the whole process.
-        let AbyssCycles = WishConfig.MonthDiff - WishConfig.Abyss.CurrentCycleCompleted;
-        
-        // Since the abyss resets on the 16th of each month, the calculations needed to get the number of abyss cycles, are slightly different.
-        if (WishConfig.WishingEndDate.getDate() >= 16) {
-            AbyssCycles += 1;
-        }
-        if (Today.getDate() < 16) {
-            AbyssCycles += 1;
-        }
-
-        Primos += WishConfig.Abyss.ExpectedPrimos * AbyssCycles;
+    // TODO: Might want to add a comment here explaining the whole process.
+    let AbyssCycles = WishConfig.MonthDiff - WishConfig.Abyss.CurrentCycleCompleted;
+    
+    // Since the abyss resets on the 16th of each month, the calculations needed to get the number of abyss cycles, are slightly different.
+    if (WishConfig.WishingEndDate.getDate() >= 16) {
+        AbyssCycles += 1;
+    }
+    if (Today.getDate() < 16) {
+        AbyssCycles += 1;
     }
 
-    if (WishConfig.ImaginariumTheater.Unlocked) {
-        // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
-        Primos += WishConfig.ImaginariumTheater.ExpectedPrimos * (WishConfig.MonthDiff + (1 - WishConfig.ImaginariumTheater.CurrentCycleCompleted));
+    Primos += ExpectedAbyssPrimos * AbyssCycles;
+
+    switch (WishConfig.Theater.ExpectedAct) {
+        case 0: var ExpectedTheaterPrimos = 0;
+        case 1: var ExpectedTheaterPrimos = 60;
+        case 2: var ExpectedTheaterPrimos = 120;
+        case 3: var ExpectedTheaterPrimos = 220;
+        case 4: var ExpectedTheaterPrimos = 280;
+        case 5: var ExpectedTheaterPrimos = 340;
+        case 6: var ExpectedTheaterPrimos = 440;
+        case 7: var ExpectedTheaterPrimos = 500;
+        case 8: var ExpectedTheaterPrimos = 620;
     }
+
+    // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
+    Primos += ExpectedTheaterPrimos * (WishConfig.MonthDiff + (1 - WishConfig.Theater.CurrentCycleCompleted));
 
     // Live Stream Primos
     // TODO: Could maybe go a bit more in depth.
