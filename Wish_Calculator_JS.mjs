@@ -207,13 +207,13 @@ function SavingsCalculator(WishConfig) {
     return WishesMade
 }
 
-function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
+function NumericWishCalculations(WishConfig, MaxWishes) {
     // TODO: Add comments.
 
     let Successes = 0;
     var DynamicMaxWishes;
     for (let TrialCount = 0; TrialCount < Trials; TrialCount++) {
-        DynamicMaxWishes = MaxNumberOfWishes
+        DynamicMaxWishes = MaxWishes
         let Wishes = 0;
 
         let Pity = WishConfig.CharacterPity;
@@ -300,7 +300,7 @@ function NumericWishCalculations(WishConfig, MaxNumberOfWishes) {
 }
 
 // Stub function
-function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
+function AnalyticWishCalculations(WishConfig, MaxWishes) {
     // TODO: Add comments.
 
     const CharacterGoal = WishConfig.CharacterGoal;
@@ -383,24 +383,24 @@ function AnalyticWishCalculations(WishConfig, MaxNumberOfWishes) {
  
     var stateTransformationsMatrix = math.matrix(stateTransformations, 'sparse')
   
-    let MaxNumberOfWishesBin = (MaxNumberOfWishes >>> 0).toString(2);
-    let ReverseMaxNumberOfWishesBin = MaxNumberOfWishesBin.split('').reverse().join('');
+    let MaxWishesBin = (MaxWishes >>> 0).toString(2);
+    let ReverseMaxWishesBin = MaxWishesBin.split('').reverse().join('');
     
     console.log(`Matrix Power 1: ${((Date.now() - time)/1000).toFixed(4)}\n`);
     time = Date.now();
 
     var FinalStateTransformationMatrix = math.identity(Object.keys(states).length);
     var newMat = stateTransformationsMatrix;
-    for (var i = 0; i < MaxNumberOfWishesBin.length ; i++) {
+    for (var i = 0; i < MaxWishesBin.length ; i++) {
         console.log(`Matrix Power ${Math.pow(2, i)}: ${((Date.now() - time)/1000).toFixed(4)}\n`);
         time = Date.now();
         
-        if(ReverseMaxNumberOfWishesBin[i] == '1') {
+        if(ReverseMaxWishesBin[i] == '1') {
 
             FinalStateTransformationMatrix = math.multiply(FinalStateTransformationMatrix, newMat);
         }
 
-        if (i < MaxNumberOfWishesBin.length - 1) {
+        if (i < MaxWishesBin.length - 1) {
             newMat = math.multiply(newMat, newMat);
         }
     };
@@ -423,9 +423,9 @@ function WishCalcs(WishConfig, WishConfig2) {
         return ''
     }
 
-    const MaxNumberOfWishes = SavingsCalculator(WishConfig);
+    const MaxWishes = SavingsCalculator(WishConfig);
 
-    $('#MaxWishes').show().html(`Max Number of Wishes: ${MaxNumberOfWishes}`);
+    $('#MaxWishes').show().html(`Max Number of Wishes: ${MaxWishes}`);
 
     var WishingFor = 'Wishing for ';
 
@@ -453,6 +453,6 @@ function WishCalcs(WishConfig, WishConfig2) {
     $('#WishingGoals').show().html(WishingFor);
     
     if (WishConfig.CharacterGoal + WishConfig.WeaponGoal > 0) {
-        $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig, MaxNumberOfWishes)}%`);
+        $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig, MaxWishes)}%`);
     }
 }
