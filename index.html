@@ -68,6 +68,43 @@
 
         <form id="form" data-parsley-validate="true">
             <div class="container">
+                <hr><center><h2>Calculator Settings</h2></center><br>
+                
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="ImportAccordion">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ImportAccordionContent" aria-expanded="false" aria-controls="ImportAccordionContent">
+                                <h4 style="margin-left: 47%">Import</h4>
+                            </button>
+                        </h2>
+                        <div id="ImportAccordionContent" class="accordion-collapse collapse" aria-labelledby="ImportAccordion" data-bs-parent="#ImportAccordion">
+                            <div class="accordion-body">
+                                <label for="ImportState" class="form-label">[PLACE HOLDER DESCRIPTION]</label><br>
+                                <textarea id="ImportState" class="form-control"></textarea><br>
+                                
+                                <center><a id="Import" class="btn btn-primary" style="border-width: 1px; border-color: black;"> Import </a></center><br>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="ExportAccordion">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ExportAccordionContent" aria-expanded="false" aria-controls="ExportAccordionContent">
+                                <h4 style="margin-left: 47.15%">Export</h4>
+                            </button>
+                        </h2>
+                        <div id="ExportAccordionContent" class="accordion-collapse collapse" aria-labelledby="ExportAccordion" data-bs-parent="#ExportAccordion">
+                            <div class="accordion-body">
+                                <label for="ExportState" class="form-label">[PLACE HOLDER DESCRIPTION]</label><br>
+                                <textarea id="ExportState" class="form-control" disabled></textarea><br>
+                                
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ 
                 <hr><center><h2>Currency</h2></center><br>
 
                 <div class="row">
@@ -370,6 +407,37 @@
                 else {
                     $('#BPLevelSkipGroup').hide();
                 }
+            });
+
+            function UpdateExportState(){
+                var FormValues = {};
+                
+                $('#form input').each(function() {
+                    if ($(this).is(':checkbox')) {
+                        FormValues[this.id] = $(this).is(':checked')
+                    }
+                    else {
+                        FormValues[this.id] = this.value;
+                    }
+                });
+                
+                $('#ExportState').val(JSON.stringify(FormValues))
+            };
+
+            $(document).ready(UpdateExportState);
+            $('#form').on('change', UpdateExportState);
+
+            $('#Import').on('click', function() {
+                var JSONImport = JSON.parse($('#ImportState').val());
+                
+                $('#form input').each(function() {
+                    if ($(this).is(':checkbox')) {
+                        $(this).prop('checked', JSONImport[this.id]);
+                    }
+                    else {
+                        $(this).val(JSONImport[this.id]);
+                    }
+                })
             });
         </script>
     </body>
