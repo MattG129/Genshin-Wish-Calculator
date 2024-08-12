@@ -6,6 +6,10 @@
 // TODO: See about adding batch wishing functionality. Soft pity might prevent it from being worthwhile.
 // TODO: Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
 // TODO: Try to make this analytic instead of numeric.
+// TODO: Chronicled Wish Pity
+// TODO: Date Input
+// TODO: Wish end date options.
+// TOOD: About section or something giving a general overview of how the calculator works.
 
 let Trials = 100000;
 
@@ -13,57 +17,44 @@ let Today = new Date();
 Today.setHours(0,0,0,0);
 
 const WishConfig = {
-    Matthew: {
-        CurrentPrimos: 43461,
-        CurrentIntertwinedFates: 0,
-        Stardust: 1440,
-        
-        UsingStarglitter: true,
-        Starglitter: 502,
-        MissingFourStars: 1,
-        MissingFiveStars: 999,
-        
-        // TODO: This should take in the expected number of stars per floor and calculate the expected number of primos based on that, rather than having the user run the numbers.
-        Abyss: {
-            ExpectedStars: {
-                F9: 9,
-                F10: 9,
-                F11: 9,
-                F12: 9,
-            },
-            CurrentCycleCompleted: true
-        },
 
-        // TODO: This should take in the expected number of acts completed and calculate the expected number of primos based on that, rather than having the user run the numbers.
-        Theater: {
-            ExpectedAct: 8,
-            CurrentCycleCompleted: true
-        },
-        
-        BattlePass: {
-            Purchased: true,
-            Level: 31
-            // Since wish related rewards are only given every ten levels you only need to make sure the tens-place digit is correct. 
-            // For example, 40 and 45 are effectively the same while 40 and 50 are not.
-        },
+    CurrentPrimos: 43461,
+    CurrentIntertwinedFates: 0,
+    Stardust: 1440,
+    
+    UsingStarglitter: true,
+    Starglitter: 502,
+    MissingFourStars: 1,
+    MissingFiveStars: 999,
+    
+    ExpectedStarsFloor9: 9,
+    ExpectedStarsFloor10: 9,
+    ExpectedStarsFloor11: 9,
+    ExpectedStarsFloor12: 9,
+    AbyssCurrentCycleCompleted: true,
 
-        HasWelkin: true,
+    ExpectedAct: 8,
+    TheaterCurrentCycleCompleted: true,
+    
+    BattlePassPurchased: true, 
+    BattlePassLevel: 31,
 
-        // The patch and phase that you need to make your wishes by.
-        EndPatch: 5.3,
-        EndPhase: 1,
+    HasWelkin: true,
 
-        CharacterPity: 22,
-        CharacterGuarantee: 0,
+    // The patch and phase that you need to make your wishes by.
+    EndPatch: 5.3,
+    EndPhase: 1,
 
-        WeaponPity: 42,
-        WeaponGuarantee: 0,
-        FatePoints: 0,
+    CharacterPity: 22,
+    CharacterGuarantee: 0,
 
-        CharacterGoal: 7,
+    WeaponPity: 42,
+    WeaponGuarantee: 0,
+    FatePoints: 0,
 
-        WeaponGoal: 0,
-    }
+    CharacterGoal: 7,
+
+    WeaponGoal: 0,
 };
 
 function DateAdd(date, days) {
@@ -124,21 +115,23 @@ function SavingsCalculator(WishConfig) {
     Primos += DateDiff * (60 + (WishConfig.HasWelkin ? 90 : 0)); // 60 primos for dailies plus 90 for welkin, if purchased.
 
     var ExpectedAbyssPrimos = 0
-
-    for (const [Key, Value] of Object.entries(WishConfig.Abyss.ExpectedStars)) {
-        if (Value == 9) {
+    
+    const FloorVals = [WishConfig.ExpectedStarsFloor9, WishConfig.ExpectedStarsFloor10, WishConfig.ExpectedStarsFloor11, WishConfig.ExpectedStarsFloor12]
+    
+    for (var i = 0; i <= FloorVals.length; i++) {
+        if (FloorVals[i] == 9) {
             ExpectedAbyssPrimos += 200;
         }
-        else if (Value >= 6) {
+        else if (FloorVals[i] >= 6) {
             ExpectedAbyssPrimos += 100;
         }
-        else if (Value >= 3) {
+        else if (FloorVals[i] >= 3) {
             ExpectedAbyssPrimos += 50;
         }
     }
-    
+
     // TODO: Might want to add a comment here explaining the whole process.
-    let AbyssCycles = WishConfig.MonthDiff - WishConfig.Abyss.CurrentCycleCompleted;
+    let AbyssCycles = WishConfig.MonthDiff - WishConfig.AbyssCurrentCycleCompleted;
     
     // Since the abyss resets on the 16th of each month, the calculations needed to get the number of abyss cycles, are slightly different.
     if (WishConfig.WishingEndDate.getDate() >= 16) {
@@ -150,7 +143,7 @@ function SavingsCalculator(WishConfig) {
 
     Primos += ExpectedAbyssPrimos * AbyssCycles;
 
-    switch (WishConfig.Theater.ExpectedAct) {
+    switch (WishConfig.ExpectedAct) {
         case 0: var ExpectedTheaterPrimos = 0;
         case 1: var ExpectedTheaterPrimos = 60;
         case 2: var ExpectedTheaterPrimos = 120;
@@ -163,7 +156,7 @@ function SavingsCalculator(WishConfig) {
     }
 
     // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
-    Primos += ExpectedTheaterPrimos * (WishConfig.MonthDiff + (1 - WishConfig.Theater.CurrentCycleCompleted));
+    Primos += ExpectedTheaterPrimos * (WishConfig.MonthDiff + (1 - WishConfig.TheaterCurrentCycleCompleted));
 
     // Live Stream Primos
     // TODO: Could maybe go a bit more in depth.
@@ -194,12 +187,12 @@ function SavingsCalculator(WishConfig) {
     }
 
     // TODO: Could maybe go a bit more in depth.
-    if (WishConfig.BattlePass.Purchased) {
+    if (WishConfig.BattlePassPurchased) {
         IntertwinedFates += (WishConfig.EndPhase === 1 ? 3 : 4) + 4 * WishConfig.PatchDiff; // Assumes that the user will only be able to claim 3 of the 4 fates for that pass, if the banner ends in the first phase.
-        IntertwinedFates -= Math.min(4, Math.floor(WishConfig.BattlePass.Level / 10)); // Subtracts the amount of fates already claimed from this battle pass.
+        IntertwinedFates -= Math.min(4, Math.floor(WishConfig.BattlePassLevel / 10)); // Subtracts the amount of fates already claimed from this battle pass.
 
         Primos += 680 * ((WishConfig.EndPhase === 2 ? 1 : 0) + WishConfig.PatchDiff); // Assumes that the user won't reach level 50 for that pass, if the banner ends in the first phase.
-        if (WishConfig.BattlePass.Level === 50) { // Subtracts 680, if the primos have already been claimed for this pass.
+        if (WishConfig.BattlePassLevel === 50) { // Subtracts 680, if the primos have already been claimed for this pass.
             Primos -= 680;
         }
     }
