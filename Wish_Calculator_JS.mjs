@@ -24,47 +24,6 @@ let Trials = 100000;
 let Today = new Date();
 Today.setHours(0,0,0,0);
 
-const WishConfig = {
-
-    Primos: 43461,
-    IntertwinedFates: 0,
-    Stardust: 1440,
-    
-    UsingStarglitter: true,
-    Starglitter: 502,
-    MissingFourStars: 1,
-    MissingFiveStars: 7,
-    
-    ExpectedStarsFloor9: 9,
-    ExpectedStarsFloor10: 9,
-    ExpectedStarsFloor11: 9,
-    ExpectedStarsFloor12: 9,
-    AbyssCurrentCycleCompleted: true,
-
-    ExpectedAct: 8,
-    ITCurrentCycleCompleted: true,
-    
-    BPPurchased: true, 
-    BPLevel: 31,
-
-    HasWelkin: true,
-
-    // The patch and phase that you need to make your wishes by.
-    EndPatch: 5.3,
-    EndPhase: 1,
-
-    CharacterPity: 22,
-    CharacterGuarantee: 0,
-
-    WeaponPity: 42,
-    WeaponGuarantee: 0,
-    FatePoints: 0,
-
-    CharacterGoal: 3,
-
-    WeaponGoal: 3,
-};
-
 function DateAdd(date, days) {
     const newDate = new Date(date);
     
