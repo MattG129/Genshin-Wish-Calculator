@@ -10,6 +10,14 @@
 // TODO: Date Input
 // TODO: Wish end date options.
 // TOOD: About section or something giving a general overview of how the calculator works.
+// TODO: Capturing Radiance
+// TODO: Weapon banner only needs 1 fp now.
+// TODO: Chronicled wish now has to be sperated from character wish.
+// TODO: Make it so the default patch value will be the next phase automatically.
+// TOOD: If a field is skipped then validations shouldn't be checked.
+// TOOD: Field ranges.
+// TODO: Field pop overs.
+// TODO: It should list out the wish goals for all categories by default.
 
 let Trials = 100000;
 
@@ -18,14 +26,14 @@ Today.setHours(0,0,0,0);
 
 const WishConfig = {
 
-    CurrentPrimos: 43461,
-    CurrentIntertwinedFates: 0,
+    Primos: 43461,
+    IntertwinedFates: 0,
     Stardust: 1440,
     
     UsingStarglitter: true,
     Starglitter: 502,
     MissingFourStars: 1,
-    MissingFiveStars: 999,
+    MissingFiveStars: 7,
     
     ExpectedStarsFloor9: 9,
     ExpectedStarsFloor10: 9,
@@ -34,10 +42,10 @@ const WishConfig = {
     AbyssCurrentCycleCompleted: true,
 
     ExpectedAct: 8,
-    TheaterCurrentCycleCompleted: true,
+    ITCurrentCycleCompleted: true,
     
-    BattlePassPurchased: true, 
-    BattlePassLevel: 31,
+    BPPurchased: true, 
+    BPLevel: 31,
 
     HasWelkin: true,
 
@@ -52,9 +60,9 @@ const WishConfig = {
     WeaponGuarantee: 0,
     FatePoints: 0,
 
-    CharacterGoal: 7,
+    CharacterGoal: 3,
 
-    WeaponGoal: 0,
+    WeaponGoal: 3,
 };
 
 function DateAdd(date, days) {
@@ -107,7 +115,8 @@ function PatchAndDateCalculator(WishConfig) {
 function SavingsCalculator(WishConfig) {
 
     // TODO: Could maybe go a bit more in depth.
-    let Primos = WishConfig.CurrentPrimos;
+    let Primos = WishConfig.Primos;
+
 
     // TODO: See if there is a better way to do this.
     var DateDiff = Math.floor((WishConfig.WishingEndDate - Today) / (1000* 60 * 60 * 24));
@@ -115,7 +124,7 @@ function SavingsCalculator(WishConfig) {
     Primos += DateDiff * (60 + (WishConfig.HasWelkin ? 90 : 0)); // 60 primos for dailies plus 90 for welkin, if purchased.
 
     var ExpectedAbyssPrimos = 0
-    
+
     const FloorVals = [WishConfig.ExpectedStarsFloor9, WishConfig.ExpectedStarsFloor10, WishConfig.ExpectedStarsFloor11, WishConfig.ExpectedStarsFloor12]
     
     for (var i = 0; i <= FloorVals.length; i++) {
@@ -156,7 +165,7 @@ function SavingsCalculator(WishConfig) {
     }
 
     // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
-    Primos += ExpectedTheaterPrimos * (WishConfig.MonthDiff + (1 - WishConfig.TheaterCurrentCycleCompleted));
+    Primos += ExpectedTheaterPrimos * (WishConfig.MonthDiff + (1 - WishConfig.ITCurrentCycleCompleted));
 
     // Live Stream Primos
     // TODO: Could maybe go a bit more in depth.
@@ -174,7 +183,7 @@ function SavingsCalculator(WishConfig) {
     Primos += 300 * WishConfig.PatchDiff;
 
     // TODO: Could maybe go a bit more in depth.
-    let IntertwinedFates = WishConfig.CurrentIntertwinedFates;
+    let IntertwinedFates = WishConfig.IntertwinedFates;
 
     // Up to five Intertwined Fates can be purchased every month from the Stardust Exchange.
     // Assumes that the current month's supply has already been purchased.
@@ -187,12 +196,12 @@ function SavingsCalculator(WishConfig) {
     }
 
     // TODO: Could maybe go a bit more in depth.
-    if (WishConfig.BattlePassPurchased) {
+    if (WishConfig.BPPurchased) {
         IntertwinedFates += (WishConfig.EndPhase === 1 ? 3 : 4) + 4 * WishConfig.PatchDiff; // Assumes that the user will only be able to claim 3 of the 4 fates for that pass, if the banner ends in the first phase.
-        IntertwinedFates -= Math.min(4, Math.floor(WishConfig.BattlePassLevel / 10)); // Subtracts the amount of fates already claimed from this battle pass.
+        IntertwinedFates -= Math.min(4, Math.floor(WishConfig.BPLevel / 10)); // Subtracts the amount of fates already claimed from this battle pass.
 
         Primos += 680 * ((WishConfig.EndPhase === 2 ? 1 : 0) + WishConfig.PatchDiff); // Assumes that the user won't reach level 50 for that pass, if the banner ends in the first phase.
-        if (WishConfig.BattlePassLevel === 50) { // Subtracts 680, if the primos have already been claimed for this pass.
+        if (WishConfig.BPLevel === 50) { // Subtracts 680, if the primos have already been claimed for this pass.
             Primos -= 680;
         }
     }
@@ -427,7 +436,7 @@ function AnalyticWishCalculations(WishConfig, MaxWishes) {
 
 }
 
-function WishCalcs(WishConfig, WishConfig2) {
+function WishCalcs(WishConfig) {
 
     Object.assign(WishConfig, PatchAndDateCalculator(WishConfig));
 
