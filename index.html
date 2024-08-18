@@ -114,8 +114,8 @@
                     </div>
                 
                     <div class="col-sm">
-                        <label for="Fates" class="form-label">Intertwined Fates</label><br>
-                        <input type="number" id="Fates" class="form-control" data-parsley-required="true" Value="0"><br>
+                        <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
+                        <input type="number" id="IntertwinedFates" class="form-control" data-parsley-required="true" Value="0"><br>
                     </div>
 
                     <div class="col-sm">
@@ -161,7 +161,7 @@
                     </div>
                     <div class="col-sm" style="margin-right: 12px;">
                         <label for="EndPatch" class="form-label">What patch will you have made all your wishes by?</label>
-                        <input type="number" id="EndPatch" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="5.0"><br>
+                        <input type="decimal" id="EndPatch" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="5.0"><br>
                     </div>
                     <div class="col-sm">
                         <label for="EndPhase" class="form-label">What phase will you have made all your wishes by?</label>
@@ -197,27 +197,27 @@
                 <br>
 
                 <hr><center><h2>Spiral Abyss</h2></center><br>
-                <center><h3>Expectected Stars:</h3></center>
+                <center><h3>Expected Stars:</h3></center>
 
                 <div class="row">
                     <div class="col-sm">
-                        <label for="F9" class="form-label">Floor 9</label><br>
-                        <input type="number" id="F9" data-parsley-max="9" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
+                        <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label><br>
+                        <input type="number" id="ExpectedStarsFloor9" data-parsley-max="9" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
                     </div>
                 
                     <div class="col-sm">
-                        <label for="F10" class="form-label">Floor 10</label><br>
-                        <input type="number" id="F10" class="form-control" data-parsley-required="true" Value="0">
+                        <label for="ExpectedStarsFloor10" class="form-label">Floor 10</label><br>
+                        <input type="number" id="ExpectedStarsFloor10" class="form-control" data-parsley-required="true" Value="0">
                     </div>
 
                     <div class="col-sm">
-                        <label for="F11" class="form-label">Floor 11</label><br>
-                        <input type="number" id="F11" class="form-control" data-parsley-required="true" Value="0">
+                        <label for="ExpectedStarsFloor11" class="form-label">Floor 11</label><br>
+                        <input type="number" id="ExpectedStarsFloor11" class="form-control" data-parsley-required="true" Value="0">
                     </div>
 
                     <div class="col-sm">
-                        <label for="F12" class="form-label">Floor 12</label><br>
-                        <input type="number" id="F12" class="form-control" data-parsley-required="true" Value="0">
+                        <label for="ExpectedStarsFloor12" class="form-label">Floor 12</label><br>
+                        <input type="number" id="ExpectedStarsFloor12" class="form-control" data-parsley-required="true" Value="0">
                     </div>
                 </div>
                 <br>
@@ -232,12 +232,12 @@
                 <div class="row">
                     <center>
                         <div class="col-sm-2">
-                            <label for="ExpectectedAct" class="form-label">Expectected Act</label>
-                            <input type="number" id="ExpectectedAct" data-parsley-max="8" max="8" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0"><br>
+                            <label for="ExpectedAct" class="form-label">Expfected Act</label>
+                            <input type="number" id="ExpectedAct" data-parsley-max="8" max="8" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0"><br>
                         </div>
                         <div class="col-sm-3">
-                            <input type="checkbox" id="TheaterCurrentCycleCompleted" class="form-check-input">
-                            <label for="TheaterCurrentCycleCompleted" class="form-label">Current cycle completed</label><br>
+                            <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
+                            <label for="ITCurrentCycleCompleted" class="form-label">Current cycle completed</label><br>
                         </div>
                     </center>
                 </div>
@@ -332,7 +332,7 @@
                           CurrentIntertwinedFates: $('#Fates').val(),
                         }
 
-                        WishCalcs(WishConfig, WishConfig2);
+                        WishCalcs(CompileForm());
 
                     ResultsLoaded = true
 
@@ -361,6 +361,10 @@
             });
 
             function UpdateExportState(){
+                $('#ExportState').val(JSON.stringify(CompileForm()))
+            };
+
+            function CompileForm(){
                 var FormValues = {};
                 
                 $('#form input').each(function() {
@@ -368,11 +372,11 @@
                         FormValues[this.id] = $(this).is(':checked')
                     }
                     else {
-                        FormValues[this.id] = this.value;
+                        FormValues[this.id] = Number(this.value);
                     }
                 });
-                
-                $('#ExportState').val(JSON.stringify(FormValues))
+
+                return FormValues
             };
 
             $(document).ready(UpdateExportState);
