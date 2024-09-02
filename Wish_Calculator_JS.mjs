@@ -1,23 +1,22 @@
-// TODO: Some of these comments should be added to the webpage.
-// TODO: Should add validations to the wish config.
-// TODO: Add something to remark if parameters might be out of date with those used for the on screen calculations.
-// TODO: Add starglitter for five stars.
-// TODO: Add import/export.
-// TODO: See about adding batch wishing functionality. Soft pity might prevent it from being worthwhile.
-// TODO: Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
-// TODO: Try to make this analytic instead of numeric.
-// TODO: Chronicled Wish Pity
-// TODO: Date Input
-// TODO: Wish end date options.
-// TOOD: About section or something giving a general overview of how the calculator works.
-// TODO: Capturing Radiance
-// TODO: Weapon banner only needs 1 fp now.
-// TODO: Chronicled wish now has to be sperated from character wish.
-// TODO: Make it so the default patch value will be the next phase automatically.
-// TOOD: If a field is skipped then validations shouldn't be checked.
-// TOOD: Field ranges.
-// TODO: Field pop overs.
-// TODO: It should list out the wish goals for all categories by default.
+// High Priority:
+    // Add tool tips for most, if not all, fields.
+    // Make a notification for if no characters/weapons were chosen.
+    // Should add validations to the wish config.
+    // Replace the end patch and end phase input with a dropdown that list off each patch/phase and the end date. EX: 5.3 Phase 1 (Ends on 01/01/2025)
+    // Add tool tips about features that are coming soon. (Especially capturing radiance.)
+    // About section or something giving a general overview of how the calculator works.
+    // Field ranges. Both for parsley and the increase/descrease functionality.
+    // If a field is skipped then validations shouldn't be checked.
+    // Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
+    // Make the site look better.
+
+// Wish List:
+    // Implement a form of batch wishing that instead of calculating how many five starts were obtained in N wishes, gets the probability distrubution of getting a five star in exactly N wishes, from zero to pity, and have the algorithm use that to get the number of wishes used.
+    // Try to make this analytic instead of numeric.
+    // Add a chronicled wish section.
+    // Capturing Radiance still needs to be implemented but we aren't sure what the actual mechanics of it are.
+    // See if we can add back in a leading zero for single digit numbers for dates.
+    // Make it so user's can insert the names of what they want instead of just numbers. This should not replace the number fields but should just serve as another method to input wish goals.
 
 let Trials = 100000;
 
@@ -257,7 +256,6 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
                     DynamicMaxWishes += 2
                 }
 
-                // TODO: What is r?
                 let r = Math.random();
 
                 if (FatePoints === 1 || (Guarantee && r <= 0.5) || (r <= 0.375)) {
@@ -279,7 +277,7 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
         }
     }
 
-    // See if there is a built in function for this.
+    // TODO: See if there is a built in function for this.
     return ((Successes / Trials)*100).toFixed(2);
 }
 
@@ -399,7 +397,6 @@ function WishCalcs(WishConfig) {
 
     Object.assign(WishConfig, PatchAndDateCalculator(WishConfig));
 
-    // TODO: See if we can add back in a leading zero for single digit numbers.
     $('#WishEndDate').show().html(`Wishing End Date: ${WishConfig.WishingEndDate.toLocaleDateString("en-US")}`);
 
     if (WishConfig.WishingEndDate < Today) {
