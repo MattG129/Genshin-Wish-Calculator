@@ -260,7 +260,7 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
                 // TODO: What is r?
                 let r = Math.random();
 
-                if (FatePoints === 2 || (Guarantee && r <= 0.5) || (r <= 0.375)) {
+                if (FatePoints === 1 || (Guarantee && r <= 0.5) || (r <= 0.375)) {
                     Weapons++;
                     Guarantee = 0;
                     FatePoints = 0;
