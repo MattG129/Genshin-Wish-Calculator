@@ -1,5 +1,6 @@
 // High Priority:
     // Add tool tips for most, if not all, fields.
+    // IT acts now go up to 10.
     // Make a notification for if no characters/weapons were chosen.
     // Should add validations to the wish config.
     // Replace the end patch and end phase input with a dropdown that list off each patch/phase and the end date. EX: 5.3 Phase 1 (Ends on 01/01/2025)
@@ -9,14 +10,17 @@
     // If a field is skipped then validations shouldn't be checked.
     // Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
     // Make the site look better.
+    // Import/Export descriptions.
+    // Improve the wish result display.
 
 // Wish List:
+    // Make it so user's can insert the names of what they want instead of just numbers. This should not replace the number fields but should just serve as another method to input wish goals.
+    // Add sortable for all selected options.
     // Implement a form of batch wishing that instead of calculating how many five starts were obtained in N wishes, gets the probability distrubution of getting a five star in exactly N wishes, from zero to pity, and have the algorithm use that to get the number of wishes used.
     // Try to make this analytic instead of numeric.
     // Add a chronicled wish section.
     // Capturing Radiance still needs to be implemented but we aren't sure what the actual mechanics of it are.
     // See if we can add back in a leading zero for single digit numbers for dates.
-    // Make it so user's can insert the names of what they want instead of just numbers. This should not replace the number fields but should just serve as another method to input wish goals.
 
 let Trials = 100000;
 
