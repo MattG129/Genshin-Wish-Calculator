@@ -1,13 +1,11 @@
 // High Priority:
     // Add tool tips for most, if not all, fields.
-    // IT acts now go up to 10.
     // Make a notification for if no characters/weapons were chosen.
     // Should add validations to the wish config.
     // Replace the end patch and end phase input with a dropdown that list off each patch/phase and the end date. EX: 5.3 Phase 1 (Ends on 01/01/2025)
     // Add tool tips about features that are coming soon. (Especially capturing radiance.)
     // About section or something giving a general overview of how the calculator works.
     // Field ranges. Both for parsley and the increase/descrease functionality.
-    // If a field is skipped then validations shouldn't be checked.
     // Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
     // Make the site look better.
     // Import/Export descriptions.
@@ -115,15 +113,17 @@ function SavingsCalculator(WishConfig) {
     Primos += ExpectedAbyssPrimos * AbyssCycles;
 
     switch (WishConfig.ExpectedAct) {
-        case 0: var ExpectedTheaterPrimos = 0;
-        case 1: var ExpectedTheaterPrimos = 60;
-        case 2: var ExpectedTheaterPrimos = 120;
-        case 3: var ExpectedTheaterPrimos = 220;
-        case 4: var ExpectedTheaterPrimos = 280;
-        case 5: var ExpectedTheaterPrimos = 340;
-        case 6: var ExpectedTheaterPrimos = 440;
-        case 7: var ExpectedTheaterPrimos = 500;
-        case 8: var ExpectedTheaterPrimos = 620;
+        case 0:  var ExpectedTheaterPrimos = 0;
+        case 1:  var ExpectedTheaterPrimos = 60;
+        case 2:  var ExpectedTheaterPrimos = 120;
+        case 3:  var ExpectedTheaterPrimos = 220;
+        case 4:  var ExpectedTheaterPrimos = 280;
+        case 5:  var ExpectedTheaterPrimos = 340;
+        case 6:  var ExpectedTheaterPrimos = 440;
+        case 7:  var ExpectedTheaterPrimos = 500;
+        case 8:  var ExpectedTheaterPrimos = 620;
+        case 9:  var ExpectedTheaterPrimos = 680;
+        case 10: var ExpectedTheaterPrimos = 800;
     }
 
     // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.

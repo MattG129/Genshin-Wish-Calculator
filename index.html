@@ -206,22 +206,22 @@
                 <div class="row">
                     <div class="col-sm">
                         <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label><br>
-                        <input type="number" id="ExpectedStarsFloor9" data-parsley-max="9" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
+                        <input type="number" id="ExpectedStarsFloor9" data-parsley-range="[0,9]" min="0" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
                     </div>
                 
                     <div class="col-sm">
                         <label for="ExpectedStarsFloor10" class="form-label">Floor 10</label><br>
-                        <input type="number" id="ExpectedStarsFloor10" class="form-control" data-parsley-required="true" Value="0">
+                        <input type="number" id="ExpectedStarsFloor10" data-parsley-range="[0,9]" min="0" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
                     </div>
 
                     <div class="col-sm">
                         <label for="ExpectedStarsFloor11" class="form-label">Floor 11</label><br>
-                        <input type="number" id="ExpectedStarsFloor11" class="form-control" data-parsley-required="true" Value="0">
+                        <input type="number" id="ExpectedStarsFloor11" data-parsley-range="[0,9]" min="0" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
                     </div>
 
                     <div class="col-sm">
                         <label for="ExpectedStarsFloor12" class="form-label">Floor 12</label><br>
-                        <input type="number" id="ExpectedStarsFloor12" class="form-control" data-parsley-required="true" Value="0">
+                        <input type="number" id="ExpectedStarsFloor12" data-parsley-range="[0,9]" min="0" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
                     </div>
                 </div>
                 <br>
@@ -237,7 +237,7 @@
                     <center>
                         <div class="col-sm-2">
                             <label for="ExpectedAct" class="form-label">Expected Act</label>
-                            <input type="number" id="ExpectedAct" data-parsley-max="8" max="8" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0"><br>
+                            <input type="number" id="ExpectedAct" data-parsley-range="[0,10]" min="0" max="10" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0"><br>
                         </div>
                         <div class="col-sm-3">
                             <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
@@ -307,8 +307,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
         <script type="text/javascript">
-
-            $('input[type=number]').attr('data-parsley-min', 0);
 
             var ResultsLoaded = false;
             // TODO: Disable the button when clicked and reenable once its done processing.
