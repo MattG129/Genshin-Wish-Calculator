@@ -307,8 +307,26 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
         <script type="text/javascript">
-
             var ResultsLoaded = false;
+            
+            function UpdateCalculateButton() {
+                var CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
+
+                if ( $(CharacterGoal).val() > 0 || $(WeaponGoal).val() > 0 ) {
+                    $("#Calculate").html(CalculateText);
+                    $("#Calculate").removeClass('disabled');
+                }
+                else {
+                    $("#Calculate").html(CalculateText + "<br> <span style='font-size: small'>(Please select at least one character or weapon)</span>");
+                    $("#Calculate").addClass('disabled');
+                }
+            }
+
+            UpdateCalculateButton();
+            $(CharacterGoal).on('change', UpdateCalculateButton)
+            $(WeaponGoal).on('change', UpdateCalculateButton)
+
+
             // TODO: Disable the button when clicked and reenable once its done processing.
             $("#Calculate").on('click', function() {
                 $('#ValidationWarning').hide();
@@ -343,10 +361,12 @@
 
                         WishCalcs(CompileForm());
 
-                    ResultsLoaded = true
+                        ResultsLoaded = true
 
-                    $('#LoadingGroup').hide();
-                  })
+                        $('#LoadingGroup').hide();
+
+                        UpdateCalculateButton();
+                    })
                 }
             })
 
