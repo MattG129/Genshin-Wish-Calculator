@@ -20,7 +20,7 @@
     // Try to make this analytic instead of numeric.
     // Add a chronicled wish section.
     // Capturing Radiance still needs to be implemented but we aren't sure what the actual mechanics of it are.
-    // See if we can add back in a leading zero for single digit numbers for dates.
+    // Maybe make two modes for approximate and extra accurate. Approximate will use 10^5 trials and return the result as just a percent while extra accurate will have more iterations and go to the second decimal.
 
 let Trials = 100000;
 
@@ -38,7 +38,7 @@ function DateAdd(date, days) {
 function PatchAndDateCalculator(WishConfig) {
     // NA region's start date for version 4 in est. Since (almost) all patches are exactly six weeks, we can use this date to derive the start dates for other patches.
     // const v4StartDate = DateTime.fromObject({ year: 2023, month: 8, day: 15 });
-    const v4StartDate = new Date('2023-8-15');
+    const v4StartDate = moment('2023-8-15', "YYYY-MM-DD").toDate();
 
     // The number of patches between 4.0 and the final patch for wishing.
     let BasePatchDiffAsDecimal = (WishConfig.EndPatch - 4.0).toFixed(1);
@@ -401,7 +401,7 @@ function WishCalcs(WishConfig) {
 
     Object.assign(WishConfig, PatchAndDateCalculator(WishConfig));
 
-    $('#WishEndDate').show().html(`Wishing End Date: ${WishConfig.WishingEndDate.toLocaleDateString("en-US")}`);
+    $('#WishEndDate').show().html(`Wishing End Date: ${moment(WishConfig.WishingEndDate, "YYYY-MM-DD").calendar()}`);
 
     if (WishConfig.WishingEndDate < Today) {
         $('#BannerEnded').show().html('Banner has already ended.');
