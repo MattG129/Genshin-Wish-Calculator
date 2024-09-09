@@ -121,12 +121,12 @@
                 
                     <div class="col-sm">
                         <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
-                        <input type="number" id="IntertwinedFates" class="form-control" data-parsley-required="true" Value="0"><br>
+                        <input type="number" id="IntertwinedFates" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                     </div>
 
                     <div class="col-sm">
                         <label for="Stardust" class="form-label">Masterless Stardust</label><br>
-                        <input type="number" id="Stardust" class="form-control" data-parsley-required="true" Value="0"><br>
+                        <input type="number" id="Stardust" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                     </div>
                 </div>
                 <br>
@@ -139,17 +139,17 @@
                 <div class="row" id="StarglitterSkipGroup" style="display: none;">
                     <div class="col-sm">
                         <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
-                        <input type="number" id="Starglitter" class="form-control" data-parsley-required="true" Value="0"><br>
+                        <input type="number" id="Starglitter" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                     </div>
                 
                     <div class="col-sm">
                         <label for="MissingFourStars" class="form-label">Missing Four Star Characters</label><br>
-                        <input type="number" id="MissingFourStars" class="form-control" data-parsley-required="true" Value="38"><br>
+                        <input type="number" id="MissingFourStars" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="38"><br>
                     </div>
 
                     <div class="col-sm">
                         <label for="MissingFiveStars" class="form-label">Missing Standard Banner Five Star Characters</label><br>
-                        <input type="number" id="MissingFiveStars" class="form-control" data-parsley-required="true" Value="7"><br>
+                        <input type="number" id="MissingFiveStars" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="7"><br>
                     </div>
                 </div>
 
@@ -158,11 +158,11 @@
                 <div class="row justify-content-md-center">
                     <div class="col-sm" style="margin-right: 12px;">
                         <label for="CharacterGoal" class="form-label">How many five star <strong>characters</strong> will you be wishing for? (Constellations included)</label>
-                        <input type="number" id="CharacterGoal" data-parsley-max="50" max="50" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0"><br>
+                        <input type="number" id="CharacterGoal" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                     </div>
                     <div class="col-sm">
                         <label for="WeaponGoal" class="form-label">How many five star <strong>weapons</strong> will you be wishing for? (Refinements included)</label>
-                        <input type="number" id="WeaponGoal" data-parsley-max="50" max="50" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0"><br>
+                        <input type="number" id="WeaponGoal" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                     </div>
                     <div class="col-sm" style="margin-right: 12px;">
                         <label for="EndPatch" class="form-label">What patch will you have made all your wishes by?</label>
@@ -179,7 +179,7 @@
                 <div class="row justify-content-md-center">
                     <div class="col-sm-3" style="margin-right: 50px;">                        
                         <label for="CharacterPity" class="form-label">Character Pity</label>
-                        <input type="number" id="CharacterPity" data-parsley-min="0" min="0" data-parsley-max="89" max="89" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
+                        <input type="number" id="CharacterPity" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
                         <br><br>
 
                         <input type="checkbox" id="CharacterGuarantee" class="form-check-input">
@@ -187,7 +187,7 @@
                     </div>
                     <div class="col-sm-3">
                         <label for="WeaponPity" class="form-label">Weapon Pity</label>
-                        <input type="number" id="WeaponPity" data-parsley-max="79" max="79" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
+                        <input type="number" id="WeaponPity" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
                         <br><br>
 
                         <input type="checkbox" id="WeaponGuarantee" class="form-check-input">
@@ -195,7 +195,7 @@
                         <br><br>
 
                         <label for="FatePoints" class="form-label">Weapon Banner Fate Points</label>
-                        <input type="number" id="FatePoints" data-parsley-range="[0, 2]" min="0" max="2" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0"><br>
+                        <input type="number" id="FatePoints" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0"><br>
                     </div>
                 </div>
 
@@ -205,22 +205,22 @@
                 <div class="row">
                     <div class="col-sm">
                         <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label><br>
-                        <input type="number" id="ExpectedStarsFloor9" data-parsley-range="[0,9]" min="0" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
+                        <input type="number" id="ExpectedStarsFloor9" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
                     </div>
                 
                     <div class="col-sm">
                         <label for="ExpectedStarsFloor10" class="form-label">Floor 10</label><br>
-                        <input type="number" id="ExpectedStarsFloor10" data-parsley-range="[0,9]" min="0" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
+                        <input type="number" id="ExpectedStarsFloor10" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
                     </div>
 
                     <div class="col-sm">
                         <label for="ExpectedStarsFloor11" class="form-label">Floor 11</label><br>
-                        <input type="number" id="ExpectedStarsFloor11" data-parsley-range="[0,9]" min="0" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
+                        <input type="number" id="ExpectedStarsFloor11" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
                     </div>
 
                     <div class="col-sm">
                         <label for="ExpectedStarsFloor12" class="form-label">Floor 12</label><br>
-                        <input type="number" id="ExpectedStarsFloor12" data-parsley-range="[0,9]" min="0" max="9" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
+                        <input type="number" id="ExpectedStarsFloor12" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
                     </div>
                 </div>
                 <br>
@@ -236,7 +236,7 @@
                     <center>
                         <div class="col-sm-2">
                             <label for="ExpectedAct" class="form-label">Expected Act</label>
-                            <input type="number" id="ExpectedAct" data-parsley-range="[0,10]" min="0" max="10" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0"><br>
+                            <input type="number" id="ExpectedAct" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0"><br>
                         </div>
                         <div class="col-sm-3">
                             <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
@@ -264,7 +264,7 @@
                     <center>
                         <div class="col-sm-2" id="BPLevelSkipGroup" style="display: none;">
                             <label for="BPLevel" class="form-label">Battle Pass Level</label>
-                            <input type="number" id="BPLevel" data-parsley-max="50" max="50" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="0">
+                            <input type="number" id="BPLevel" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 50]" min="0" max="50" Value="0">
                         </div>
                     </center>
                 </div>
