@@ -1,15 +1,18 @@
 // High Priority:
     // Add tool tips for most, if not all, fields.
-    // Make a notification for if no characters/weapons were chosen.
-    // Should add validations to the wish config.
     // Replace the end patch and end phase input with a dropdown that list off each patch/phase and the end date. EX: 5.3 Phase 1 (Ends on 01/01/2025)
-    // Add tool tips about features that are coming soon. (Especially capturing radiance.)
+    // Add coming soon accordian. (Especially capturing radiance.)
     // About section or something giving a general overview of how the calculator works.
     // Field ranges. Both for parsley and the increase/descrease functionality.
     // Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
     // Make the site look better.
     // Import/Export descriptions.
     // Improve the wish result display.
+    // Rename the wish history section and convert it into a table.
+    // If max wishes exceeds theoretical max then skip wish calcs.
+    // Add styling (bold, italics, ect) to tool tips.
+    // Add hover and click animations for tool tips.
+    // Import should trigger change.
 
 // Wish List:
     // Make it so user's can insert the names of what they want instead of just numbers. This should not replace the number fields but should just serve as another method to input wish goals.
@@ -19,6 +22,9 @@
     // Add a chronicled wish section.
     // Capturing Radiance still needs to be implemented but we aren't sure what the actual mechanics of it are.
     // Maybe make two modes for approximate and extra accurate. Approximate will use 10^5 trials and return the result as just a percent while extra accurate will have more iterations and go to the second decimal.
+    // Multiple end dates.
+    // Close first tool tip when clicking on a second one.
+
 
 let Trials = 100000;
 
@@ -113,17 +119,17 @@ function SavingsCalculator(WishConfig) {
     Primos += ExpectedAbyssPrimos * AbyssCycles;
 
     switch (WishConfig.ExpectedAct) {
-        case 0:  var ExpectedTheaterPrimos = 0;
-        case 1:  var ExpectedTheaterPrimos = 60;
-        case 2:  var ExpectedTheaterPrimos = 120;
-        case 3:  var ExpectedTheaterPrimos = 220;
-        case 4:  var ExpectedTheaterPrimos = 280;
-        case 5:  var ExpectedTheaterPrimos = 340;
-        case 6:  var ExpectedTheaterPrimos = 440;
-        case 7:  var ExpectedTheaterPrimos = 500;
-        case 8:  var ExpectedTheaterPrimos = 620;
-        case 9:  var ExpectedTheaterPrimos = 680;
-        case 10: var ExpectedTheaterPrimos = 800;
+        case 0:  var ExpectedTheaterPrimos = 0;   break;
+        case 1:  var ExpectedTheaterPrimos = 60;  break;
+        case 2:  var ExpectedTheaterPrimos = 120; break;
+        case 3:  var ExpectedTheaterPrimos = 220; break;
+        case 4:  var ExpectedTheaterPrimos = 280; break;
+        case 5:  var ExpectedTheaterPrimos = 340; break;
+        case 6:  var ExpectedTheaterPrimos = 440; break;
+        case 7:  var ExpectedTheaterPrimos = 500; break;
+        case 8:  var ExpectedTheaterPrimos = 620; break;
+        case 9:  var ExpectedTheaterPrimos = 680; break;
+        case 10: var ExpectedTheaterPrimos = 800; break;
     }
 
     // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
