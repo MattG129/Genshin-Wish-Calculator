@@ -24,6 +24,9 @@
     // Maybe make two modes for approximate and extra accurate. Approximate will use 10^5 trials and return the result as just a percent while extra accurate will have more iterations and go to the second decimal.
     // Multiple end dates.
     // Close first tool tip when clicking on a second one.
+    // Clean up how the date displays on the wishing end date.
+    // Make wishing end date also display time.
+    // See if differing time zones could cause issues down the line in terms of calcs.
 
 
 let Trials = 100000;
@@ -410,7 +413,7 @@ function WishCalcs(WishConfig) {
 
     Object.assign(WishConfig, PatchAndDateCalculator(WishConfig));
 
-    $('#WishEndDate').show().html(`Wishing End Date: ${moment(WishConfig.WishingEndDate, "YYYY-MM-DD").calendar()}`);
+    $('#WishEndDate').show().html(`Wishing End Date: ${moment(WishConfig.WishingEndDate, "YYYY-MM-DD").format('L')}`);
 
     if (WishConfig.WishingEndDate < Today) {
         $('#BannerEnded').show().html('Banner has already ended.');
