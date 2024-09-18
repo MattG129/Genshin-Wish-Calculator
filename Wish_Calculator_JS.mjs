@@ -414,6 +414,7 @@ function WishCalcs(WishConfig) {
 
     if (WishConfig.WishingEndDate < Today) {
         $('#BannerEnded').show().html('Banner has already ended.');
+        $('#MaxWishes,#WishingGoals,#Chance').hide();
         return ''
     }
 
