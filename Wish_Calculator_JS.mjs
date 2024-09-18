@@ -165,8 +165,11 @@ function SavingsCalculator(WishConfig) {
 
     // TODO: Could maybe go a bit more in depth.
     if (WishConfig.BPPurchased) {
-        IntertwinedFates += (WishConfig.EndPhase === 1 ? 3 : 4) + 4 * WishConfig.PatchDiff; // Assumes that the user will only be able to claim 3 of the 4 fates for that pass, if the banner ends in the first phase.
-        IntertwinedFates -= Math.min(4, Math.floor(WishConfig.BPLevel / 10)); // Subtracts the amount of fates already claimed from this battle pass.
+        IntertwinedFates += Math.max(0, (WishConfig.EndPhase === 1 ? 3 : 4) + 4 * WishConfig.PatchDiff - Math.min(4, Math.floor(WishConfig.BPLevel / 10))); 
+        // Assumes that the user will only be able to claim 3 of the 4 fates for that pass, if the banner ends in the first phase. 
+        // Also, subtracts the amount of fates already claimed from this battle pass.
+        // Subtracting the claimed interwined fates has to be done on the same line so it can be wrapped in the max function as there is an edge case where
+        //      the user can earn 4 intertwined from the pass while the system is only expecting 3 to be claimable and so it would result in -1 fates being expected from the pass.
 
         Primos += 680 * ((WishConfig.EndPhase === 2 ? 1 : 0) + WishConfig.PatchDiff); // Assumes that the user won't reach level 50 for that pass, if the banner ends in the first phase.
         if (WishConfig.BPLevel === 50) { // Subtracts 680, if the primos have already been claimed for this pass.
