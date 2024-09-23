@@ -15,7 +15,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/mathjs@13.0.3/lib/browser/math.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-        
+
         <script src="Wish_Calculator_JS.mjs" type="text/javascript"></script>
         <script src="https://parsleyjs.org/dist/parsley.js"></script>
 
@@ -24,8 +24,6 @@
     <body>
         <style>
             body, html {
-                margin-left:5%;
-                margin-right:5%;
                 margin-bottom:1.5%;
                 margin-top:1.5%;
             }
@@ -65,6 +63,21 @@
                 padding: 0;
                 margin: 0;
                 color: #800000;
+            }
+
+            a.help-tooltip  {
+                height: 25px; 
+                width: 25px;
+                border-color: #0DCAF0;
+            }
+
+            i.tooltip-question-icon {
+                color: #0DCAF0;
+                font-size: 18px;
+                margin-left: .75px;
+                transform: translateY(-18%);
+                align-items: center;
+                flex-direction: column;
             }
         </style>
     
@@ -127,7 +140,14 @@
 
                     <div class="col-sm">
                         <label for="Stardust" class="form-label">Masterless Stardust</label>
-                        <a style="color: #0DCAF0;" data-togle="tooltip" title="This will be used to calculate how many of the available Intertwined Fates you can purchase from the Stardust Exchange between now and the Wishing End Date."><i class="bi bi-question-circle"></i></a>
+                            <a 
+                                type="button"
+                                data-toggle="tooltip"
+                                class="help-tooltip btn btn-dark rounded-circle"
+                                title="This will be used to calculate how many of the available Intertwined Fates you can purchase from the Stardust Exchange between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased."
+                            >
+                                <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                            </a>
                         <br>
                         <input type="number" id="Stardust" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                     </div>
@@ -421,15 +441,11 @@
             });
 
             $(function () {
-                $('body').tooltip({
-                    selector: 'a[rel="tooltip"], [data-toggle="tooltip"]'
+                $('a[data-toggle="tooltip"]').each(function() {
+                    $(this).tooltip({
+                        html: true
+                    });
                 });
-
-                $('a').on('click', function () {
-                    // TODO: For some reason after clicking on a field the toggle will break but adding the hide will fix it. Figure out why this is and how to better do this.
-                    $(this).tooltip('toggle');
-                    $(this).tooltip('hide');
-                })
             });
         </script>
     </body>
