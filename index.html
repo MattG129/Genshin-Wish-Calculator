@@ -449,6 +449,15 @@
                     });
                 });
             });
+
+            $('input').on('change', function(){
+                if (!$(this).parsley().isValid()) {
+                    $(this).css('background-color', '#E55451');
+                }
+                else{
+                    $(this).css('background-color', 'white');
+                }
+            });
         </script>
     </body>
 </html>
