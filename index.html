@@ -140,14 +140,14 @@
 
                     <div class="col-sm">
                         <label for="Stardust" class="form-label">Masterless Stardust</label>
-                            <a 
-                                type="button"
-                                data-toggle="tooltip"
-                                class="help-tooltip btn btn-dark rounded-circle"
-                                title="This will be used to calculate how many of the available Intertwined Fates you can purchase from the Stardust Exchange between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased."
-                            >
-                                <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
-                            </a>
+                        <a 
+                            type="button"
+                            data-toggle="tooltip"
+                            class="help-tooltip btn btn-dark rounded-circle"
+                            title="This will be used to calculate how many of the available Intertwined Fates you can purchase from the Stardust Exchange between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month’s Intertwined Fates have already been purchased."
+                        >
+                            <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                        </a>
                         <br>
                         <input type="number" id="Stardust" class="form-control" data-parsley-trigger="change" data-parsley-min="0" min="0"><br>
                     </div>
@@ -166,12 +166,30 @@
                     </div>
                 
                     <div class="col-sm">
-                        <label for="MissingFourStars" class="form-label">Missing Four Star Characters</label><br>
+                        <label for="MissingFourStars" class="form-label">Missing Four Star Characters</label>
+                        <a 
+                            type="button"
+                            data-toggle="tooltip"
+                            class="help-tooltip btn btn-dark rounded-circle"
+                            title="If all four star characters have been acquired then every four star pulled should give at least 2 Masterless Starglitter. The calculator will assume that a four star is given once every 10 wishes, and so if all four stars are acquired before or during the wishing process then 2 additional Masterless Starglitter will be awarded per subsequent wish."
+                        >
+                            <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                        </a>
+                        <br>
                         <input type="number" id="MissingFourStars" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="38"><br>
                     </div>
 
                     <div class="col-sm">
-                        <label for="MissingFiveStars" class="form-label">Missing Standard Banner Five Star Characters</label><br>
+                        <label for="MissingFiveStars" class="form-label">Missing Standard Banner Five Star Characters</label>
+                        <a 
+                            type="button"
+                            data-toggle="tooltip"
+                            class="help-tooltip btn btn-dark rounded-circle"
+                            title="Five star character constellations will award 10 Masterless Starglitter and so if all standard banner five stars are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you lose a 50:50. Additional wishes gained from this won't be factored into the <b>Max Number of Wishes</b>."
+                        >
+                            <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                        </a>
+                        <br>
                         <input type="number" id="MissingFiveStars" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="7"><br>
                     </div>
                 </div>
@@ -180,11 +198,11 @@
 
                 <div class="row justify-content-md-center">
                     <div class="col-sm" style="margin-right: 12px;">
-                        <label for="CharacterGoal" class="form-label">How many five star <strong>characters</strong> will you be wishing for? (Constellations included)</label>
+                        <label for="CharacterGoal" class="form-label">How many five star <b>characters</b> will you be wishing for? (Constellations included)</label>
                         <input type="number" id="CharacterGoal" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                     </div>
                     <div class="col-sm">
-                        <label for="WeaponGoal" class="form-label">How many five star <strong>weapons</strong> will you be wishing for? (Refinements included)</label>
+                        <label for="WeaponGoal" class="form-label">How many five star <b>weapons</b> will you be wishing for? (Refinements included)</label>
                         <input type="number" id="WeaponGoal" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                     </div>
                     <div class="col-sm" style="margin-right: 12px;">
@@ -269,7 +287,20 @@
                 </div>
 
                 <hr>
-                <center><h2>Battle Pass & Welkin</h2></center><br>
+                <center>
+                    <h2>
+                        Battle Pass & Welkin
+                        <a
+                            type="button"
+                            data-toggle="tooltip"
+                            class="help-tooltip btn btn-dark rounded-circle"
+                            title="This calculator will assume that the <b>Blessing of the Welkin Moon</b>/<b>Battle Pass</b> will either be purchased from now until the <b>Wishing End Date</b> or not at all."
+                        >
+                            <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                        </a>
+                    </h2>
+                </center>
+                <br>
                 <div class="row">
                     <center>
                         <div class="col-sm">
