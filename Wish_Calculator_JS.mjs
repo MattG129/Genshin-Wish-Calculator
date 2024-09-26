@@ -9,12 +9,12 @@
     // Import/Export descriptions.
     // Improve the wish result display.
     // Rename the wish history section and convert it into a table.
-    // If max wishes exceeds theoretical max then skip wish calcs.
-    // Add styling (bold, italics, ect) to tool tips.
-    // Add hover and click animations for tool tips.
-    // Import should trigger change.
+    // Make empty stardust not calc.
+    // Change parsley validation color.
+    // Add import validation.
 
 // Wish List:
+    // If max wishes exceeds theoretical max then skip wish calcs.
     // Make it so user's can insert the names of what they want instead of just numbers. This should not replace the number fields but should just serve as another method to input wish goals.
     // Add sortable for all selected options.
     // Implement a form of batch wishing that instead of calculating how many five starts were obtained in N wishes, gets the probability distrubution of getting a five star in exactly N wishes, from zero to pity, and have the algorithm use that to get the number of wishes used.
@@ -27,7 +27,7 @@
     // Clean up how the date displays on the wishing end date.
     // Make wishing end date also display time.
     // See if differing time zones could cause issues down the line in terms of calcs.
-
+    // Make tool tips smaller.
 
 let Trials = 100000;
 
@@ -297,116 +297,53 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
     return ((Successes / Trials)*100).toFixed(2);
 }
 
-// Stub function
-function AnalyticWishCalculations(WishConfig, MaxWishes) {
-    // TODO: Add comments.
+// Stub function. Will use this in the future for wish simulations.
+function GetWishNumberDistributions() {
+    var MaxPity = 90;
 
-    const CharacterGoal = WishConfig.CharacterGoal;
-    const WeaponGoal = WishConfig.WeaponGoal;
-
-    let Successes = 0;
     var states = {};
-    let Key;
-    let state = {}
-    let Next1 = {};
-    let Next2 = {};
-    let FiveStarChance;
-    let Finished = 0;
-    let transitions;
-    var NextChar;
+    var FiveStarChance;
 
-    var time = Date.now();
+    for (let i = 0; i <= MaxPity; i++) {
+        states[i] = {};
 
-    // console.log(time);
+        // This needs to be updated for weapon and chronicled banners.
+        FiveStarChance = Math.min(.006 + .06*Math.max(0, i-72), 1);
 
-    var KeyArray = [];
-    for (var i = 0; i < 180*WishConfig.CharacterGoal; i++) {
-        transitions = {}
-        transitions['ID'] = i
-
-        if ( (Math.floor(i/180) + 1) < WishConfig.CharacterGoal) {
-            NextChar = WishConfig.CharacterGoal[Math.floor(i/180)+1]
-        } 
-        else{
-            NextChar = 'Finished'
+        if (i < MaxPity) {
+            states[i][i+1] = 1-FiveStarChance;
         }
-
-        if (i >= 180*WishConfig.CharacterGoal - 1) {
-            // Finished = 1
-            transitions['Finished-0-0'] = 1
-        } else {
-            FiveStarChance = Math.min(.006 + .06*Math.max(0, (i % 90) - 72), 1)
-
-            transitions[`${WishConfig.CharacterGoal[Math.floor(i/180)]}-${ (i+1)%90 }-${Math.floor( ((i+1)/90) % 2 )}`] = (1-FiveStarChance)
-            if (i % 180 < 90) {
-                transitions[`${WishConfig.CharacterGoal[Math.floor(i/180)]}-0-1`] = (FiveStarChance/2)
-                transitions[`${NextChar}-0-0`] = (FiveStarChance/2)
-            } else {
-                transitions[`${NextChar}-0-0`] = FiveStarChance;
-            }
-        }
-
-        Key = `${WishConfig.CharacterGoal[Math.floor(i/180)]}-${i % 90}-${Math.floor( ((i)/90) % 2 )}`
-        states[Key] =  transitions
+        
+        states[i][90] = FiveStarChance;
     }
 
-    Key = `${WishConfig.CharacterGoal[Math.floor(i/180)]}-${i % 90}-${Math.floor( ((i+1)/90) % 2 )}`
-    states['Finished-0-0'] =  {'ID': `${180*WishConfig.CharacterGoal}`, 'Finished-0-0': 1}
-
-    console.log(`States Generated: ${((Date.now() - time)/1000).toFixed(4)}\n`);
-    time = Date.now();
-
-    let stateTransformations = [];
-    let rowTransformations;
-    let TransationProbability;
-    let iterKey;
-    var Char;
+    var stateTransformations = [];
+    var rowTransformations;
 
     for (const [key, value] of Object.entries(states)) {
-        rowTransformations = new Array(Object.keys(states).length).fill(0)
+        rowTransformations = new Array(Object.keys(states).length).fill(0);
 
         for (const [SubKey, SubValue] of Object.entries(value)) {
-            if (SubKey != 'ID') {
-                rowTransformations[states[SubKey].ID] = SubValue
-            }
-        }
+            rowTransformations[SubKey] = SubValue
+        };
 
-        stateTransformations.push(rowTransformations)
+        stateTransformations.push(rowTransformations);
     };
 
+    var stateTransformationsMatrix = math.matrix(stateTransformations.slice(), 'sparse')
+    const OriginalStateTransformationsMatrix = math.matrix(stateTransformations.slice(), 'sparse')
 
-    console.log(`Transition Matrix Generated: ${((Date.now() - time)/1000).toFixed(4)}\n`)
-    time = Date.now();
+    var Pities = Array.from(Array(MaxPity), () => [0]);
 
- 
-    var stateTransformationsMatrix = math.matrix(stateTransformations, 'sparse')
-  
-    let MaxWishesBin = (MaxWishes >>> 0).toString(2);
-    let ReverseMaxWishesBin = MaxWishesBin.split('').reverse().join('');
-    
-    console.log(`Matrix Power 1: ${((Date.now() - time)/1000).toFixed(4)}\n`);
-    time = Date.now();
-
-    var FinalStateTransformationMatrix = math.identity(Object.keys(states).length);
-    var newMat = stateTransformationsMatrix;
-    for (var i = 0; i < MaxWishesBin.length ; i++) {
-        console.log(`Matrix Power ${Math.pow(2, i)}: ${((Date.now() - time)/1000).toFixed(4)}\n`);
-        time = Date.now();
+    for (var i = 1; i < MaxPity; i++) {
+        for (var CharacterPity = 0; CharacterPity <= MaxPity-i; CharacterPity++) {
+            Pities[CharacterPity].push(math.subset(stateTransformationsMatrix, math.index(CharacterPity, Object.keys(states).length-1)).toFixed(6));
+        }
         
-        if(ReverseMaxWishesBin[i] == '1') {
+        stateTransformationsMatrix = math.multiply(stateTransformationsMatrix, OriginalStateTransformationsMatrix)
+    }
 
-            FinalStateTransformationMatrix = math.multiply(FinalStateTransformationMatrix, newMat);
-        }
-
-        if (i < MaxWishesBin.length - 1) {
-            newMat = math.multiply(newMat, newMat);
-        }
-    };
-
-    console.log(`Finished: ${((Date.now() - time)/1000).toFixed(4)}`);
-
-    console.log(`${(math.subset(FinalStateTransformationMatrix, math.index(WishConfig.CharacterPity, Object.keys(states).length-1))*100).toFixed(2)}%`);
-
+    console.dir(Pities, {'maxArrayLength': null})
 }
 
 function WishCalcs(WishConfig) {
