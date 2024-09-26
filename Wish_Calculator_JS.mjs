@@ -1,7 +1,10 @@
 // High Priority:
     // Add tool tips for most, if not all, fields.
     // Replace the end patch and end phase input with a dropdown that list off each patch/phase and the end date. EX: 5.3 Phase 1 (Ends on 01/01/2025)
-    // Add coming soon accordian. (Especially capturing radiance.)
+    // Add coming soon accordian.
+        // Capturing radiance.
+        // BP/Welkin.
+        // Chronicled Wish.
     // About section or something giving a general overview of how the calculator works.
     // Field ranges. Both for parsley and the increase/descrease functionality.
     // Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
@@ -14,6 +17,7 @@
     // Add import validation.
 
 // Wish List:
+    // Make it so you can specify date ranges for BP/Welkin.
     // If max wishes exceeds theoretical max then skip wish calcs.
     // Make it so user's can insert the names of what they want instead of just numbers. This should not replace the number fields but should just serve as another method to input wish goals.
     // Add sortable for all selected options.
@@ -359,6 +363,7 @@ function WishCalcs(WishConfig) {
 
     $('#WishEndDate').show().html(`Wishing End Date: ${moment(WishConfig.WishingEndDate, "YYYY-MM-DD").format('L')}`);
 
+    $('#BannerEnded').hide();
     if (WishConfig.WishingEndDate < Today) {
         $('#BannerEnded').show().html('Banner has already ended.');
         $('#MaxWishes,#WishingGoals,#Chance').hide();
