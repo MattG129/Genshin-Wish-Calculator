@@ -28,6 +28,7 @@
     // Make wishing end date also display time.
     // See if differing time zones could cause issues down the line in terms of calcs.
     // Make tool tips smaller.
+    // Page freezes when results are loading.
 
 let Trials = 100000;
 
@@ -158,7 +159,13 @@ function SavingsCalculator(WishConfig) {
 
     // Up to five Intertwined Fates can be purchased every month from the Stardust Exchange.
     // Assumes that the current month's supply has already been purchased.
-    IntertwinedFates += Math.min(5 * WishConfig.MonthDiff, Math.floor(WishConfig.Stardust / 75));
+    // If the Stardust field is left empty then it will be assumed that all available Intertwined Fates can be purchased.
+    if (WishConfig.Stardust === '') {
+        IntertwinedFates += 5 * WishConfig.MonthDiff;
+    }
+    else {
+        IntertwinedFates += Math.min(5 * WishConfig.MonthDiff, Math.floor(WishConfig.Stardust / 75));
+    }
 
     // TODO: Could maybe go a bit more in depth.
     if (WishConfig.UsingStarglitter) {

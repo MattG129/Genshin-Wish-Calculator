@@ -149,7 +149,7 @@
                                 <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
                             </a>
                         <br>
-                        <input type="number" id="Stardust" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                        <input type="number" id="Stardust" class="form-control" data-parsley-trigger="change" data-parsley-min="0" min="0"><br>
                     </div>
                 </div>
                 <br>
@@ -417,7 +417,7 @@
                         FormValues[this.id] = $(this).is(':checked')
                     }
                     else {
-                        FormValues[this.id] = Number(this.value);
+                        FormValues[this.id] = this.value == '' ? '' : Number(this.value);
                     }
                 });
 
