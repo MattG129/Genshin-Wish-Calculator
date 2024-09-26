@@ -101,7 +101,7 @@
                             <div class="accordion-body">
                                 <label for="ImportState" class="form-label">[PLACE HOLDER DESCRIPTION]</label><br>
                                 <textarea id="ImportState" class="form-control"></textarea><br>
-                                
+                                <p id="InvalidImportMessage" style="color: red; display: none;">Invalid Import.</p>
                                 <center><a id="Import" class="btn btn-primary" style="border-width: 1px; border-color: black;"> Import </a></center><br>
                             </div>
                         </div>
@@ -459,18 +459,31 @@
             $('#form').on('change', UpdateExportState);
 
             $('#Import').on('click', function() {
-                var JSONImport = JSON.parse($('#ImportState').val());
-                
-                $('#form input').each(function() {
-                    if ($(this).is(':checkbox')) {
-                        $(this).prop('checked', JSONImport[this.id]);
-                    }
-                    else {
-                        $(this).val(JSONImport[this.id]);
-                    }
-                })
+                var isValidJSON = true;
 
-                $('input').change().trigger('input');
+                try {
+                    var JSONImport = JSON.parse($('#ImportState').val());
+                } catch (error) {
+                    var isValidJSON = false;
+                }
+
+                if (isValidJSON) {
+                    $('#InvalidImportMessage').hide();
+                    
+                    $('#form input').each(function() {
+                        if ($(this).is(':checkbox')) {
+                            $(this).prop('checked', JSONImport[this.id]);
+                        }
+                        else {
+                            $(this).val(JSONImport[this.id]);
+                        }
+                    })
+
+                    $('input').change().trigger('input');
+                }
+                else {
+                    $('#InvalidImportMessage').show();
+                }
             });
 
             $(function () {
