@@ -450,7 +450,7 @@
                 });
             });
 
-            $('input').on('change', function(){
+            $('input:not([type="checkbox"])').on('change', function(){
                 if (!$(this).parsley().isValid()) {
                     $(this).css('background-color', '#E55451');
                 }
