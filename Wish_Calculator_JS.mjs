@@ -1,38 +1,3 @@
-// High Priority:
-    // Add tool tips for most, if not all, fields.
-    // Replace the end patch and end phase input with a dropdown that list off each patch/phase and the end date. EX: 5.3 Phase 1 (Ends on 01/01/2025)
-    // Add coming soon accordian.
-        // Capturing radiance.
-        // BP/Welkin.
-        // Chronicled Wish.
-    // About section or something giving a general overview of how the calculator works.
-    // Field ranges. Both for parsley and the increase/descrease functionality.
-    // Add a mode to allow direct input of primos and intertwined as some users may just want a simpler calculator.
-    // Make the site look better.
-    // Import/Export descriptions.
-    // Improve the wish result display.
-    // Rename the wish history section and convert it into a table.
-    // Make empty stardust not calc.
-    // Change parsley validation color.
-    // Add import validation.
-
-// Wish List:
-    // Make it so you can specify date ranges for BP/Welkin.
-    // If max wishes exceeds theoretical max then skip wish calcs.
-    // Make it so user's can insert the names of what they want instead of just numbers. This should not replace the number fields but should just serve as another method to input wish goals.
-    // Add sortable for all selected options.
-    // Implement a form of batch wishing that instead of calculating how many five starts were obtained in N wishes, gets the probability distrubution of getting a five star in exactly N wishes, from zero to pity, and have the algorithm use that to get the number of wishes used.
-    // Try to make this analytic instead of numeric.
-    // Add a chronicled wish section.
-    // Capturing Radiance still needs to be implemented but we aren't sure what the actual mechanics of it are.
-    // Maybe make two modes for approximate and extra accurate. Approximate will use 10^5 trials and return the result as just a percent while extra accurate will have more iterations and go to the second decimal.
-    // Multiple end dates.
-    // Close first tool tip when clicking on a second one.
-    // Clean up how the date displays on the wishing end date.
-    // Make wishing end date also display time.
-    // See if differing time zones could cause issues down the line in terms of calcs.
-    // Make tool tips smaller.
-    // Page freezes when results are loading.
 
 let Trials = 100000;
 
