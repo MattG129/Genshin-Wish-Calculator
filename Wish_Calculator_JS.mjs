@@ -1,4 +1,6 @@
-
+// NA region's start date for version 4 in est. Since (almost) all patches are exactly six weeks, we can use this date to calculate the start and end dates for other patches.
+const v4StartDate = moment('2023-8-15', "YYYY-MM-DD").toDate();
+let BannerInfo = {};
 let Trials = 100000;
 
 let Today = new Date();
@@ -13,10 +15,6 @@ function DateAdd(date, days) {
 }
 
 function PatchAndDateCalculator(WishConfig) {
-    // NA region's start date for version 4 in est. Since (almost) all patches are exactly six weeks, we can use this date to derive the start dates for other patches.
-    // const v4StartDate = DateTime.fromObject({ year: 2023, month: 8, day: 15 });
-    const v4StartDate = moment('2023-8-15', "YYYY-MM-DD").toDate();
-
     // The number of patches between 4.0 and the final patch for wishing.
     let BasePatchDiffAsDecimal = (WishConfig.EndPatch - 4.0).toFixed(1);
 
@@ -49,6 +47,47 @@ function PatchAndDateCalculator(WishConfig) {
         // TODO: See if there is a better way to do this.
         DaysSincePatchStarted: Math.floor((Today - v4StartDate) / (1000* 60 * 60 * 24)) % 42
     };
+}
+
+function GetBannerInfo() {
+    let Patch = 38; //Using integers so we don't have to deal with floats. Starting with 3.8 since the patch will be increased to 4.0 during the first iteration.
+
+    let PatchDiff = 0;
+    let BannerEndDate = v4StartDate;
+    // Using 0 & 1 instead of 1 & 2 for the Phase since they are easier to work with.
+    let Phase = -1;
+
+    while (PatchDiff <= 9) {
+        BannerEndDate = DateAdd(BannerEndDate, 21);
+        Phase = (Phase + 1) % 2
+      
+        // Increase the patch everytime we reach a phase 1 banner.
+        if (Phase + 1 == 1) {       
+            if ((Patch % 10) != 8) {
+                Patch++
+            }
+            else {
+              Patch += 10
+              Patch -= 8
+            }
+        }
+      
+        if (Today < BannerEndDate) {
+            // Increase the patch diff everytime we reach a phase 1 banner, unless its the current banner.
+            if ((Phase + 1 == 1) && ((BannerEndDate - Today)/(1000 * 60 * 60 * 24) > 21)) {
+                PatchDiff += 1;  
+            }
+                
+            BannerInfo[`${Patch}${Phase+1}`] = {
+                'Patch': Number((Patch/10).toFixed(1)),
+                'MonthDiff': 12 * (BannerEndDate.getFullYear() - Today.getFullYear()) + (BannerEndDate.getMonth() - Today.getMonth()),
+                'PatchDiff': PatchDiff,
+                'Phase': Phase+1,
+                'BannerEndDate': BannerEndDate,
+                'DaysSincePatchStarted': Math.floor((Today - v4StartDate) / (1000* 60 * 60 * 24)) % 42
+            };
+        }
+    }
 }
 
 function SavingsCalculator(WishConfig) {
