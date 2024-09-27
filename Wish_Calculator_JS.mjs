@@ -58,15 +58,15 @@ function SavingsCalculator(WishConfig) {
 
 
     // TODO: See if there is a better way to do this.
-    var DateDiff = Math.floor((WishConfig.WishingEndDate - Today) / (1000* 60 * 60 * 24));
+    let DateDiff = Math.floor((WishConfig.WishingEndDate - Today) / (1000* 60 * 60 * 24));
 
     Primos += DateDiff * (60 + (WishConfig.HasWelkin ? 90 : 0)); // 60 primos for dailies plus 90 for welkin, if purchased.
 
-    var ExpectedAbyssPrimos = 0
+    let ExpectedAbyssPrimos = 0
 
     const FloorVals = [WishConfig.ExpectedStarsFloor9, WishConfig.ExpectedStarsFloor10, WishConfig.ExpectedStarsFloor11, WishConfig.ExpectedStarsFloor12]
     
-    for (var i = 0; i <= FloorVals.length; i++) {
+    for (let i = 0; i <= FloorVals.length; i++) {
         if (FloorVals[i] == 9) {
             ExpectedAbyssPrimos += 200;
         }
@@ -91,18 +91,19 @@ function SavingsCalculator(WishConfig) {
 
     Primos += ExpectedAbyssPrimos * AbyssCycles;
 
+    let ExpectedTheaterPrimos = 0;
     switch (WishConfig.ExpectedAct) {
-        case 0:  var ExpectedTheaterPrimos = 0;   break;
-        case 1:  var ExpectedTheaterPrimos = 60;  break;
-        case 2:  var ExpectedTheaterPrimos = 120; break;
-        case 3:  var ExpectedTheaterPrimos = 220; break;
-        case 4:  var ExpectedTheaterPrimos = 280; break;
-        case 5:  var ExpectedTheaterPrimos = 340; break;
-        case 6:  var ExpectedTheaterPrimos = 440; break;
-        case 7:  var ExpectedTheaterPrimos = 500; break;
-        case 8:  var ExpectedTheaterPrimos = 620; break;
-        case 9:  var ExpectedTheaterPrimos = 680; break;
-        case 10: var ExpectedTheaterPrimos = 800; break;
+        case 0:  ExpectedTheaterPrimos = 0;   break;
+        case 1:  ExpectedTheaterPrimos = 60;  break;
+        case 2:  ExpectedTheaterPrimos = 120; break;
+        case 3:  ExpectedTheaterPrimos = 220; break;
+        case 4:  ExpectedTheaterPrimos = 280; break;
+        case 5:  ExpectedTheaterPrimos = 340; break;
+        case 6:  ExpectedTheaterPrimos = 440; break;
+        case 7:  ExpectedTheaterPrimos = 500; break;
+        case 8:  ExpectedTheaterPrimos = 620; break;
+        case 9:  ExpectedTheaterPrimos = 680; break;
+        case 10: ExpectedTheaterPrimos = 800; break;
     }
 
     // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
@@ -137,9 +138,10 @@ function SavingsCalculator(WishConfig) {
     }
 
     // TODO: Could maybe go a bit more in depth.
+    let Starglitter;
     if (WishConfig.UsingStarglitter) {
         IntertwinedFates += Math.floor(WishConfig.Starglitter / 5);
-        var Starglitter = WishConfig.Starglitter % 5;
+        Starglitter = WishConfig.Starglitter % 5;
     }
 
     // TODO: Could maybe go a bit more in depth.
@@ -188,8 +190,8 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
     // TODO: Add comments.
 
     let Successes = 0;
-    var DynamicMaxWishes;
-    var Lost5050s;
+    let DynamicMaxWishes;
+    let Lost5050s;
     for (let TrialCount = 0; TrialCount < Trials; TrialCount++) {
         Lost5050s = 0
         DynamicMaxWishes = MaxWishes
@@ -275,10 +277,10 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
 
 // Stub function. Will use this in the future for wish simulations.
 function GetWishNumberDistributions() {
-    var MaxPity = 90;
+    let MaxPity = 90;
 
-    var states = {};
-    var FiveStarChance;
+    let states = {};
+    let FiveStarChance;
 
     for (let i = 0; i <= MaxPity; i++) {
         states[i] = {};
@@ -293,8 +295,8 @@ function GetWishNumberDistributions() {
         states[i][90] = FiveStarChance;
     }
 
-    var stateTransformations = [];
-    var rowTransformations;
+    let stateTransformations = [];
+    let rowTransformations;
 
     for (const [key, value] of Object.entries(states)) {
         rowTransformations = new Array(Object.keys(states).length).fill(0);
@@ -306,13 +308,13 @@ function GetWishNumberDistributions() {
         stateTransformations.push(rowTransformations);
     };
 
-    var stateTransformationsMatrix = math.matrix(stateTransformations.slice(), 'sparse')
+    let stateTransformationsMatrix = math.matrix(stateTransformations.slice(), 'sparse')
     const OriginalStateTransformationsMatrix = math.matrix(stateTransformations.slice(), 'sparse')
 
-    var Pities = Array.from(Array(MaxPity), () => [0]);
+    let Pities = Array.from(Array(MaxPity), () => [0]);
 
-    for (var i = 1; i < MaxPity; i++) {
-        for (var CharacterPity = 0; CharacterPity <= MaxPity-i; CharacterPity++) {
+    for (let i = 1; i < MaxPity; i++) {
+        for (let CharacterPity = 0; CharacterPity <= MaxPity-i; CharacterPity++) {
             Pities[CharacterPity].push(math.subset(stateTransformationsMatrix, math.index(CharacterPity, Object.keys(states).length-1)).toFixed(6));
         }
         
@@ -339,7 +341,7 @@ function WishCalcs(WishConfig) {
 
     $('#MaxWishes').show().html(`Max Number of Wishes: ${MaxWishes}`);
 
-    var WishingFor = 'Wishing for ';
+    let WishingFor = 'Wishing for ';
 
     if (WishConfig.CharacterGoal > 1) {
         WishingFor += `${WishConfig.CharacterGoal} characters`
