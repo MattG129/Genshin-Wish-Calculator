@@ -16,10 +16,9 @@
         <script src="https://cdn.jsdelivr.net/npm/mathjs@13.0.3/lib/browser/math.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
         <script src="Wish_Calculator_JS.mjs" type="text/javascript"></script>
         <script src="https://parsleyjs.org/dist/parsley.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     </head>
     <body>
         <style>
@@ -205,15 +204,19 @@
                         <label for="WeaponGoal" class="form-label">How many five star <b>weapons</b> will you be wishing for? (Refinements included)</label>
                         <input type="number" id="WeaponGoal" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                     </div>
-                    <div class="col-sm" style="margin-right: 12px;">
-                        <label for="EndPatch" class="form-label">What patch will you have made all your wishes by?</label>
-                        <input type="decimal" id="EndPatch" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="5.0"><br>
-                    </div>
-                    <div class="col-sm">
-                        <label for="EndPhase" class="form-label">What phase will you have made all your wishes by?</label>
-                        <input type="number" id="EndPhase" data-parsley-min="1" data-parsley-max="2" min="1" max="2" data-parsley-trigger="change" class="form-control" data-parsley-required="true" Value="1"><br>
-                    </div>
                 </div>
+
+                <div class="row justify-content-md-center">
+                    <center>
+                        <div class="col-sm-4" style="align-content: center;">
+                            <label for="EndPatch" class="form-label">What banner will you have made all your wishes by?</label>
+                            <select id="BannerEnd" class="form-select">
+                                <!-- Filled in by GetBannerInfo. -->
+                            </select>
+                        </div>
+                    </center>
+                </div>
+                <br>
 
                 <hr><center><h2>Wishing History</h2></center><br>
 
@@ -354,6 +357,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
         <script type="text/javascript">
+            GetBannerInfo();
+
             var ResultsLoaded = false;
             
             function UpdateCalculateButton() {
@@ -443,7 +448,7 @@
             function CompileForm(){
                 var FormValues = {};
                 
-                $('#form input').each(function() {
+                $('#form input, #form select').each(function() {
                     if ($(this).is(':checkbox')) {
                         FormValues[this.id] = $(this).is(':checked')
                     }
@@ -470,7 +475,7 @@
                 if (isValidJSON) {
                     $('#InvalidImportMessage').hide();
                     
-                    $('#form input').each(function() {
+                    $('#form input, #form select').each(function() {
                         if ($(this).is(':checkbox')) {
                             $(this).prop('checked', JSONImport[this.id]);
                         }
