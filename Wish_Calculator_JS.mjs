@@ -15,41 +15,6 @@ function DateAdd(date, days) {
     return newDate;
 }
 
-function PatchAndDateCalculator(WishConfig) {
-    // The number of patches between 4.0 and the final patch for wishing.
-    let BasePatchDiffAsDecimal = (WishConfig.EndPatch - 4.0).toFixed(1);
-
-    // Assumes 9 patches per version.
-    //TODO: Add a comment for this.
-    let BasePatchDiff = Math.floor(9 * Math.floor(BasePatchDiffAsDecimal) + 10 * (BasePatchDiffAsDecimal % 1));
-
-    //TODO: Add a comment for this.
-    let BasePhaseDiff = Math.floor(2 * BasePatchDiff + LastBannerInfo.Phase);
-
-    //TODO: Add a comment for this.
-    let WishingEndDate = DateAdd(v4StartDate, 21*BasePhaseDiff);
-
-    // Adds up the number of start dates for new patches, that are after the current date but before the end date, to get the number of patches between now and then.
-    // TODO: I think a comment adding more context could be useful here as well or maybe even a comment explaining the functions process as a hole.
-    let PatchDiff = 0;
-    let PatchDate = v4StartDate;
-    for (let i = 0; i <= BasePatchDiff; i++) {
-        PatchDate = DateAdd(PatchDate, 42);
-        if (Today < PatchDate && PatchDate < WishingEndDate) {
-            PatchDiff += 1;
-        }
-    }
-
-    return {
-        WishingEndDate: WishingEndDate,
-        PatchDiff: PatchDiff,
-        // TODO: See if there is a better way to do this.
-        MonthDiff: 12 * (WishingEndDate.getFullYear() - Today.getFullYear()) + (WishingEndDate.getMonth() - Today.getMonth()),
-        // TODO: See if there is a better way to do this.
-        DaysSincePatchStarted: Math.floor((Today - v4StartDate) / (1000* 60 * 60 * 24)) % 42
-    };
-}
-
 function GetBannerInfo() {
     let Patch = 38; //Using integers so we don't have to deal with floats. Starting with 3.8 since the patch will be increased to 4.0 during the first iteration.
 
