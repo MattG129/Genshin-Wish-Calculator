@@ -88,7 +88,6 @@ function GetBannerInfo() {
             });
 
             $('#BannerEnd').append($('<option>', {
-                style: "text-align: Center;",
                 value: BannerInfo.length-1,
                 text: `${(Patch/10).toFixed(1)} Phase ${Phase+1} (Ends on ${moment(BannerEndDate, "YYYY-MM-DD").format('L')})`,
             }));
