@@ -15,6 +15,10 @@ function DateAdd(date, days) {
     return newDate;
 }
 
+function DateDiff(DateFrom, DateTo) {
+    return Math.floor((DateTo - DateFrom)/(1000 * 60 * 60 * 24));
+}
+
 function GetBannerInfo() {
     let Patch = 38; //Using integers so we don't have to deal with floats. Starting with 3.8 since the patch will be increased to 4.0 during the first iteration.
 
@@ -40,7 +44,7 @@ function GetBannerInfo() {
       
         if (Today < BannerEndDate) {
             // Increase the patch diff everytime we reach a phase 1 banner, unless its the current banner.
-            if ((Phase + 1 == 1) && ((BannerEndDate - Today)/(1000 * 60 * 60 * 24) > 21)) {
+            if ((Phase + 1 == 1) && DateDiff(Today, BannerEndDate)) {
                 PatchDiff += 1;  
             }
                 
@@ -64,10 +68,7 @@ function SavingsCalculator(WishConfig) {
     // TODO: Could maybe go a bit more in depth.
     let Primos = WishConfig.Primos;
 
-    // TODO: See if there is a better way to do this.
-    let DateDiff = Math.floor((LastBannerInfo.BannerEndDate - Today) / (1000* 60 * 60 * 24));
-
-    Primos += DateDiff * (60 + (WishConfig.HasWelkin ? 90 : 0)); // 60 primos for dailies plus 90 for welkin, if purchased.
+    Primos += DateDiff(Today, LastBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
 
     let ExpectedAbyssPrimos = 0
 
@@ -133,7 +134,7 @@ function SavingsCalculator(WishConfig) {
     // If we are 31 or more days into the patch, then the user should have already been able to claim the primos, thus we no longer need to account for them. 
     // If the current patch is also the final patch, for wishing, then wishing will have to go into the second phase in order to claim the primos.
     // BannerInfo[0] = Current Patch.
-    if ((LastBannerInfo.PatchDiff > 0 || LastBannerInfo.Phase === 2) && ((Today - BannerInfo[0].PatchStartDate)/(1000 * 60 * 60 * 24) < 31)) {
+    if ( (LastBannerInfo.PatchDiff > 0 || LastBannerInfo.Phase === 2) && (DateDiff(BannerInfo[0].PatchStartDate, Today) < 31) ) {
         Primos += 300;
     }
 
