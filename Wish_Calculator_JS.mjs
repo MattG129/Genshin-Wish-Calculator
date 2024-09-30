@@ -115,20 +115,25 @@ function SavingsCalculator(WishConfig) {
 
     // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
     Primos += ExpectedTheaterPrimos * (LastBannerInfo.MonthDiff + (1 - WishConfig.ITCurrentCycleCompleted));
-
+    
     // Live Stream Primos
+    // If there are any patches after the current patch, then we will add 300 primos for each of them, unless the final banner ends in the first phase. In which case we will add 300 for all but the final patch as we would finish wishing before the it's live stream airs.
     // TODO: Could maybe go a bit more in depth.
-    Primos += 300 * (LastBannerInfo.PatchDiff);
+    if (LastBannerInfo.PatchDiff > 0) {
+        if (LastBannerInfo.Phase == 1) {
+            Primos += 300 * (LastBannerInfo.PatchDiff - 1);
+
+        }
+        else {
+            Primos += 300 * LastBannerInfo.PatchDiff;
+        }
+    }
 
     // Adding in the current patches primos for the live steam, if applicable. Live streams generally air on the second to last Friday of a patch, or 31 days into the patch. 
     // If we are 31 or more days into the patch, then the user should have already been able to claim the primos, thus we no longer need to account for them. 
     // If the current patch is also the final patch, for wishing, then wishing will have to go into the second phase in order to claim the primos.
-
-
-    // 'DaysSincePatchStarted': Math.floor((Today - v4StartDate) / (1000* 60 * 60 * 24)) % 42
-
-
-    if ((LastBannerInfo.PatchDiff > 0 || LastBannerInfo.Phase === 2) && ((Today - LastBannerInfo.PatchStartDate)/(1000 * 60 * 60 * 24) < 31)) {
+    // BannerInfo[0] = Current Patch.
+    if ((LastBannerInfo.PatchDiff > 0 || LastBannerInfo.Phase === 2) && ((Today - BannerInfo[0].PatchStartDate)/(1000 * 60 * 60 * 24) < 31)) {
         Primos += 300;
     }
 
