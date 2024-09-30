@@ -78,6 +78,10 @@
                 align-items: center;
                 flex-direction: column;
             }
+
+            .TableInput {
+                border-color: black;
+            }
         </style>
     
         <div class="header" style="color: red;">This site is still under construction. Certain features and functionality may not be fully implemented yet.</div><br>
@@ -220,28 +224,42 @@
 
                 <hr><center><h2>Wishing History</h2></center><br>
 
-                <div class="row justify-content-md-center">
-                    <div class="col-sm-3" style="margin-right: 50px;">                        
-                        <label for="CharacterPity" class="form-label">Character Pity</label>
-                        <input type="number" id="CharacterPity" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
-                        <br><br>
-
-                        <input type="checkbox" id="CharacterGuarantee" class="form-check-input">
-                        <label for="CharacterGuarantee" class="form-label">Next Event Character Guaranteed</label><br>
-                    </div>
-                    <div class="col-sm-3">
-                        <label for="WeaponPity" class="form-label">Weapon Pity</label>
-                        <input type="number" id="WeaponPity" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
-                        <br><br>
-
-                        <input type="checkbox" id="WeaponGuarantee" class="form-check-input">
-                        <label for="WeaponGuarantee" class="form-label">Next Event Weapon Guaranteed</label>
-                        <br><br>
-
-                        <label for="FatePoints" class="form-label">Weapon Banner Fate Points</label>
-                        <input type="number" id="FatePoints" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0"><br>
-                    </div>
-                </div>
+                <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 50%;">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td><b>Character Banner</b></td>
+                            <td><b>Weapon Banner</b></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Pity</b></td>
+                            <td>
+                                <input type="number" id="CharacterPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
+                            </td>
+                            <td>
+                                <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Guarantee</b></td>
+                            <td>
+                                <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput">
+                            </td>
+                            <td>
+                                <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Fate Points</b></td>
+                            <td style="background-color: black;"></td>
+                            <td>
+                                <input type="number" id="FatePoints" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <hr><center><h2>Spiral Abyss</h2></center><br>
                 <center><h3>Expected Stars:</h3></center>
