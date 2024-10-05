@@ -377,10 +377,10 @@
         <script type="text/javascript">
             GetBannerInfo();
 
-            var ResultsLoaded = false;
+            let ResultsLoaded = false;
             
             function UpdateCalculateButton() {
-                var CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
+                let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
                 if ( $(CharacterGoal).val() > 0 || $(WeaponGoal).val() > 0 ) {
                     $("#Calculate").html(CalculateText);
@@ -403,7 +403,7 @@
                 
                 $('input').change();
                 
-                var InvalidData = false;
+                let InvalidData = false;
                 $('.parsley-error').each(function( index ) {
                     if ($(this).is(":visible")) {
                         InvalidData = true;
@@ -424,11 +424,6 @@
                     $('#LoadingGroup').show();
 
                     $(document).ready(function() {
-                        var WishConfig2 = {
-                          CurrentPrimos: $('#Primos').val(),
-                          CurrentIntertwinedFates: $('#Fates').val(),
-                        }
-
                         WishCalcs(CompileForm());
 
                         ResultsLoaded = true
@@ -464,7 +459,7 @@
             };
 
             function CompileForm(){
-                var FormValues = {};
+                let FormValues = {};
                 
                 $('#form input, #form select').each(function() {
                     if ($(this).is(':checkbox')) {
@@ -482,12 +477,13 @@
             $('#form').on('change', UpdateExportState);
 
             $('#Import').on('click', function() {
-                var isValidJSON = true;
+                let isValidJSON = true;
+                let JSONImport;
 
                 try {
-                    var JSONImport = JSON.parse($('#ImportState').val());
+                    JSONImport = JSON.parse($('#ImportState').val());
                 } catch (error) {
-                    var isValidJSON = false;
+                    isValidJSON = false;
                 }
 
                 if (isValidJSON) {
