@@ -217,7 +217,12 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
     let Successes = 0;
     let DynamicMaxWishes;
     let Lost5050s;
+    let Start = Date.now();
     for (let TrialCount = 0; TrialCount < Trials; TrialCount++) {
+        if (Date.now() - Start > 5000) {
+            break;
+        }
+
         Lost5050s = 0
         DynamicMaxWishes = MaxWishes
         let Wishes = 0;
