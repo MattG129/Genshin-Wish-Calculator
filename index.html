@@ -434,9 +434,7 @@
             }
 
             UpdateCalculateButton();
-            $(CharacterGoal).on('change', UpdateCalculateButton)
-            $(WeaponGoal).on('change', UpdateCalculateButton)
-
+            $('#CharacterGoal, #WeaponGoal').on('change', UpdateCalculateButton)
 
             // TODO: Disable the button when clicked and reenable once its done processing.
             $("#Calculate").on('click', function() {
@@ -486,6 +484,8 @@
                 }
             });
 
+            $('#UsingStarglitter').change();
+
             $('#BPPurchased').on('change', function(){
                 if ($('#BPPurchased').is(':checked')) {
                     $('#BPLevelSkipGroup').show();
@@ -494,6 +494,8 @@
                     $('#BPLevelSkipGroup').hide();
                 }
             });
+
+            $('#BPPurchased').change();
 
             function UpdateExportState(){
                 $('#ExportState').val(JSON.stringify(CompileForm()))
