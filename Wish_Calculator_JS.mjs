@@ -246,7 +246,7 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
                     Guarantee = 1;
                     Lost5050s++;
 
-                    if ( WishConfig.UsingStarglitter && (WishConfig.MissingFiveStars - Lost5050s <= 0) ){
+                    if ( WishConfig.UsingStarglitter && (Lost5050s > WishConfig.MissingFiveStars) ){
                         DynamicMaxWishes += 2
                     }
                 }
