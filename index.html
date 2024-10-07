@@ -406,18 +406,6 @@
         <script type="text/javascript">
             GetBannerInfo();
 
-            $(SimpleMode).on('change', function () {
-                if ($(SimpleMode).is(':checked')) {
-                    $('.SimpleModeSkipGroup').hide();
-                }
-                else {
-                    $('.SimpleModeSkipGroup').show();
-                }
-
-            })
-
-            $(SimpleMode).change();
-
             let ResultsLoaded = false;
             
             function UpdateCalculateButton() {
@@ -475,6 +463,17 @@
             })
 
             // Skip Logic
+            $(SimpleMode).on('change', function () {
+                if ($(SimpleMode).is(':checked')) {
+                    $('.SimpleModeSkipGroup').hide();
+                }
+                else {
+                    $('.SimpleModeSkipGroup').show();
+                }
+            })
+
+            $(SimpleMode).change();
+
             $('#UsingStarglitter').on('change', function(){
                 if ($('#UsingStarglitter').is(':checked')) {
                     $('#StarglitterSkipGroup').show();
