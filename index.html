@@ -127,222 +127,251 @@
                         </div>
                     </div>
                 </div>
- 
-                <hr><center><h2>Currency</h2></center><br>
-
-                <div class="row">
-                    <div class="col-sm">
-                        <label for="Primos" class="form-label">Primogems</label><br>
-                        <input type="number" id="Primos" class="form-control" data-parsley-trigger="change" data-parsley-required="true" Value="0"><br>
-                    </div>
-                
-                    <div class="col-sm">
-                        <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
-                        <input type="number" id="IntertwinedFates" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
-                    </div>
-
-                    <div class="col-sm">
-                        <label for="Stardust" class="form-label">Masterless Stardust</label>
-                        <a 
-                            type="button"
-                            data-toggle="tooltip"
-                            class="help-tooltip btn btn-dark rounded-circle"
-                            title="This will be used to calculate how many of the available Intertwined Fates you can purchase from the Stardust Exchange between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month's Intertwined Fates have already been purchased."
-                        >
-                            <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
-                        </a>
-                        <br>
-                        <input type="number" id="Stardust" class="form-control" data-parsley-trigger="change" data-parsley-min="0" min="0"><br>
-                    </div>
-                </div>
                 <br>
-
+                
                 <center>
-                    <input type="checkbox" id="UsingStarglitter" class="form-check-input">
-                    <label for="UsingStarglitter" class="form-label">Using Masterless Starglitter</label><br>
+                    <input type="checkbox" id="SimpleMode" class="form-check-input">
+                    <label for="SimpleMode" class="form-label">Simple Wishing Mode</label>
+                    <a 
+                        type="button"
+                        data-toggle="tooltip"
+                        class="help-tooltip btn btn-dark rounded-circle"
+                        title="This mode will allow you to run the calculator with just the ammount of resources you have at the moment."
+                    >
+                        <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                    </a>
                 </center>
 
-                <div class="row" id="StarglitterSkipGroup" style="display: none;">
-                    <div class="col-sm">
-                        <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
-                        <input type="number" id="Starglitter" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
-                    </div>
-                
-                    <div class="col-sm">
-                        <label for="MissingFourStars" class="form-label">Missing Four Star Characters</label>
-                        <a 
-                            type="button"
-                            data-toggle="tooltip"
-                            class="help-tooltip btn btn-dark rounded-circle"
-                            title="If all four star characters have been acquired then every four star pulled should give at least 2 Masterless Starglitter. The calculator will assume that a four star is given once every 10 wishes, and so if all four stars are acquired before or during the wishing process then 2 additional Masterless Starglitter will be awarded per subsequent wish."
-                        >
-                            <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
-                        </a>
-                        <br>
-                        <input type="number" id="MissingFourStars" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="38"><br>
-                    </div>
+                <div class="WishSection">
+                    <hr><center><h2>Currency</h2></center><br>
 
-                    <div class="col-sm">
-                        <label for="MissingFiveStars" class="form-label">Missing Standard Banner Five Star Characters</label>
-                        <a 
-                            type="button"
-                            data-toggle="tooltip"
-                            class="help-tooltip btn btn-dark rounded-circle"
-                            title="Five star character constellations will award 10 Masterless Starglitter and so if all standard banner five stars are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you lose a 50:50. Additional wishes gained from this won't be factored into the <b>Max Number of Wishes</b>."
-                        >
-                            <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
-                        </a>
-                        <br>
-                        <input type="number" id="MissingFiveStars" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="7"><br>
-                    </div>
-                </div>
-
-                <hr><center><h2>Wishing Goals</h2></center><br>
-
-                <div class="row justify-content-md-center">
-                    <div class="col-sm" style="margin-right: 12px;">
-                        <label for="CharacterGoal" class="form-label">How many five star <b>characters</b> will you be wishing for? (Constellations included)</label>
-                        <input type="number" id="CharacterGoal" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
-                    </div>
-                    <div class="col-sm">
-                        <label for="WeaponGoal" class="form-label">How many five star <b>weapons</b> will you be wishing for? (Refinements included)</label>
-                        <input type="number" id="WeaponGoal" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
-                    </div>
-                </div>
-
-                <div class="justify-content-md-center">
-                    <center>
-                        <div style="align-content: center;">
-                            <label for="EndPatch" class="form-label">What banner will you have made all your wishes by?</label>
-                            <select id="BannerEnd" class="form-select" style="max-width: 300px;">
-                                <!-- Filled in by GetBannerInfo. -->
-                            </select>
-                        </div>
-                    </center>
-                </div>
-                <br>
-
-                <hr><center><h2>Wishing History</h2></center><br>
-
-                <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 75%;">
-                    <thead>
-                        <tr>
-                            <td></td>
-                            <td><b>Character Banner</b></td>
-                            <td><b>Weapon Banner</b></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="vertical-align: middle;"><b>Pity</b></td>
-                            <td>
-                                <input type="number" id="CharacterPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
-                            </td>
-                            <td>
-                                <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle;"><b>Guarantee</b></td>
-                            <td>
-                                <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput">
-                            </td>
-                            <td>
-                                <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align: middle;"><b>Fate Points</b></td>
-                            <td></td>
-                            <td>
-                                <input type="number" id="FatePoints" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <hr><center><h2>Spiral Abyss</h2></center><br>
-                <center><h3>Expected Stars:</h3></center>
-
-                <div class="row">
-                    <div class="col-sm">
-                        <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label><br>
-                        <input type="number" id="ExpectedStarsFloor9" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
-                    </div>
-                
-                    <div class="col-sm">
-                        <label for="ExpectedStarsFloor10" class="form-label">Floor 10</label><br>
-                        <input type="number" id="ExpectedStarsFloor10" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
-                    </div>
-
-                    <div class="col-sm">
-                        <label for="ExpectedStarsFloor11" class="form-label">Floor 11</label><br>
-                        <input type="number" id="ExpectedStarsFloor11" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
-                    </div>
-
-                    <div class="col-sm">
-                        <label for="ExpectedStarsFloor12" class="form-label">Floor 12</label><br>
-                        <input type="number" id="ExpectedStarsFloor12" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
-                    </div>
-                </div>
-                <br>
-
-                <center>
-                    <input type="checkbox" id="AbyssCurrentCycleCompleted" class="form-check-input">
-                    <label for="AbyssCurrentCycleCompleted" class="form-label">Current cycle completed?</label><br>
-                </center>
-
-                <hr><center><h2>Imaginarium Theater</h2></center><br>
-
-                <div class="row">
-                    <center>
-                        <div class="col-sm-2">
-                            <label for="ExpectedAct" class="form-label">Expected Act</label>
-                            <input type="number" id="ExpectedAct" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0"><br>
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
-                            <label for="ITCurrentCycleCompleted" class="form-label">Current cycle completed</label><br>
-                        </div>
-                    </center>
-                </div>
-
-                <hr>
-                <center>
-                    <h2>
-                        Battle Pass & Welkin
-                        <a
-                            type="button"
-                            data-toggle="tooltip"
-                            class="help-tooltip btn btn-dark rounded-circle"
-                            title="This calculator will assume that the <b>Blessing of the Welkin Moon</b>/<b>Battle Pass</b> will either be purchased from now until the <b>Wishing End Date</b> or not at all."
-                        >
-                            <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
-                        </a>
-                    </h2>
-                </center>
-                <br>
-                <div class="row">
-                    <center>
+                    <div class="row">
                         <div class="col-sm">
-                            <input type="checkbox" id="HasWelkin" class="form-check-input">
-                            <label for="HasWelkin" class="form-label">Purchasing Blessing of the Welking Moon</label>
+                            <label for="Primos" class="form-label">Primogems</label><br>
+                            <input type="number" id="Primos" class="form-control" data-parsley-trigger="change" data-parsley-required="true" Value="0"><br>
                         </div>
-                        <div class="col-sm-3">
-                            <input type="checkbox" id="BPPurchased" class="form-check-input">
-                            <label for="BPPurchased" class="form-label">Purchasing Battle Pass</label>
+                    
+                        <div class="col-sm">
+                            <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
+                            <input type="number" id="IntertwinedFates" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
+
+                        <div class="col-sm SimpleModeSkipGroup">
+                            <label for="Stardust" class="form-label">Masterless Stardust</label>
+                            <a 
+                                type="button"
+                                data-toggle="tooltip"
+                                class="help-tooltip btn btn-dark rounded-circle"
+                                title="This will be used to calculate how many of the available Intertwined Fates you can purchase from the Stardust Exchange between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month's Intertwined Fates have already been purchased."
+                            >
+                                <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                            </a>
+                            <br>
+                            <input type="number" id="Stardust" class="form-control" data-parsley-trigger="change" data-parsley-min="0" min="0"><br>
+                        </div>
+                    </div>
+                    <br>
+
+                    <center>
+                        <input type="checkbox" id="UsingStarglitter" class="form-check-input">
+                        <label for="UsingStarglitter" class="form-label">Using Masterless Starglitter</label><br>
+                    </center>
+
+                    <div class="row" id="StarglitterSkipGroup" style="display: none;">
+                        <div class="col-sm">
+                            <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
+                            <input type="number" id="Starglitter" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                        </div>
+                    
+                        <div class="col-sm">
+                            <label for="MissingFourStars" class="form-label">Missing Four Star Characters</label>
+                            <a 
+                                type="button"
+                                data-toggle="tooltip"
+                                class="help-tooltip btn btn-dark rounded-circle"
+                                title="If all four star characters have been acquired then every four star pulled should give at least 2 Masterless Starglitter. The calculator will assume that a four star is given once every 10 wishes, and so if all four stars are acquired before or during the wishing process then 2 additional Masterless Starglitter will be awarded per subsequent wish."
+                            >
+                                <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                            </a>
+                            <br>
+                            <input type="number" id="MissingFourStars" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="38"><br>
+                        </div>
+
+                        <div class="col-sm">
+                            <label for="MissingFiveStars" class="form-label">Missing Standard Banner Five Star Characters</label>
+                            <a 
+                                type="button"
+                                data-toggle="tooltip"
+                                class="help-tooltip btn btn-dark rounded-circle"
+                                title="Five star character constellations will award 10 Masterless Starglitter and so if all standard banner five stars are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you lose a 50:50. Additional wishes gained from this won't be factored into the <b>Max Number of Wishes</b>."
+                            >
+                                <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                            </a>
+                            <br>
+                            <input type="number" id="MissingFiveStars" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="7"><br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="WishSection">
+                    <hr><center><h2>Wishing Goals</h2></center><br>
+
+                    <div class="row justify-content-md-center">
+                        <div class="col-sm" style="margin-right: 12px;">
+                            <label for="CharacterGoal" class="form-label">How many five star <b>characters</b> will you be wishing for? (Constellations included)</label>
+                            <input type="number" id="CharacterGoal" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                        </div>
+                        <div class="col-sm">
+                            <label for="WeaponGoal" class="form-label">How many five star <b>weapons</b> will you be wishing for? (Refinements included)</label>
+                            <input type="number" id="WeaponGoal" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                        </div>
+                    </div>
+
+                    <div class="justify-content-md-center SimpleModeSkipGroup">
+                        <center>
+                            <div style="align-content: center;">
+                                <label for="EndPatch" class="form-label">What banner will you have made all your wishes by?</label>
+                                <select id="BannerEnd" class="form-select" style="max-width: 300px;">
+                                    <!-- Filled in by GetBannerInfo. -->
+                                </select>
+                            </div>
+                        </center>
+                    </div>
+                    <br>
+                </div>
+
+
+                <div class="WishSection">
+                    <hr><center><h2>Wishing History</h2></center><br>
+
+                    <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 75%;">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td><b>Character Banner</b></td>
+                                <td><b>Weapon Banner</b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="vertical-align: middle;"><b>Pity</b></td>
+                                <td>
+                                    <input type="number" id="CharacterPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
+                                </td>
+                                <td>
+                                    <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;"><b>Guarantee</b></td>
+                                <td>
+                                    <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput">
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;"><b>Fate Points</b></td>
+                                <td></td>
+                                <td>
+                                    <input type="number" id="FatePoints" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="WishSection SimpleModeSkipGroup">
+                    <hr><center><h2>Spiral Abyss</h2></center><br>
+                    <center><h3>Expected Stars:</h3></center>
+
+                    <div class="row">
+                        <div class="col-sm">
+                            <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label><br>
+                            <input type="number" id="ExpectedStarsFloor9" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
+                        </div>
+                    
+                        <div class="col-sm">
+                            <label for="ExpectedStarsFloor10" class="form-label">Floor 10</label><br>
+                            <input type="number" id="ExpectedStarsFloor10" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
+                        </div>
+
+                        <div class="col-sm">
+                            <label for="ExpectedStarsFloor11" class="form-label">Floor 11</label><br>
+                            <input type="number" id="ExpectedStarsFloor11" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
+                        </div>
+
+                        <div class="col-sm">
+                            <label for="ExpectedStarsFloor12" class="form-label">Floor 12</label><br>
+                            <input type="number" id="ExpectedStarsFloor12" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,9]" min="0" max="9" Value="0">
+                        </div>
+                    </div>
+                    <br>
+
+                    <center>
+                        <input type="checkbox" id="AbyssCurrentCycleCompleted" class="form-check-input">
+                        <label for="AbyssCurrentCycleCompleted" class="form-label">Current cycle completed?</label><br>
                     </center>
                 </div>
 
-                <div class="row">
-                    <center>
-                        <div class="col-sm-2" id="BPLevelSkipGroup" style="display: none;">
-                            <label for="BPLevel" class="form-label">Battle Pass Level</label>
-                            <input type="number" id="BPLevel" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 50]" min="0" max="50" Value="0">
-                        </div>
-                    </center>
+
+                <div class="WishSection SimpleModeSkipGroup">
+                    <hr><center><h2>Imaginarium Theater</h2></center><br>
+
+                    <div class="row">
+                        <center>
+                            <div class="col-sm-2">
+                                <label for="ExpectedAct" class="form-label">Expected Act</label>
+                                <input type="number" id="ExpectedAct" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0"><br>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
+                                <label for="ITCurrentCycleCompleted" class="form-label">Current cycle completed</label><br>
+                            </div>
+                        </center>
+                    </div>
                 </div>
+
+                <div class="WishSection SimpleModeSkipGroup">
+                    <hr>
+                    <center>
+                        <h2>
+                            Battle Pass & Welkin
+                            <a
+                                type="button"
+                                data-toggle="tooltip"
+                                class="help-tooltip btn btn-dark rounded-circle"
+                                title="This calculator will assume that the <b>Blessing of the Welkin Moon</b>/<b>Battle Pass</b> will either be purchased from now until the <b>Wishing End Date</b> or not at all."
+                            >
+                                <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                            </a>
+                        </h2>
+                    </center>
+                    <br>
+                    <div class="row">
+                        <center>
+                            <div class="col-sm">
+                                <input type="checkbox" id="HasWelkin" class="form-check-input">
+                                <label for="HasWelkin" class="form-label">Purchasing Blessing of the Welking Moon</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="checkbox" id="BPPurchased" class="form-check-input">
+                                <label for="BPPurchased" class="form-label">Purchasing Battle Pass</label>
+                            </div>
+                        </center>
+                    </div>
+
+                    <div class="row">
+                        <center>
+                            <div class="col-sm-2" id="BPLevelSkipGroup" style="display: none;">
+                                <label for="BPLevel" class="form-label">Battle Pass Level</label>
+                                <input type="number" id="BPLevel" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 50]" min="0" max="50" Value="0">
+                            </div>
+                        </center>
+                    </div>
+                </div>
+
                 <hr>
 
                 <center><a id="Calculate" class="btn btn-primary" style="border-width: 1px; border-color: black;"> Calculate </a></center><br>
@@ -376,6 +405,18 @@
 
         <script type="text/javascript">
             GetBannerInfo();
+
+            $(SimpleMode).on('change', function () {
+                if ($(SimpleMode).is(':checked')) {
+                    $('.SimpleModeSkipGroup').hide();
+                }
+                else {
+                    $('.SimpleModeSkipGroup').show();
+                }
+
+            })
+
+            $(SimpleMode).change();
 
             let ResultsLoaded = false;
             

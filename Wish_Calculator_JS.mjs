@@ -68,92 +68,85 @@ function SavingsCalculator(WishConfig) {
     // TODO: Could maybe go a bit more in depth.
     let Primos = WishConfig.Primos;
 
-    Primos += DateDiff(Today, LastBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
+    if(!WishConfig.SimpleMode) {
+        Primos += DateDiff(Today, LastBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
 
-    let ExpectedAbyssPrimos = 0
+        let ExpectedAbyssPrimos = 0
 
-    const FloorVals = [WishConfig.ExpectedStarsFloor9, WishConfig.ExpectedStarsFloor10, WishConfig.ExpectedStarsFloor11, WishConfig.ExpectedStarsFloor12]
-    
-    for (let i = 0; i <= FloorVals.length; i++) {
-        if (FloorVals[i] == 9) {
-            ExpectedAbyssPrimos += 200;
+        const FloorVals = [WishConfig.ExpectedStarsFloor9, WishConfig.ExpectedStarsFloor10, WishConfig.ExpectedStarsFloor11, WishConfig.ExpectedStarsFloor12]
+        
+        for (let i = 0; i <= FloorVals.length; i++) {
+            if (FloorVals[i] == 9) {
+                ExpectedAbyssPrimos += 200;
+            }
+            else if (FloorVals[i] >= 6) {
+                ExpectedAbyssPrimos += 100;
+            }
+            else if (FloorVals[i] >= 3) {
+                ExpectedAbyssPrimos += 50;
+            }
         }
-        else if (FloorVals[i] >= 6) {
-            ExpectedAbyssPrimos += 100;
+
+        // TODO: Might want to add a comment here explaining the whole process.
+        let AbyssCycles = LastBannerInfo.MonthDiff - WishConfig.AbyssCurrentCycleCompleted;
+        
+        // Since the abyss resets on the 16th of each month, the calculations needed to get the number of abyss cycles, are slightly different.
+        if (LastBannerInfo.BannerEndDate.getDate() >= 16) {
+            AbyssCycles += 1;
         }
-        else if (FloorVals[i] >= 3) {
-            ExpectedAbyssPrimos += 50;
+        if (Today.getDate() < 16) {
+            AbyssCycles += 1;
         }
-    }
 
-    // TODO: Might want to add a comment here explaining the whole process.
-    let AbyssCycles = LastBannerInfo.MonthDiff - WishConfig.AbyssCurrentCycleCompleted;
-    
-    // Since the abyss resets on the 16th of each month, the calculations needed to get the number of abyss cycles, are slightly different.
-    if (LastBannerInfo.BannerEndDate.getDate() >= 16) {
-        AbyssCycles += 1;
-    }
-    if (Today.getDate() < 16) {
-        AbyssCycles += 1;
-    }
+        Primos += ExpectedAbyssPrimos * AbyssCycles;
 
-    Primos += ExpectedAbyssPrimos * AbyssCycles;
-
-    let ExpectedTheaterPrimos = 0;
-    switch (WishConfig.ExpectedAct) {
-        case 0:  ExpectedTheaterPrimos = 0;   break;
-        case 1:  ExpectedTheaterPrimos = 60;  break;
-        case 2:  ExpectedTheaterPrimos = 120; break;
-        case 3:  ExpectedTheaterPrimos = 220; break;
-        case 4:  ExpectedTheaterPrimos = 280; break;
-        case 5:  ExpectedTheaterPrimos = 340; break;
-        case 6:  ExpectedTheaterPrimos = 440; break;
-        case 7:  ExpectedTheaterPrimos = 500; break;
-        case 8:  ExpectedTheaterPrimos = 620; break;
-        case 9:  ExpectedTheaterPrimos = 680; break;
-        case 10: ExpectedTheaterPrimos = 800; break;
-    }
-
-    // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
-    Primos += ExpectedTheaterPrimos * (LastBannerInfo.MonthDiff + (1 - WishConfig.ITCurrentCycleCompleted));
-    
-    // Live Stream Primos
-    // If there are any patches after the current patch, then we will add 300 primos for each of them, unless the final banner ends in the first phase. In which case we will add 300 for all but the final patch as we would finish wishing before the it's live stream airs.
-    // TODO: Could maybe go a bit more in depth.
-    if (LastBannerInfo.PatchDiff > 0) {
-        if (LastBannerInfo.Phase == 1) {
-            Primos += 300 * (LastBannerInfo.PatchDiff - 1);
-
+        let ExpectedTheaterPrimos = 0;
+        switch (WishConfig.ExpectedAct) {
+            case 0:  ExpectedTheaterPrimos = 0;   break;
+            case 1:  ExpectedTheaterPrimos = 60;  break;
+            case 2:  ExpectedTheaterPrimos = 120; break;
+            case 3:  ExpectedTheaterPrimos = 220; break;
+            case 4:  ExpectedTheaterPrimos = 280; break;
+            case 5:  ExpectedTheaterPrimos = 340; break;
+            case 6:  ExpectedTheaterPrimos = 440; break;
+            case 7:  ExpectedTheaterPrimos = 500; break;
+            case 8:  ExpectedTheaterPrimos = 620; break;
+            case 9:  ExpectedTheaterPrimos = 680; break;
+            case 10: ExpectedTheaterPrimos = 800; break;
         }
-        else {
-            Primos += 300 * LastBannerInfo.PatchDiff;
+
+        // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
+        Primos += ExpectedTheaterPrimos * (LastBannerInfo.MonthDiff + (1 - WishConfig.ITCurrentCycleCompleted));
+        
+        // Live Stream Primos
+        // If there are any patches after the current patch, then we will add 300 primos for each of them, unless the final banner ends in the first phase. In which case we will add 300 for all but the final patch as we would finish wishing before the it's live stream airs.
+        // TODO: Could maybe go a bit more in depth.
+        if (LastBannerInfo.PatchDiff > 0) {
+            if (LastBannerInfo.Phase == 1) {
+                Primos += 300 * (LastBannerInfo.PatchDiff - 1);
+
+            }
+            else {
+                Primos += 300 * LastBannerInfo.PatchDiff;
+            }
         }
-    }
 
-    // Adding in the current patches primos for the live steam, if applicable. Live streams generally air on the second to last Friday of a patch, or 31 days into the patch. 
-    // If we are 31 or more days into the patch, then the user should have already been able to claim the primos, thus we no longer need to account for them. 
-    // If the current patch is also the final patch, for wishing, then wishing will have to go into the second phase in order to claim the primos.
-    // BannerInfo[0] = Current Patch.
-    if ( (LastBannerInfo.PatchDiff > 0 || LastBannerInfo.Phase === 2) && (DateDiff(BannerInfo[0].PatchStartDate, Today) < 31) ) {
-        Primos += 300;
-    }
+        // Adding in the current patches primos for the live steam, if applicable. Live streams generally air on the second to last Friday of a patch, or 31 days into the patch. 
+        // If we are 31 or more days into the patch, then the user should have already been able to claim the primos, thus we no longer need to account for them. 
+        // If the current patch is also the final patch, for wishing, then wishing will have to go into the second phase in order to claim the primos.
+        // BannerInfo[0] = Current Patch.
+        if ( (LastBannerInfo.PatchDiff > 0 || LastBannerInfo.Phase === 2) && (DateDiff(BannerInfo[0].PatchStartDate, Today) < 31) ) {
+            Primos += 300;
+        }
 
-    // Maintenance
-    // TODO: Could maybe go a bit more in depth.
-    Primos += 300 * LastBannerInfo.PatchDiff;
+        // Maintenance
+        // TODO: Could maybe go a bit more in depth.
+        Primos += 300 * LastBannerInfo.PatchDiff;
+
+    }
 
     // TODO: Could maybe go a bit more in depth.
     let IntertwinedFates = WishConfig.IntertwinedFates;
-
-    // Up to five Intertwined Fates can be purchased every month from the Stardust Exchange.
-    // Assumes that the current month's supply has already been purchased.
-    // If the Stardust field is left empty then it will be assumed that all available Intertwined Fates can be purchased.
-    if (WishConfig.Stardust === '') {
-        IntertwinedFates += 5 * LastBannerInfo.MonthDiff;
-    }
-    else {
-        IntertwinedFates += Math.min(5 * LastBannerInfo.MonthDiff, Math.floor(WishConfig.Stardust / 75));
-    }
 
     // TODO: Could maybe go a bit more in depth.
     let Starglitter;
@@ -161,20 +154,34 @@ function SavingsCalculator(WishConfig) {
         IntertwinedFates += Math.floor(WishConfig.Starglitter / 5);
         Starglitter = WishConfig.Starglitter % 5;
     }
+    
+    if (!WishConfig.SimpleMode) {
 
-    // TODO: Could maybe go a bit more in depth.
-    if (WishConfig.BPPurchased) {
-        IntertwinedFates += Math.max(0, (LastBannerInfo.Phase === 1 ? 3 : 4) + 4 * LastBannerInfo.PatchDiff - Math.min(4, Math.floor(WishConfig.BPLevel / 10))); 
-        // Assumes that the user will only be able to claim 3 of the 4 fates for that pass, if the banner ends in the first phase. 
-        // Also, subtracts the amount of fates already claimed from this battle pass.
-        // Subtracting the claimed interwined fates has to be done on the same line so it can be wrapped in the max function as there is an edge case where
-        //      the user can earn 4 intertwined from the pass while the system is only expecting 3 to be claimable and so it would result in -1 fates being expected from the pass.
+        // Up to five Intertwined Fates can be purchased every month from the Stardust Exchange.
+        // Assumes that the current month's supply has already been purchased.
+        // If the Stardust field is left empty then it will be assumed that all available Intertwined Fates can be purchased.
+        if (WishConfig.Stardust === '') {
+            IntertwinedFates += 5 * LastBannerInfo.MonthDiff;
+        }
+        else {
+            IntertwinedFates += Math.min(5 * LastBannerInfo.MonthDiff, Math.floor(WishConfig.Stardust / 75));
+        }
 
-        Primos += 680 * ((LastBannerInfo.Phase === 2 ? 1 : 0) + LastBannerInfo.PatchDiff); // Assumes that the user won't reach level 50 for that pass, if the banner ends in the first phase.
-        if (WishConfig.BPLevel === 50) { // Subtracts 680, if the primos have already been claimed for this pass.
-            Primos -= 680;
+        // TODO: Could maybe go a bit more in depth.
+        if (WishConfig.BPPurchased) {
+            IntertwinedFates += Math.max(0, (LastBannerInfo.Phase === 1 ? 3 : 4) + 4 * LastBannerInfo.PatchDiff - Math.min(4, Math.floor(WishConfig.BPLevel / 10))); 
+            // Assumes that the user will only be able to claim 3 of the 4 fates for that pass, if the banner ends in the first phase. 
+            // Also, subtracts the amount of fates already claimed from this battle pass.
+            // Subtracting the claimed interwined fates has to be done on the same line so it can be wrapped in the max function as there is an edge case where
+            //      the user can earn 4 intertwined from the pass while the system is only expecting 3 to be claimable and so it would result in -1 fates being expected from the pass.
+
+            Primos += 680 * ((LastBannerInfo.Phase === 2 ? 1 : 0) + LastBannerInfo.PatchDiff); // Assumes that the user won't reach level 50 for that pass, if the banner ends in the first phase.
+            if (WishConfig.BPLevel === 50) { // Subtracts 680, if the primos have already been claimed for this pass.
+                Primos -= 680;
+            }
         }
     }
+
 
     // TODO: Could maybe go a bit more in depth.
     let WishesMade = Math.floor(Primos/160) + IntertwinedFates;
@@ -219,7 +226,7 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
         let Guarantee = WishConfig.CharacterGuarantee;
         let Characters = 0;
         let p = 0.006;
-
+        
         while (Characters < WishConfig.CharacterGoal && Wishes < DynamicMaxWishes) {
             Wishes++;
             Pity++;
@@ -345,13 +352,18 @@ function GetWishNumberDistributions() {
 function WishCalcs(WishConfig) {
     LastBannerInfo = BannerInfo[WishConfig.BannerEnd];
 
-    $('#WishEndDate').show().html(`Wishing End Date: ${moment(LastBannerInfo.BannerEndDate, "YYYY-MM-DD").format('L')}`);
-
     $('#BannerEnded').hide();
-    if (LastBannerInfo.BannerEndDate < Today) {
-        $('#BannerEnded').show().html('Banner has already ended.');
-        $('#MaxWishes,#WishingGoals,#Chance').hide();
-        return ''
+    $('#WishEndDate').hide();
+    
+    if (!WishConfig.SimpleMode) {
+        // While the Banner End dropdown should prevent the user from selecting an end date that is in the past, we will leave it here for any edge cases that may occur.
+        if (LastBannerInfo.BannerEndDate < Today) {
+            $('#BannerEnded').show().html('Banner has already ended.');
+            $('#MaxWishes,#WishingGoals,#Chance').hide();
+            return ''
+        }
+        
+        $('#WishEndDate').show().html(`Wishing End Date: ${moment(LastBannerInfo.BannerEndDate, "YYYY-MM-DD").format('L')}`);
     }
 
     const MaxWishes = SavingsCalculator(WishConfig);
