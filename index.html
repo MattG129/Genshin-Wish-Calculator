@@ -380,7 +380,7 @@
 
                 <div id="Results">
                     <!-- TODO: Maybe change the message a bit. -->
-                    <div id="ValidationWarning" style="display: none; color: #800000;">Please correct any invalid data.</div>
+                    <div id="CalculatorFormValidationWarning" style="display: none; color: #800000;">Please correct any invalid data.</div>
                     
                     <div id="WishEndDate" style="display: none;"></div>
 
@@ -420,7 +420,7 @@
 
             // TODO: Disable the button when clicked and reenable once its done processing.
             $("#Calculate").on('click', function() {
-                $('#ValidationWarning').hide();
+                $('#CalculatorFormValidationWarning').hide();
                 
                 $('input').change();
                 
@@ -432,7 +432,7 @@
                 })
 
                 if (InvalidData) {
-                    $('#ValidationWarning').show();
+                    $('#CalculatorFormValidationWarning').show();
                 }
                 else {
                     if (ResultsLoaded) {
