@@ -97,8 +97,8 @@
                                 <textarea id="ImportState" class="form-control"></textarea><br>
                                 <p id="InvalidImportMessage" style="color: red; display: none;">Invalid Import.</p>
                                 <center>
-                                    <a id="Import" class="btn btn-primary" style="border-color: black;"> Import </a>
-                                    <a class="btn btn-primary" style="border-color: black;" onclick="$('#Import').trigger('click'); $('#Calculate').trigger('click');"> Import and Run </a>
+                                    <a id="Import" class="btn btn-primary" style="border-color: black;" onclick="Import(Scroll=true)"> Import </a>
+                                    <a class="btn btn-primary" style="border-color: black;" onclick="Import(Scroll=false); $('#Calculate').trigger('click');"> Import and Run </a>
                                 </center>
                                 <br>
                             </div>
@@ -136,6 +136,8 @@
                         <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
                     </a>
                 </center>
+
+                <a id="CalculatorHeaderAnchor"></a>
 
                 <div class="WishSection">
                     <hr><center><h2>Currency</h2></center><br>
@@ -381,18 +383,20 @@
                     <span id="LoadingText"></span>
                 </div>
 
-                <!-- TODO: Maybe change the message a bit. -->
-                <div id="ValidationWarning" style="display: none; color: #800000;">Please correct any invalid data.</div>
-                
-                <div id="WishEndDate" style="display: none;"></div>
+                <div id="Results">
+                    <!-- TODO: Maybe change the message a bit. -->
+                    <div id="ValidationWarning" style="display: none; color: #800000;">Please correct any invalid data.</div>
+                    
+                    <div id="WishEndDate" style="display: none;"></div>
 
-                <div id="BannerEnded" style="display: none;"></div>
+                    <div id="BannerEnded" style="display: none;"></div>
 
-                <div id="MaxWishes" style="display: none;"></div>
+                    <div id="MaxWishes" style="display: none;"></div>
 
-                <div id="WishingGoals" style="display: none;"></div>
+                    <div id="WishingGoals" style="display: none;"></div>
 
-                <div id="Chance" style="display: none;"></div>
+                    <div id="Chance" style="display: none;"></div>
+                </div>
             </center>
         </div>
 
@@ -445,7 +449,12 @@
 
                     $('#LoadingGroup').show();
 
-                    $(document).ready(function() {
+                    $('html, body').animate({
+                        scrollTop: $("#LoadingGroup").offset().top,
+                        easing: 'linear'
+                    }, 250)
+
+                    setTimeout(function () {
                         WishCalcs(CompileForm());
 
                         ResultsLoaded = true
@@ -453,7 +462,7 @@
                         $('#LoadingGroup').hide();
 
                         UpdateCalculateButton();
-                    })
+                    }, 500);
                 }
             })
 
@@ -513,7 +522,7 @@
             $(document).ready(UpdateExportState);
             $('#form').on('change', UpdateExportState);
 
-            $('#Import').on('click', function() {
+            function Import(Scroll) {
                 let isValidJSON = true;
                 let JSONImport;
 
@@ -536,11 +545,18 @@
                     })
 
                     $('input').change().trigger('input');
+
+                    if (Scroll == true) {
+                        $('html, body').animate({
+                            scrollTop: $("#CalculatorHeaderAnchor").offset().top,
+                            easing: 'linear'
+                        }, 500);
+                    };
                 }
                 else {
                     $('#InvalidImportMessage').show();
                 }
-            });
+            };
 
             $(function () {
                 $('a[data-toggle="tooltip"]').each(function() {
