@@ -20,47 +20,54 @@ function DateDiff(DateFrom, DateTo) {
 }
 
 function GetBannerInfo() {
-    let Patch = 38; //Using integers so we don't have to deal with floats. Starting with 3.8 since the patch will be increased to 4.0 during the first iteration.
+    let Patch = 40; // Using integers so we don't have to deal with floats.
 
-    let PatchDiff = 0;
-    let BannerEndDate = v4StartDate;
-    // Using 0 & 1 instead of 1 & 2 for the Phase since they are easier to work with.
-    let Phase = -1;
+    let PatchDiff = 0; // This will track how many patches are between the current patch and any subsequent patches.
+    let BannerEndDate = DateAdd(v4StartDate, 21);
 
-    while (PatchDiff <= 9) {
-        BannerEndDate = DateAdd(BannerEndDate, 21);
-        Phase = (Phase + 1) % 2
-      
-        // Increase the patch everytime we reach a phase 1 banner.
-        if (Phase + 1 == 1) {       
-            if ((Patch % 10) != 8) {
-                Patch++
-            }
-            else {
-              Patch += 10
-              Patch -= 8
+    let TotalPhaseDiff = 0;
+
+    let First = true
+    while (PatchDiff <= 25) {
+        if (!First) { // Since we are starting with 4.0 phase 1, we don't want to increae the patch/phase on the first iteration.
+            BannerEndDate = DateAdd(BannerEndDate, 21);
+            TotalPhaseDiff++;
+            
+            // Increase the patch everytime we reach a phase 1 banner. If the patch is a ".8" then the next patch should be a ".0".
+            if (TotalPhaseDiff % 2 == 0) {
+                if ((Patch % 10) == 8) {
+                    Patch += 2;
+                }
+                else {
+                  Patch++;
+                }
             }
         }
-      
-        if (Today < BannerEndDate) {
+        else {
+            First = false
+        }
+
+        if (BannerEndDate > Today) {
             // Increase the patch diff everytime we reach a phase 1 banner, unless its the current banner.
-            if ((Phase + 1 == 1) && DateDiff(Today, BannerEndDate)) {
+            if ((TotalPhaseDiff % 2 == 0) && DateDiff(Today, BannerEndDate) > 21) {
                 PatchDiff += 1;  
             }
-                
-            BannerInfo.push({
-                'MonthDiff': 12 * (BannerEndDate.getFullYear() - Today.getFullYear()) + (BannerEndDate.getMonth() - Today.getMonth()),
-                'PatchDiff': PatchDiff,
-                'Phase': Phase+1,
-                'BannerEndDate': BannerEndDate,
-                'PatchStartDate': DateAdd(BannerEndDate, -21*(Phase+1))
-            });
 
             $('#BannerEnd').append($('<option>', {
-                value: BannerInfo.length-1,
-                text: `${(Patch/10).toFixed(1)} Phase ${Phase+1} (Ends on ${moment(BannerEndDate, "YYYY-MM-DD").format('L')})`,
+                value: TotalPhaseDiff,
+                text: `${(Patch/10).toFixed(1)} Phase ${(TotalPhaseDiff % 2) + 1} (Ends on ${moment(BannerEndDate, "YYYY-MM-DD").format('L')})`,
             }));
         }
+
+        BannerInfo.push({
+            'MonthDiff': 12 * (BannerEndDate.getFullYear() - Today.getFullYear()) + (BannerEndDate.getMonth() - Today.getMonth()),
+            'PatchDiff': PatchDiff,
+            'Phase': (TotalPhaseDiff % 2) + 1,
+            'BannerEndDate': BannerEndDate,
+            'PatchStartDate': DateAdd(BannerEndDate, -21*((TotalPhaseDiff % 2) + 1)),
+            'Patch': (Patch/10).toFixed(1)
+        });
+
     }
 }
 
@@ -134,8 +141,8 @@ function SavingsCalculator(WishConfig) {
         // Adding in the current patches primos for the live steam, if applicable. Live streams generally air on the second to last Friday of a patch, or 31 days into the patch. 
         // If we are 31 or more days into the patch, then the user should have already been able to claim the primos, thus we no longer need to account for them. 
         // If the current patch is also the final patch, for wishing, then wishing will have to go into the second phase in order to claim the primos.
-        // BannerInfo[0] = Current Patch.
-        if ( (LastBannerInfo.PatchDiff > 0 || LastBannerInfo.Phase === 2) && (DateDiff(BannerInfo[0].PatchStartDate, Today) < 31) ) {
+        let CurrentBannerVal = $('#BannerEnd')[0].options[0].value
+        if ( (LastBannerInfo.PatchDiff > 0 || LastBannerInfo.Phase === 2) && (DateDiff(BannerInfo[CurrentBannerVal].PatchStartDate, Today) < 31) ) {
             Primos += 300;
         }
 

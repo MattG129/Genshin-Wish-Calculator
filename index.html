@@ -530,7 +530,20 @@
 
                 if (isValidJSON) {
                     $('#InvalidImportMessage').hide();
+
+                    if (JSONImport['BannerEnd'] < $('#BannerEnd')[0].options[0].value) {
+                        
+                        alert('Banner end date was not imported as it has already passed. All other fields have been successfully imported.');
+
+                        JSONImport['BannerEnd'] = $('#BannerEnd')[0].options[0].value;
+                    }
+                    else if (JSONImport['BannerEnd'] >= BannerInfo.length) {
                     
+                        alert('Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.');
+
+                        JSONImport['BannerEnd'] = $('#BannerEnd')[0].options[0].value;
+                    }
+
                     $('#form input, #form select').each(function() {
                         if ($(this).is(':checkbox')) {
                             $(this).prop('checked', JSONImport[this.id]);
