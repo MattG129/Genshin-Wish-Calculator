@@ -72,8 +72,13 @@ function GetBannerInfo() {
 }
 
 function SavingsCalculator(WishConfig) {
+    let CurrentBannerVal = $('#BannerEnd')[0].options[0].value;
+
     // TODO: Could maybe go a bit more in depth.
     let Primos = WishConfig.Primos;
+
+    // 40 primos from character trials, every banner. Assumes that this banner's trial primos have already been claimed.
+    Primos += 40*(WishConfig.BannerEnd - CurrentBannerVal);
 
     if(!WishConfig.SimpleMode) {
         Primos += DateDiff(Today, LastBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
@@ -141,7 +146,6 @@ function SavingsCalculator(WishConfig) {
         // Adding in the current patches primos for the live steam, if applicable. Live streams generally air on the second to last Friday of a patch, or 31 days into the patch. 
         // If we are 31 or more days into the patch, then the user should have already been able to claim the primos, thus we no longer need to account for them. 
         // If the current patch is also the final patch, for wishing, then wishing will have to go into the second phase in order to claim the primos.
-        let CurrentBannerVal = $('#BannerEnd')[0].options[0].value
         if ( (LastBannerInfo.PatchDiff > 0 || LastBannerInfo.Phase === 2) && (DateDiff(BannerInfo[CurrentBannerVal].PatchStartDate, Today) < 31) ) {
             Primos += 300;
         }
