@@ -19,6 +19,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
         <script src="Wish_Calculator_JS.mjs" type="text/javascript"></script>
         <script src="https://parsleyjs.org/dist/parsley.js"></script>
+
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     </head>
     <body>
         <style>
@@ -73,6 +75,14 @@
 
             .TableInput {
                 border-color: black;
+            }
+
+            .swal-button {
+                background-color: #4962B3;
+            }
+
+            .swal-button:not([disabled]):hover {
+                background-color: #5b71ba;
             }
         </style>
 
@@ -434,7 +444,10 @@
                 let InvalidFields = getInvalidFields();
 
                 if (InvalidFields.length > 0) {
-                    alert('Please correct any invalid data.'); // TODO: Maybe change the message a bit.
+                    swal({
+                        text: 'Please correct invalid data before running calculations.',
+                        icon: 'error'
+                    });
 
                     $('html, body').animate({
                         scrollTop: $(`#${InvalidFields[0]}`).offset().top-100,
@@ -538,14 +551,18 @@
                     $('#InvalidImportMessage').hide();
 
                     if (JSONImport['BannerEnd'] < $('#BannerEnd')[0].options[0].value) {
-                        
-                        alert('Banner end date was not imported as it has already passed. All other fields have been successfully imported.');
+                        swal({
+                            text: 'Banner end date was not imported as it has already passed. All other fields have been successfully imported.',
+                            icon: 'info'
+                        });
 
                         JSONImport['BannerEnd'] = $('#BannerEnd')[0].options[0].value;
                     }
                     else if (JSONImport['BannerEnd'] >= BannerInfo.length) {
-                    
-                        alert('Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.');
+                        swal({
+                            text: 'Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.',
+                            icon: 'info'
+                        });
 
                         JSONImport['BannerEnd'] = $('#BannerEnd')[0].options[0].value;
                     }
