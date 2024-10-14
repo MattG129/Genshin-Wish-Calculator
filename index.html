@@ -424,7 +424,7 @@
             function UpdateCalculateButton() {
                 let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
-                if ( $(CharacterGoal).val() > 0 || $(WeaponGoal).val() > 0 ) {
+                if ( $('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 ) {
                     $("#Calculate").html(CalculateText);
                     $("#Calculate").removeClass('disabled');
                 }
@@ -484,8 +484,8 @@
             })
 
             // Skip Logic
-            $(SimpleMode).on('change', function () {
-                if ($(SimpleMode).is(':checked')) {
+            $('#SimpleMode').on('change', function () {
+                if ($('#SimpleMode').is(':checked')) {
                     $('.SimpleModeSkipGroup').hide();
                 }
                 else {
