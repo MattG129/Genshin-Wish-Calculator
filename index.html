@@ -378,10 +378,7 @@
                     <span id="LoadingText"></span>
                 </div>
 
-                <div id="Results">
-                    <!-- TODO: Maybe change the message a bit. -->
-                    <div id="CalculatorFormValidationWarning" style="display: none; color: #800000;">Please correct any invalid data.</div>
-                    
+                <div id="Results" style="display: none;">
                     <div id="WishEndDate" style="display: none;"></div>
 
                     <div id="BannerEnded" style="display: none;"></div>
@@ -432,10 +429,17 @@
 
             // TODO: Disable the button when clicked and reenable once its done processing.
             $("#Calculate").on('click', function() {
-                $('#CalculatorFormValidationWarning').hide();
-                                
-                if (getInvalidFields().length > 0) {
-                    $('#CalculatorFormValidationWarning').show();
+                $('#Results').hide();
+
+                let InvalidFields = getInvalidFields();
+
+                if (InvalidFields.length > 0) {
+                    alert('Please correct any invalid data.'); // TODO: Maybe change the message a bit.
+
+                    $('html, body').animate({
+                        scrollTop: $(`#${InvalidFields[0]}`).offset().top-100,
+                        easing: 'linear'
+                    }, 250)
                 }
                 else {
                     if (ResultsLoaded) {
@@ -458,6 +462,8 @@
                         ResultsLoaded = true
 
                         $('#LoadingGroup').hide();
+
+                        $('#Results').show();
 
                         UpdateCalculateButton();
                     }, 500);
