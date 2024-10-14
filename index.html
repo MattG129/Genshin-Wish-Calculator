@@ -401,7 +401,19 @@
             GetBannerInfo();
 
             let ResultsLoaded = false;
-            
+
+            function getInvalidFields() {
+                let InvalidFields = [];
+                
+                $('input').each(function() {
+                    if ( !$(this).parsley().isValid() && $(this).is(":visible") ) {
+                        InvalidFields.push($(this).attr('id'));
+                    }
+                })
+
+                return InvalidFields;
+            }
+
             function UpdateCalculateButton() {
                 let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
@@ -421,17 +433,8 @@
             // TODO: Disable the button when clicked and reenable once its done processing.
             $("#Calculate").on('click', function() {
                 $('#CalculatorFormValidationWarning').hide();
-                
-                $('input').change();
-                
-                let InvalidData = false;
-                $('.parsley-error').each(function( index ) {
-                    if ($(this).is(":visible")) {
-                        InvalidData = true;
-                    }
-                })
-
-                if (InvalidData) {
+                                
+                if (getInvalidFields().length > 0) {
                     $('#CalculatorFormValidationWarning').show();
                 }
                 else {
@@ -471,8 +474,6 @@
                 }
             })
 
-            $(SimpleMode).change();
-
             $('#UsingStarglitter').on('change', function(){
                 if ($('#UsingStarglitter').is(':checked')) {
                     $('#StarglitterSkipGroup').show();
@@ -481,8 +482,6 @@
                     $('#StarglitterSkipGroup').hide();
                 }
             });
-
-            $('#UsingStarglitter').change();
 
             $('#BPPurchased').on('change', function(){
                 if ($('#BPPurchased').is(':checked')) {
@@ -493,10 +492,13 @@
                 }
             });
 
-            $('#BPPurchased').change();
-
             function UpdateExportState(){
-                $('#ExportState').val(JSON.stringify(CompileForm()))
+                if (getInvalidFields().length == 0) {
+                    $('#ExportState').val(JSON.stringify(CompileForm()))
+                }
+                else {
+                    $('#ExportState').val('Invalid information detected. Cannot generate export.')
+                }
             };
 
             function CompileForm(){
@@ -514,8 +516,7 @@
                 return FormValues
             };
 
-            $(document).ready(UpdateExportState);
-            $('#form').on('change', UpdateExportState);
+            $('#form').on('input', UpdateExportState);
 
             function Import(Scroll) {
                 let isValidJSON = true;
@@ -561,13 +562,21 @@
                 });
             });
 
-            $('input:not([type="checkbox"])').on('change', function(){
+            $('input:not([type="checkbox"])').on('input', function(){
                 if (!$(this).parsley().isValid()) {
                     $(this).css('background-color', '#E55451');
                 }
                 else{
                     $(this).css('background-color', 'white');
                 }
+            });
+
+            $('input').change().trigger('input');
+
+            $(document).ready(function(){
+                $('input').each(function() {
+                    $(this).parsley().validate();
+                })
             });
         </script>
     </body>
