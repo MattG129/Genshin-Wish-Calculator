@@ -77,10 +77,10 @@ function SavingsCalculator(WishConfig) {
     // TODO: Could maybe go a bit more in depth.
     let Primos = WishConfig.Primos;
 
-    // 40 primos from character trials, every banner. Assumes that this banner's trial primos have already been claimed.
-    Primos += 40*(WishConfig.BannerEnd - CurrentBannerVal);
-
     if(!WishConfig.SimpleMode) {
+        // 40 primos from character trials, every banner. Assumes that this banner's trial primos have already been claimed.
+        Primos += 40*(WishConfig.BannerEnd - CurrentBannerVal);
+        
         Primos += DateDiff(Today, LastBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
 
         let ExpectedAbyssPrimos = 0
