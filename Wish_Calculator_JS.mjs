@@ -154,6 +154,43 @@ function SavingsCalculator(WishConfig) {
         // TODO: Could maybe go a bit more in depth.
         Primos += 300 * LastBannerInfo.PatchDiff;
 
+        if (WishConfig.EnableEventCalcs) {
+            if (LastBannerInfo.PatchDiff > 0) {
+                if (!WishConfig.FlagshipEventCompleted) {
+                    Primos += 900;
+                }
+
+                Primos += (3 - WishConfig.SecondaryEventsCompleted) * 420
+
+                Primos += (900 + 3*420) * (LastBannerInfo.PatchDiff - 1);
+        
+                if ((BannerInfo[WishConfig.BannerEnd].Phase == 2) || WishConfig.FlagshipEventCompletable) {
+                    Primos += 900;
+                };
+
+                if ((BannerInfo[WishConfig.BannerEnd].Phase == 2) ) {
+                    Primos += 3*420;
+                }
+                else {
+                    Primos += WishConfig.SecondaryEventsCompletable * 420;
+                };
+            }
+            else {
+                if (
+                    ( (BannerInfo[WishConfig.BannerEnd].Phase == 2) || WishConfig.FlagshipEventCompletable )
+                    && !WishConfig.FlagshipEventCompleted
+                ) {
+                    Primos += 900;
+                };
+
+                if ((BannerInfo[WishConfig.BannerEnd].Phase == 2) ) {
+                    Primos += (3 - WishConfig.SecondaryEventsCompleted) * 420
+                }
+                else {
+                    Primos += (WishConfig.SecondaryEventsCompletable - WishConfig.SecondaryEventsCompleted) * 420
+                };
+            };
+        };
     }
 
     // TODO: Could maybe go a bit more in depth.

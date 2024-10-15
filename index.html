@@ -147,6 +147,19 @@
                     </a>
                 </center>
 
+                <center class="SimpleModeSkipGroup">
+                    <input type="checkbox" id="EnableEventCalcs" class="form-check-input">
+                    <label for="EnableEventCalcs" class="form-label">Factor in events (beta)</label>
+                    <a 
+                        type="button"
+                        data-toggle="tooltip"
+                        class="help-tooltip btn btn-dark rounded-circle"
+                        title="If checked, then the calculator will assume that each patch there will be 1 flagship event, awarding <b>900 Primogems</b> and 3 secondary events, each awarding <b>420 Primogems</b>."
+                    >
+                        <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                    </a>
+                </center>
+
                 <a id="CalculatorHeaderAnchor"></a>
 
                 <div class="WishSection">
@@ -374,6 +387,31 @@
                     </div>
                 </div>
 
+
+                <div id="EventCalcs" class="WishSection SimpleModeSkipGroup">
+                    <hr><center><h2>Events (beta)</h2></center><br>
+
+                    <center id="SecondaryEventsCompletableSkipGroup" style="max-width: 30%;">
+                        <label for="SecondaryEventsCompletable" class="form-label">Final Patch's Secondary Events Completable by Wishing End Date</label>
+                        <input type="number" id="SecondaryEventsCompletable" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0"><br>
+                    </center>
+
+                    <center style="max-width: 30%;">
+                        <label for="SecondaryEventsCompleted" class="form-label">Current Patch's Secondary Events Completed</label>
+                        <input type="number" id="SecondaryEventsCompleted" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0"><br>
+                    </center>
+
+                    <center id="FlagshipEventCompletableSkipGroup">
+                        <input type="checkbox" id="FlagshipEventCompletable" class="form-check-input">
+                        <label for="FlagshipEventCompletable" class="form-label">Final Patch's Flagship Event Completable by Wishing End Date</label>
+                    </center>
+
+                    <center id="FlagshipEventCompletedSkipGroup">
+                        <input type="checkbox" id="FlagshipEventCompleted" class="form-check-input">
+                        <label for="FlagshipEventCompleted" class="form-label">Current Patch's Flagship Event Completed</label><br>
+                    </center>
+                </div>
+
                 <hr>
 
                 <center><a id="Calculate" class="btn btn-primary" style="border-width: 1px; border-color: black;"> Calculate </a></center><br>
@@ -483,6 +521,23 @@
                 }
             })
 
+            $('#BannerEnd, #SecondaryEventsCompletable').on('change', function() {
+                if ( ($('#BannerEnd').val() == $('#BannerEnd')[0].options[0].value) && (BannerInfo[$('#BannerEnd').val()].Phase == 1) ) {
+                    $('#SecondaryEventsCompleted').attr('max', $('#SecondaryEventsCompletable').val());
+                    
+                    $('#SecondaryEventsCompleted').parsley({range: `[0, ${$('#SecondaryEventsCompletable').val()}]`});
+
+                    $('#SecondaryEventsCompleted').trigger('input');
+                }
+                else {
+                    $('#SecondaryEventsCompleted').attr('max', 3);
+
+                    $('#SecondaryEventsCompleted').parsley({range: '[0, 3]'});
+
+                    $('#SecondaryEventsCompleted').trigger('input');
+                }
+            })
+
             // Skip Logic
             $('#SimpleMode').on('change', function () {
                 if ($('#SimpleMode').is(':checked')) {
@@ -490,6 +545,47 @@
                 }
                 else {
                     $('.SimpleModeSkipGroup').show();
+                }
+            })
+
+            $('#EnableEventCalcs').on('change', function () {
+                if ($('#EnableEventCalcs').is(':checked')) {
+                    $('#EventCalcs').show();
+                }
+                else {
+                    $('#EventCalcs').hide();
+                }
+            })
+
+            $('#BannerEnd').on('change', function () {
+                if (BannerInfo[$('#BannerEnd').val()].Phase == 1) {
+                    $('#FlagshipEventCompletableSkipGroup').show().trigger('input');
+                    $('#SecondaryEventsCompletableSkipGroup').show().trigger('input');
+                }
+                else {
+                    $('#FlagshipEventCompletableSkipGroup').hide();
+                    $('#SecondaryEventsCompletableSkipGroup').hide();
+
+                    $('#FlagshipEventCompletedSkipGroup').show();
+
+                    $('#SecondaryEventsCompleted').attr('max', 3);
+
+                    $('#SecondaryEventsCompleted').parsley({range: '[0, 3]'});
+
+                    $('#SecondaryEventsCompleted').trigger('input');
+                }
+            })
+
+            $('#BannerEnd, #FlagshipEventCompletable').on('change', function () {
+                if ( 
+                    $('#BannerEnd').val() != $('#BannerEnd')[0].options[0].value
+                    || BannerInfo[$('#BannerEnd').val()].Phase == 2
+                    || $('#FlagshipEventCompletable').is(':checked')
+                ) {
+                    $('#FlagshipEventCompletedSkipGroup').show();
+                }
+                else {
+                    $('#FlagshipEventCompletedSkipGroup').hide();
                 }
             })
 
