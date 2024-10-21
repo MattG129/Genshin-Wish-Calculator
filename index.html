@@ -221,7 +221,6 @@
                 <div class="WishSection">
                     <hr><center><h2>Wishing Info</h2></center><br>
 
-
                     <div class="justify-content-md-center SimpleModeSkipGroup">
                         <center>
                             <div style="align-content: center;">
@@ -234,12 +233,13 @@
                     </div>
                     <br>
 
-                    <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 75%;">
+                    <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 100%;">
                         <thead>
                             <tr>
                                 <td></td>
                                 <td><b>Character Banner</b></td>
                                 <td><b>Weapon Banner</b></td>
+                                <td><b>Chronicled Wish</b></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -251,6 +251,9 @@
                                 <td>
                                     <input type="number" id="WeaponGoal" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                                 </td>
+                                <td>
+                                    <input type="number" id="ChronicledGoal" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                                </td>
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;"><b>Pity</b></td>
@@ -259,6 +262,9 @@
                                 </td>
                                 <td>
                                     <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
+                                </td>
+                                <td>
+                                    <input type="number" id="ChronicledPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
                                 </td>
                             </tr>
                             <tr>
@@ -269,12 +275,16 @@
                                 <td>
                                     <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput">
                                 </td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;"><b>Fate Points</b></td>
                                 <td></td>
                                 <td>
-                                    <input type="number" id="FatePoints" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                    <input type="number" id="WeaponFatePoints" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                </td>
+                                <td>
+                                    <input type="number" id="ChronicledFatePoints" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
                                 </td>
                             </tr>
                             <tr>
@@ -305,6 +315,7 @@
                                         <input type="number" id="CapturingRadiancePity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
                                     </div>
                                 </td>
+                                <td></td>
                                 <td></td>
                             </tr>
                         </tbody>
@@ -473,7 +484,7 @@
             function UpdateCalculateButton() {
                 let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
-                if ( $('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 ) {
+                if ( $('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 || $('#ChronicledGoal').val() > 0 ) {
                     $("#Calculate").html(CalculateText);
                     $("#Calculate").removeClass('disabled');
                 }
@@ -484,7 +495,7 @@
             }
 
             UpdateCalculateButton();
-            $('#CharacterGoal, #WeaponGoal').on('change', UpdateCalculateButton)
+            $('#CharacterGoal, #WeaponGoal, #ChronicledGoal').on('change', UpdateCalculateButton)
 
             // TODO: Disable the button when clicked and reenable once its done processing.
             $("#Calculate").on('click', function() {

@@ -331,7 +331,7 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
 
         Pity = WishConfig.WeaponPity;
         Guarantee = WishConfig.WeaponGuarantee;
-        let FatePoints = WishConfig.FatePoints;
+        let WeaponFatePoints = WishConfig.WeaponFatePoints;
         let Weapons = 0;
         p = 0.007;
 
@@ -353,21 +353,47 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
 
                 let r = Math.random();
 
-                if (FatePoints === 1 || (Guarantee && r <= 0.5) || (r <= 0.375)) {
+                if (WeaponFatePoints === 1 || (Guarantee && r <= 0.5) || (r <= 0.375)) {
                     Weapons++;
                     Guarantee = 0;
-                    FatePoints = 0;
+                    WeaponFatePoints = 0;
                 } else if (Guarantee || (r <= 0.75)) {
                     Guarantee = 0;
-                    FatePoints++;
+                    WeaponFatePoints++;
                 } else {
                     Guarantee = 1;
-                    FatePoints++;
+                    WeaponFatePoints++;
                 }
             }
         }
 
-        if (Characters >= WishConfig.CharacterGoal && Weapons >= WishConfig.WeaponGoal) {
+        Pity = WishConfig.ChronicledPity;
+        let ChronicledFatePoints = WishConfig.ChronicledFatePoints;
+        let ChronicledItems = 0;
+        p = 0.006;
+
+        while (ChronicledItems < WishConfig.ChronicledGoal && Wishes < DynamicMaxWishes) {
+            Wishes++;
+            Pity++;
+
+            if (Pity >= 74) {
+                p += 0.06;
+            }
+
+            if (Math.random() <= p) {
+                p = 0.006;
+                Pity = 0;
+
+                if (ChronicledFatePoints >= 1 || (Math.random() < 0.5)) {
+                    ChronicledItems++;
+                    ChronicledFatePoints = 0;
+                } else {
+                    ChronicledFatePoints++;
+                }
+            }
+        }
+
+        if (Characters >= WishConfig.CharacterGoal && Weapons >= WishConfig.WeaponGoal && ChronicledItems >= WishConfig.ChronicledGoal) {
             Successes++;
         }
     }
@@ -446,32 +472,9 @@ function WishCalcs(WishConfig) {
 
     $('#MaxWishes').show().html(`Max Number of Wishes: ${MaxWishes}`);
 
-    let WishingFor = 'Wishing for ';
-
-    if (WishConfig.CharacterGoal > 1) {
-        WishingFor += `${WishConfig.CharacterGoal} characters`
-    }
-    else if (WishConfig.CharacterGoal > 0) {
-        WishingFor += `${WishConfig.CharacterGoal} character`
-    }
-
-    if (WishConfig.CharacterGoal > 0 && WishConfig.WeaponGoal > 0) {
-        WishingFor += ' and '
-    }
-    else if (WishConfig.WeaponGoal == 0){
-        WishingFor += '.'
-    }
-
-    if (WishConfig.WeaponGoal > 1) {
-        WishingFor += `${WishConfig.WeaponGoal} weapons.`
-    }
-    else if (WishConfig.WeaponGoal > 0) {
-        WishingFor += `${WishConfig.WeaponGoal} weapon.`
-    }
+    let WishingFor = `Wishing for ${WishConfig.CharacterGoal} characters, ${WishConfig.WeaponGoal} weapons, and ${WishConfig.ChronicledGoal} chronicled items.`;
 
     $('#WishingGoals').show().html(WishingFor);
-    
-    if (WishConfig.CharacterGoal + WishConfig.WeaponGoal > 0) {
-        $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig, MaxWishes)}%`);
-    }
+
+    $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig, MaxWishes)}%`);
 }
