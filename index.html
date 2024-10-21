@@ -549,7 +549,7 @@
             })
 
             $('#EnableEventCalcs').on('change', function () {
-                if ($('#EnableEventCalcs').is(':checked')) {
+                if ( $('#EnableEventCalcs').is(':checked') && !$('#SimpleMode').is(':checked')) {
                     $('#EventCalcs').show();
                 }
                 else {
