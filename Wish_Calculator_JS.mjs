@@ -266,6 +266,8 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
     let DynamicMaxWishes;
     let Lost5050s;
     let Start = Date.now();
+    let NonGuaranteeCharacterWinChance;
+    let CapturingRadiancePity = 0;
     for (let TrialCount = 0; TrialCount < Trials; TrialCount++) {
         if (Date.now() - Start > 5000) {
             break;
@@ -280,6 +282,10 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
         let Characters = 0;
         let p = 0.006;
         
+        if (WishConfig.EnableCapturingRadiance) {
+            CapturingRadiancePity = WishConfig.CapturingRadiancePity;
+        }
+
         while (Characters < WishConfig.CharacterGoal && Wishes < DynamicMaxWishes) {
             Wishes++;
             Pity++;
@@ -292,12 +298,29 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
                 p = 0.006;
                 Pity = 0;
 
-                if (Guarantee || (Math.random() < 0.5)) {
+                if (!WishConfig.EnableCapturingRadiance) {
+                    NonGuaranteeCharacterWinChance = 0.500
+                }
+                else {  
+                    switch (CapturingRadiancePity) {
+                        case 0:  NonGuaranteeCharacterWinChance = 0.500;  break;
+                        case 1:  NonGuaranteeCharacterWinChance = 0.525; break;
+                        case 2:  NonGuaranteeCharacterWinChance = 0.750; break;
+                        case 3:  NonGuaranteeCharacterWinChance = 1.000; break;
+                    };
+                };
+
+                if (Guarantee || (Math.random() < NonGuaranteeCharacterWinChance)) {
+                    if (!Guarantee) {
+                        CapturingRadiancePity = 0;
+                    }
+
                     Characters++;
                     Guarantee = 0;
                 } else {
                     Guarantee = 1;
                     Lost5050s++;
+                    CapturingRadiancePity++;
 
                     if ( WishConfig.UsingStarglitter && (Lost5050s > WishConfig.MissingFiveStars) ){
                         DynamicMaxWishes += 2

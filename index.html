@@ -293,6 +293,40 @@
                                     <input type="number" id="FatePoints" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
                                 </td>
                             </tr>
+                            <tr>
+                                <td style="vertical-align: middle;">
+                                    <b id="CapturingRadianceLabel">Capturing Radiance Pity</b>
+                                    <a
+                                        type="button"
+                                        data-toggle="tooltip"
+                                        data-container="body"
+                                        class="help-tooltip btn btn-dark rounded-circle"
+                                        title="
+                                            When pulling on a character banner, if you obtain a five star character and they are not the event character, you will gain one <b>Capturing Radiance Pity</b>. If you obtain the event character without the <b>Guarantee</b>, then your <b>Capturing Radiance Pity</b> will be reset to 0. Your <b>Capturing Radiance Pity</b> will alter your chances of obtaining the event character without the <b>Guarantee</b>, as follows:
+                                            <br><br>
+                                            <ul>
+                                                <li> 0 Pity: 50% Chance   </li>
+                                                <li> 1 Pity: 52.5% Chance </li>
+                                                <li> 2 Pity: 75% Chance   </li>
+                                                <li> 3 Pity: 100% Chance  </li>
+                                            </ul>
+                                            These numbers come from a speculative model, based on wish results following this mechanics addition to the game, and as such may not be entirely accurate.
+                                        "
+                                    >
+                                        <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                                    </a>
+                                    <br>
+
+                                    <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableInput">
+                                    <label for="EnableCapturingRadiance" class="form-label">Enable</label>
+                                </td>
+                                <td>
+                                    <div id="CapturingRadiancePitySkipGroup">
+                                        <input type="number" id="CapturingRadiancePity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -575,6 +609,17 @@
                     $('#SecondaryEventsCompleted').trigger('input');
                 }
             })
+
+            $('#EnableCapturingRadiance').on('change', function () {
+                if ($('#EnableCapturingRadiance').is(':checked')) {
+                    $('#CapturingRadianceLabel').css('color', 'black');
+                    $('#CapturingRadiancePitySkipGroup').show();
+                }
+                else {
+                    $('#CapturingRadianceLabel').css('color', 'gray');
+                    $('#CapturingRadiancePitySkipGroup').hide();
+                };
+            });
 
             $('#BannerEnd, #FlagshipEventCompletable').on('change', function () {
                 if ( 
