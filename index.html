@@ -21,6 +21,7 @@
         <script src="https://parsleyjs.org/dist/parsley.js"></script>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.0/jquery-ui.min.js"></script>
     </head>
     <body>
         <style>
@@ -83,6 +84,14 @@
 
             .swal-button:not([disabled]):hover {
                 background-color: #5b71ba;
+            }
+
+            .btn-add {
+                background: #52b4fa;
+            }
+
+            .btn-add:not([disabled]):hover {
+                background: #90d5ff;
             }
         </style>
 
@@ -221,7 +230,17 @@
                 <div class="WishSection">
                     <hr><center><h2>Wishing Info</h2></center><br>
 
-                    <div class="justify-content-md-center SimpleModeSkipGroup">
+                    <center class="SimpleModeSkipGroup">
+                        <input type="checkbox" id="AdvancedWishPlanning" class="form-check-input">
+                        <label for="AdvancedWishPlanning" class="form-label">Advanced Wish Planning</label>
+                        <a type="button" data-toggle="tooltip" class="help-tooltip btn btn-dark rounded-circle"
+                            title="<b>Advanced wish planning</b> will allow you to specify which characters and weapons you want to wish for, the order you will be wishing for them in, and the end dates of each banner."
+                        >
+                            <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
+                        </a>
+                    </center>
+
+                    <div class="justify-content-md-center SimpleModeSkipGroup SimpleWishPlanningSkipGroup">
                         <center>
                             <div style="align-content: center;">
                                 <label for="EndPatch" class="form-label">What banner will you have made all your wishes by?</label>
@@ -243,7 +262,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr class='SimpleWishPlanningSkipGroup'>
                                 <td style="vertical-align: middle;"><b>Number of 5&#9733;s Wishing For</b></td>
                                 <td>
                                     <input type="number" id="CharacterGoal" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
@@ -321,6 +340,76 @@
                         </tbody>
                     </table>
                 </div>
+
+                <table id="WishPlanningTable" class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Banner Type</th>
+                            <th>Wishing End Date</th>
+                            <th>Number of Copies</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="WishPlanningTableBody">
+                        <!--- Rows will be added by jquery. --->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <button id="AddRowButton" type="button" style="width: 100%" class="btn btn-add">
+                                    <b><i class="bi bi-plus-lg" style="font-size: 30px; font-weight: bold; color: white;"></i></b>
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <script>
+                    $(function() {
+                        let NewWishPlanRowID = 1;
+
+                        $('#WishPlanningTableBody').sortable();
+
+                        $("#AddRowButton").click(function() {
+                            let newRow = $(
+                                `<tr id="WishPlanRowID${NewWishPlanRowID}">`+
+                                    `<td><input id="WishPlanItem${NewWishPlanRowID}" type="text" class="form-control TableInput"></td>`+
+                                    `<td>`+
+                                        `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableInput" style="max-width: 175px;">`+
+                                            `<option value=1> Character </option>`+
+                                            `<option value=2> Weapon </option>`+
+                                            `<option value=3> Chronicled Wish </option>`+
+                                        `</select>`+
+                                    `</td>`+
+                                    `<td id="WishPlanBannerEndCell${NewWishPlanRowID}"></td>`+
+                                    `<td><input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="1"></td>`+
+                                    `<td>`+
+                                        `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRowID${NewWishPlanRowID}').remove()">`+
+                                            `<i class="bi bi-x-lg" style=" font-weight: bold;"></i>`+
+                                        `</button>`+
+                                    `</td>`+
+                                `</tr>`
+                            )
+
+                            $('#WishPlanningTableBody').append(newRow);
+                            $('#WishPlanningTableBody').sortable("refresh"); 
+                            
+                            let bannerEndDropdown = $(`<select id="WishPlanBannerEnd${NewWishPlanRowID}" class="form-select TableInput" style="max-width: 300px;"></select>`);
+
+                            bannerEndDropdown.html($('#BannerEnd').html());
+
+                            $(`#WishPlanBannerEndCell${NewWishPlanRowID}`).html(bannerEndDropdown)
+                                                        
+                            NewWishPlanRowID++;
+                        });
+
+                        // We will trigger 3 clicks so the table will by default start with 3 rows.
+                        $("#AddRowButton").trigger('click');
+                        $("#AddRowButton").trigger('click');
+                        $("#AddRowButton").trigger('click');
+                    });
+                </script>
 
                 <div class="WishSection SimpleModeSkipGroup">
                     <hr><center><h2>Spiral Abyss</h2></center><br>
@@ -564,9 +653,21 @@
             $('#SimpleMode').on('change', function () {
                 if ($('#SimpleMode').is(':checked')) {
                     $('.SimpleModeSkipGroup').hide();
+                    $('#AdvancedWishPlanning').prop('checked', false).change();
                 }
                 else {
                     $('.SimpleModeSkipGroup').show();
+                }
+            })
+
+            $('#AdvancedWishPlanning').on('change', function () {
+                if ($('#AdvancedWishPlanning').is(':checked')) {
+                    $('.SimpleWishPlanningSkipGroup').hide();
+                    $('#WishPlanningTable').show();
+                }
+                else {
+                    $('.SimpleWishPlanningSkipGroup').show();
+                    $('#WishPlanningTable').hide();
                 }
             })
 
