@@ -405,9 +405,7 @@
                         });
 
                         // We will trigger 3 clicks so the table will by default start with 3 rows.
-                        $("#AddRowButton").trigger('click');
-                        $("#AddRowButton").trigger('click');
-                        $("#AddRowButton").trigger('click');
+                        for(let i = 0; i < 3; i++) $("#AddRowButton").trigger('click');
                     });
                 </script>
 
