@@ -389,7 +389,11 @@
                                             `</select>`+
                                         `</center>`+
                                     `</td>`+
-                                    `<td><center id="WishPlanBannerEndCell${NewWishPlanRowID}"></center></td>`+
+                                    `<td>`+
+                                        `<center>`+
+                                            `<select id="WishPlanBannerEnd${NewWishPlanRowID}" class="form-select TableInput" style="max-width: 300px;"></select>`+
+                                        `</center>`+
+                                    `</td>`+
                                     `<td>`+
                                         `<center>`+
                                             `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
@@ -406,11 +410,7 @@
                             $('#WishPlanningTableBody').append(newRow);
                             $('#WishPlanningTableBody').sortable("refresh"); 
                             
-                            let bannerEndDropdown = $(`<select id="WishPlanBannerEnd${NewWishPlanRowID}" class="form-select TableInput" style="max-width: 300px;"></select>`);
-
-                            bannerEndDropdown.html($('#BannerEnd').html());
-
-                            $(`#WishPlanBannerEndCell${NewWishPlanRowID}`).html(bannerEndDropdown)
+                            $(`#WishPlanBannerEnd${NewWishPlanRowID}`).html($('#BannerEnd').html());
                                                         
                             NewWishPlanRowID++;
                         });
