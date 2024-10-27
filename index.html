@@ -512,7 +512,7 @@
                     <hr><center><h2>Events</h2></center><br>
 
                     <center id="SecondaryEventsCompletableSkipGroup" style="max-width: 30%;">
-                        <label for="SecondaryEventsCompletable" class="form-label">Final Patch's Secondary Events Completable by Wishing End Date</label>
+                        <label for="SecondaryEventsCompletable" class="form-label"></label>
                         <input type="number" id="SecondaryEventsCompletable" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0"><br>
                     </center>
 
@@ -523,7 +523,7 @@
 
                     <center id="FlagshipEventCompletableSkipGroup">
                         <input type="checkbox" id="FlagshipEventCompletable" class="form-check-input">
-                        <label for="FlagshipEventCompletable" class="form-label">Final Patch's Flagship Event Completable by Wishing End Date</label>
+                        <label for="FlagshipEventCompletable" class="form-label"></label>
                     </center>
 
                     <center id="FlagshipEventCompletedSkipGroup">
@@ -657,6 +657,17 @@
                     $('#SecondaryEventsCompleted').trigger('input');
                 }
             })
+
+            let NextPhase1;
+            for (let i = 0; i < BannerInfo.length; i++) {
+                if (i >= $('#BannerEnd')[0].options[0].value && BannerInfo[i].Phase == 1) {
+                    NextPhase1 = BannerInfo[i];
+                    break;
+                };
+            };
+
+            $("label[for='FlagshipEventCompletable']").html(`${NextPhase1.Patch} Flagship Event Completable by first half.`);
+            $("label[for='SecondaryEventsCompletable']").html(`${NextPhase1.Patch} Secondary Events Completable by first half.`);
 
             // Skip Logic
             $('#SimpleMode').on('change', function () {
