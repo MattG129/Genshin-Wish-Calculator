@@ -155,6 +155,8 @@ function SavingsCalculator(WishConfig) {
         Primos += 300 * LastBannerInfo.PatchDiff;
 
         if (WishConfig.EnableEventCalcs) {
+            let PhaseDiff = WishConfig.BannerEnd - $('#BannerEnd')[0].options[0].value;
+
             if (LastBannerInfo.PatchDiff > 0) {
                 if (!WishConfig.FlagshipEventCompleted) {
                     Primos += 900;
@@ -163,7 +165,14 @@ function SavingsCalculator(WishConfig) {
                 Primos += (3 - WishConfig.SecondaryEventsCompleted) * 420
 
                 Primos += (900 + 3*420) * (LastBannerInfo.PatchDiff - 1);
-        
+
+                // User's should only know the events schedule as far out as the end of the next banner. 
+                // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
+                if (PhaseDiff > 1) {
+                    WishConfig.FlagshipEventCompletable = false;
+                    WishConfig.SecondaryEventsCompletable = 1;
+                }
+
                 if ((BannerInfo[WishConfig.BannerEnd].Phase == 2) || WishConfig.FlagshipEventCompletable) {
                     Primos += 900;
                 };

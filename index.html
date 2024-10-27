@@ -158,7 +158,7 @@
 
                 <center class="SimpleModeSkipGroup">
                     <input type="checkbox" id="EnableEventCalcs" class="form-check-input">
-                    <label for="EnableEventCalcs" class="form-label">Factor in events (beta)</label>
+                    <label for="EnableEventCalcs" class="form-label">Factor in events</label>
                     <a type="button" data-toggle="tooltip" class="help-tooltip btn btn-dark rounded-circle"
                         title="If checked, then the calculator will assume that each patch there will be 1 flagship event, awarding <b>900 Primogems</b> and 3 secondary events, each awarding <b>420 Primogems</b>."
                     >
@@ -509,7 +509,7 @@
 
 
                 <div id="EventCalcs" class="WishSection SimpleModeSkipGroup">
-                    <hr><center><h2>Events (beta)</h2></center><br>
+                    <hr><center><h2>Events</h2></center><br>
 
                     <center id="SecondaryEventsCompletableSkipGroup" style="max-width: 30%;">
                         <label for="SecondaryEventsCompletable" class="form-label">Final Patch's Secondary Events Completable by Wishing End Date</label>
@@ -690,7 +690,11 @@
             })
 
             $('#BannerEnd').on('change', function () {
-                if (BannerInfo[$('#BannerEnd').val()].Phase == 1) {
+                let PhaseDiff = $('#BannerEnd').val() - $('#BannerEnd')[0].options[0].value;
+
+                // User's should only know the events schedule as far out as the end of the next banner. 
+                // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
+                if (BannerInfo[$('#BannerEnd').val()].Phase == 1 && PhaseDiff <= 1 ) {
                     $('#FlagshipEventCompletableSkipGroup').show().trigger('input');
                     $('#SecondaryEventsCompletableSkipGroup').show().trigger('input');
                 }
