@@ -379,16 +379,22 @@
                             let newRow = $(
                                 `<tr id="WishPlanRowID${NewWishPlanRowID}">`+
                                     `<td style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
-                                    `<td><input id="WishPlanItem${NewWishPlanRowID}" type="text" class="form-control TableInput"></td>`+
+                                    `<td><input id="WishPlanItem${NewWishPlanRowID}" type="text" class="form-control TableInput" style="width: 100%"></td>`+
                                     `<td>`+
+                                        `<center>`+
                                             `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableInput" style="max-width: 175px;">`+
                                                 `<option value=1> Character </option>`+
                                                 `<option value=2> Weapon </option>`+
                                                 `<option value=3> Chronicled Wish </option>`+
                                             `</select>`+
+                                        `</center>`+
                                     `</td>`+
-                                    `<td id="WishPlanBannerEndCell${NewWishPlanRowID}"></td>`+
-                                    `<td><input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="1"></td>`+
+                                    `<td><center id="WishPlanBannerEndCell${NewWishPlanRowID}"></center></td>`+
+                                    `<td>`+
+                                        `<center>`+
+                                            `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
+                                        `</center>`+
+                                    `</td>`+
                                     `<td>`+
                                         `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRowID${NewWishPlanRowID}').remove()">`+
                                             `<i class="bi bi-x-lg" style=" font-weight: bold;"></i>`+
