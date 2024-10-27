@@ -142,7 +142,7 @@
                     </div>
                 </div>
                 <br>
-                
+
                 <center>
                     <input type="checkbox" id="SimpleMode" class="form-check-input">
                     <label for="SimpleMode" class="form-label">Simple Wishing Mode</label>
@@ -344,11 +344,12 @@
                 <table id="WishPlanningTable" class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 100%;">
                     <thead>
                         <tr>
+                            <th><!-- Move Arrows --></th>
                             <th>Name</th>
                             <th>Banner Type</th>
                             <th>Wishing End Date</th>
                             <th>Number of Copies</th>
-                            <th></th>
+                            <th><!-- Remove Button --></th>
                         </tr>
                     </thead>
                     <tbody id="WishPlanningTableBody">
@@ -356,7 +357,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <button id="AddRowButton" type="button" style="width: 100%" class="btn btn-add">
                                     <b><i class="bi bi-plus-lg" style="font-size: 30px; font-weight: bold; color: white;"></i></b>
                                 </button>
@@ -374,6 +375,7 @@
                         $("#AddRowButton").click(function() {
                             let newRow = $(
                                 `<tr id="WishPlanRowID${NewWishPlanRowID}">`+
+                                    `<td style="max-width: 50px"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
                                     `<td><input id="WishPlanItem${NewWishPlanRowID}" type="text" class="form-control TableInput"></td>`+
                                     `<td>`+
                                         `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableInput" style="max-width: 175px;">`+
