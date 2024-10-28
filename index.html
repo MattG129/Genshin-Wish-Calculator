@@ -709,14 +709,19 @@
                 }
             })
 
-            $('#BannerEnd').on('change', function () {
+            $(document).on('change', '#BannerEnd, .WishPlanBannerEnd, #AdvancedWishPlanning', function() {
                 let PhaseDiff = $('#BannerEnd').val() - $('#BannerEnd')[0].options[0].value;
 
                 // User's should only know the events schedule as far out as the end of the next banner. 
                 // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
-                if (BannerInfo[$('#BannerEnd').val()].Phase == 1 && PhaseDiff <= 1 ) {
-                    $('#FlagshipEventCompletableSkipGroup').show().trigger('input');
-                    $('#SecondaryEventsCompletableSkipGroup').show().trigger('input');
+                if (
+                    (!$('#AdvancedWishPlanning').is(':checked') && BannerInfo[$('#BannerEnd').val()].Phase == 1 && PhaseDiff <= 1)
+                    || ($('#AdvancedWishPlanning').is(':checked') && $(`.WishPlanBannerEnd option[value=${$('#BannerEnd')[0].options[0].value}]:selected`).length >= 1)
+                ) {
+                    $('#FlagshipEventCompletableSkipGroup').show();
+                    $('#FlagshipEventCompletable').trigger('input').change();
+                    $('#SecondaryEventsCompletableSkipGroup').show();
+                    $('#SecondaryEventsCompletable').trigger('input').change();
                 }
                 else {
                     $('#FlagshipEventCompletableSkipGroup').hide();
@@ -730,7 +735,7 @@
 
                     $('#SecondaryEventsCompleted').trigger('input');
                 }
-            })
+            });
 
             $('#EnableCapturingRadiance').on('change', function () {
                 if ($('#EnableCapturingRadiance').is(':checked')) {
@@ -918,9 +923,9 @@
                 }
             });
 
-            $('input').change().trigger('input');
-
             $(document).ready(function(){
+                $('input, select').change().trigger('input');
+
                 $('input').each(function() {
                     $(this).parsley().validate();
                 })
