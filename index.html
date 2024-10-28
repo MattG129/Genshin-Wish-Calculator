@@ -811,16 +811,20 @@
             $('#form').on('input', UpdateExportState);
 
             function Import(Scroll) {
-                let isValidJSON = true;
+                let isValidImport = true;
                 let JSONImport;
 
                 try {
                     JSONImport = JSON.parse($('#ImportState').val());
+
+                    if (JSONImport['wishPlanMapper'] == undefined) {
+                        isValidImport = false;
+                    }
                 } catch (error) {
-                    isValidJSON = false;
+                    isValidImport = false;
                 }
 
-                if (isValidJSON) {
+                if (isValidImport) {
                     $('#InvalidImportMessage').hide();
 
                     if (JSONImport['BannerEnd'] < $('#BannerEnd')[0].options[0].value) {
