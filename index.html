@@ -716,7 +716,7 @@
                 // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
                 if (
                     (!$('#AdvancedWishPlanning').is(':checked') && BannerInfo[$('#BannerEnd').val()].Phase == 1 && PhaseDiff <= 1)
-                    || ($('#AdvancedWishPlanning').is(':checked') && $(`.WishPlanBannerEnd option[value=${$('#BannerEnd')[0].options[0].value}]:selected`).length >= 1)
+                    || ($('#AdvancedWishPlanning').is(':checked') && $(`.WishPlanBannerEnd option[value=${NextPhase1.value}]:selected`).length >= 1)
                 ) {
                     $('#FlagshipEventCompletableSkipGroup').show();
                     $('#FlagshipEventCompletable').trigger('input').change();
