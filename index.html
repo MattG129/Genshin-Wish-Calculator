@@ -649,8 +649,20 @@
                 }
             })
 
-            $('#BannerEnd, #SecondaryEventsCompletable').on('change', function() {
-                if ( ($('#BannerEnd').val() == $('#BannerEnd')[0].options[0].value) && (BannerInfo[$('#BannerEnd').val()].Phase == 1) ) {
+            let NextPhase1;
+            for (let i = 0; i < BannerInfo.length; i++) {
+                if (i >= $('#BannerEnd')[0].options[0].value && BannerInfo[i].Phase == 1) {
+                    NextPhase1 = BannerInfo[i];
+                    NextPhase1['value'] = i;
+                    break;
+                };
+            };
+
+            $("label[for='FlagshipEventCompletable']").html(`${NextPhase1.Patch} Flagship Event Completable by first half.`);
+            $("label[for='SecondaryEventsCompletable']").html(`${NextPhase1.Patch} Secondary Events Completable by first half.`);
+
+            $('#SecondaryEventsCompletable').on('change', function() {
+                if ( $('#BannerEnd')[0].options[0].value == NextPhase1.value ) {
                     $('#SecondaryEventsCompleted').attr('max', $('#SecondaryEventsCompletable').val());
                     
                     $('#SecondaryEventsCompleted').parsley({range: `[0, ${$('#SecondaryEventsCompletable').val()}]`});
@@ -665,17 +677,6 @@
                     $('#SecondaryEventsCompleted').trigger('input');
                 }
             })
-
-            let NextPhase1;
-            for (let i = 0; i < BannerInfo.length; i++) {
-                if (i >= $('#BannerEnd')[0].options[0].value && BannerInfo[i].Phase == 1) {
-                    NextPhase1 = BannerInfo[i];
-                    break;
-                };
-            };
-
-            $("label[for='FlagshipEventCompletable']").html(`${NextPhase1.Patch} Flagship Event Completable by first half.`);
-            $("label[for='SecondaryEventsCompletable']").html(`${NextPhase1.Patch} Secondary Events Completable by first half.`);
 
             // Skip Logic
             $('#SimpleMode').on('change', function () {
