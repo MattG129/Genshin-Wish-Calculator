@@ -74,12 +74,14 @@ function GetBannerInfo() {
 function SavingsCalculator(WishConfig) {
     let CurrentBannerVal = $('#BannerEnd')[0].options[0].value;
 
+    let PhaseDiff = WishConfig.BannerEnd - CurrentBannerVal;
+
     // TODO: Could maybe go a bit more in depth.
     let Primos = WishConfig.Primos;
 
     if(!WishConfig.SimpleMode) {
         // 40 primos from character trials, every banner. Assumes that this banner's trial primos have already been claimed.
-        Primos += 40*(WishConfig.BannerEnd - CurrentBannerVal);
+        Primos += 40*(PhaseDiff);
         
         Primos += DateDiff(Today, LastBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
 
@@ -155,8 +157,7 @@ function SavingsCalculator(WishConfig) {
         Primos += 300 * LastBannerInfo.PatchDiff;
 
         if (WishConfig.EnableEventCalcs) {
-            let PhaseDiff = WishConfig.BannerEnd - $('#BannerEnd')[0].options[0].value;
-
+            
             if (LastBannerInfo.PatchDiff > 0) {
                 if (!WishConfig.FlagshipEventCompleted) {
                     Primos += 900;
