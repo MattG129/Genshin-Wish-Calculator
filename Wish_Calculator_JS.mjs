@@ -159,7 +159,7 @@ function SavingsCalculator(WishConfig) {
         Primos += 300 * LastBannerInfo.PatchDiff;
 
         if (WishConfig.EnableEventCalcs) {
-            
+
             if (LastBannerInfo.PatchDiff > 0) {
                 if (!WishConfig.FlagshipEventCompleted) {
                     Primos += 900;
@@ -176,11 +176,11 @@ function SavingsCalculator(WishConfig) {
                     WishConfig.SecondaryEventsCompletable = 1;
                 }
 
-                if ((BannerInfo[WishConfig.BannerEnd].Phase == 2) || WishConfig.FlagshipEventCompletable) {
+                if ((LastBannerInfo.Phase == 2) || WishConfig.FlagshipEventCompletable) {
                     Primos += 900;
                 };
 
-                if ((BannerInfo[WishConfig.BannerEnd].Phase == 2) ) {
+                if ((LastBannerInfo.Phase == 2) ) {
                     Primos += 3*420;
                 }
                 else {
@@ -189,13 +189,13 @@ function SavingsCalculator(WishConfig) {
             }
             else {
                 if (
-                    ( (BannerInfo[WishConfig.BannerEnd].Phase == 2) || WishConfig.FlagshipEventCompletable )
+                    ( (LastBannerInfo.Phase == 2) || WishConfig.FlagshipEventCompletable )
                     && !WishConfig.FlagshipEventCompleted
                 ) {
                     Primos += 900;
                 };
 
-                if ((BannerInfo[WishConfig.BannerEnd].Phase == 2) ) {
+                if ((LastBannerInfo.Phase == 2) ) {
                     Primos += (3 - WishConfig.SecondaryEventsCompleted) * 420
                 }
                 else {
