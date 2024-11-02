@@ -26,6 +26,7 @@ function GetBannerInfo() {
     let BannerEndDate = DateAdd(v4StartDate, 21);
 
     let TotalPhaseDiff = 0;
+    let PhaseDiffFromCurrentBanner = -1; //Since we only care about this value for active banners so we can have it start at -1.
 
     let First = true
     while (PatchDiff <= 25) {
@@ -57,6 +58,8 @@ function GetBannerInfo() {
                 value: TotalPhaseDiff,
                 text: `${(Patch/10).toFixed(1)} Phase ${(TotalPhaseDiff % 2) + 1} (Ends on ${moment(BannerEndDate, "YYYY-MM-DD").format('L')})`,
             }));
+
+            PhaseDiffFromCurrentBanner++
         }
 
         BannerInfo.push({
@@ -65,7 +68,8 @@ function GetBannerInfo() {
             'Phase': (TotalPhaseDiff % 2) + 1,
             'BannerEndDate': BannerEndDate,
             'PatchStartDate': DateAdd(BannerEndDate, -21*((TotalPhaseDiff % 2) + 1)),
-            'Patch': (Patch/10).toFixed(1)
+            'Patch': (Patch/10).toFixed(1),
+            'PhaseDiff': PhaseDiffFromCurrentBanner
         });
 
     }
@@ -74,14 +78,12 @@ function GetBannerInfo() {
 function SavingsCalculator(WishConfig) {
     let CurrentBannerVal = $('#BannerEnd')[0].options[0].value;
 
-    let PhaseDiff = WishConfig.BannerEnd - CurrentBannerVal;
-
     // TODO: Could maybe go a bit more in depth.
     let Primos = WishConfig.Primos;
 
     if(!WishConfig.SimpleMode) {
         // 40 primos from character trials, every banner. Assumes that this banner's trial primos have already been claimed.
-        Primos += 40*(PhaseDiff);
+        Primos += 40*(LastBannerInfo.PhaseDiff);
         
         Primos += DateDiff(Today, LastBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
 
@@ -169,7 +171,7 @@ function SavingsCalculator(WishConfig) {
 
                 // User's should only know the events schedule as far out as the end of the next banner. 
                 // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
-                if (PhaseDiff > 1) {
+                if (LastBannerInfo.PhaseDiff > 1) {
                     WishConfig.FlagshipEventCompletable = false;
                     WishConfig.SecondaryEventsCompletable = 1;
                 }

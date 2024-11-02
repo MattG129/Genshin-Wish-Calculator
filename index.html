@@ -710,12 +710,10 @@
             })
 
             $(document).on('change', '#BannerEnd, .WishPlanBannerEnd, #AdvancedWishPlanning', function() {
-                let PhaseDiff = $('#BannerEnd').val() - $('#BannerEnd')[0].options[0].value;
-
                 // User's should only know the events schedule as far out as the end of the next banner. 
                 // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
                 if (
-                    (!$('#AdvancedWishPlanning').is(':checked') && BannerInfo[$('#BannerEnd').val()].Phase == 1 && PhaseDiff <= 1)
+                    (!$('#AdvancedWishPlanning').is(':checked') && BannerInfo[$('#BannerEnd').val()].Phase == 1 && BannerInfo[$('#BannerEnd').val()].PhaseDiff <= 1)
                     || ($('#AdvancedWishPlanning').is(':checked') && $(`.WishPlanBannerEnd option[value=${NextPhase1.value}]:selected`).length >= 1)
                 ) {
                     $('#FlagshipEventCompletableSkipGroup').show();
@@ -750,7 +748,7 @@
 
             $('#BannerEnd, #FlagshipEventCompletable').on('change', function () {
                 if ( 
-                    $('#BannerEnd').val() != $('#BannerEnd')[0].options[0].value
+                    BannerInfo[$('#BannerEnd').val()].PhaseDiff > 0
                     || BannerInfo[$('#BannerEnd').val()].Phase == 2
                     || $('#FlagshipEventCompletable').is(':checked')
                 ) {
