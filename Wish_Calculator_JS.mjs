@@ -316,7 +316,7 @@ function NumericWishCalculations(WishConfig) {
             CapturingRadiancePity = WishConfig.CapturingRadiancePity;
         }
 
-        CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
+        CharacterWishSim(WishConfig, WishConfig.CharacterGoal);
 
         WeaponPity = WishConfig.WeaponPity;
         Guarantee = WishConfig.WeaponGuarantee;
@@ -324,14 +324,14 @@ function NumericWishCalculations(WishConfig) {
         Weapons = 0;
         WeaponRate = 0.007 + Math.max(.07*(WeaponPity-61), 0);
 
-        WeaponWishSim(WishConfig, WishConfig.WeaponGoal, WishConfig.MaxWishes);
+        WeaponWishSim(WishConfig, WishConfig.WeaponGoal);
 
         ChronicledPity = WishConfig.ChronicledPity;
         ChronicledFatePoints = WishConfig.ChronicledFatePoints;
         ChronicledItems = 0;
         ChronicledRate = 0.006 + Math.max(0, .06*(ChronicledPity-73));
 
-        ChronicledWishSim(WishConfig, WishConfig.WeaponGoal, WishConfig.MaxWishes);
+        ChronicledWishSim(WishConfig, WishConfig.WeaponGoal);
 
         if (Characters >= WishConfig.CharacterGoal && Weapons >= WishConfig.WeaponGoal && ChronicledItems >= WishConfig.ChronicledGoal) {
             Successes++;
