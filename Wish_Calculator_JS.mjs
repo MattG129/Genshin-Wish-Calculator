@@ -271,9 +271,8 @@ function SavingsCalculator(WishConfig) {
     return WishesMade
 }
 
-let Wishes = 0;
+let Wishes;
 let Lost5050s;
-let Start = Date.now();
 let NonGuaranteeCharacterWinChance;
 let CapturingRadiancePity;
 
@@ -295,8 +294,9 @@ let ChronicledRate;
 
 function NumericWishCalculations(WishConfig, MaxWishes) {
     // TODO: Add comments.
-
+    Wishes = 0;
     let Successes = 0;
+    let Start = Date.now();
 
     let TrialCount;
     for (TrialCount = 1; TrialCount <= Trials; TrialCount++) {
@@ -319,7 +319,7 @@ function NumericWishCalculations(WishConfig, MaxWishes) {
         Guarantee = WishConfig.WeaponGuarantee;
         WeaponFatePoints = WishConfig.WeaponFatePoints;
         Weapons = 0;
-        WeaponRate = 0.007 + Math.max(.07*(WeaponPity-63), 0);
+        WeaponRate = 0.007 + Math.max(.07*(WeaponPity-61), 0);
 
         WeaponWishSim(WishConfig, WishConfig.WeaponGoal, MaxWishes);
 
