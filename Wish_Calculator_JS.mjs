@@ -271,148 +271,181 @@ function SavingsCalculator(WishConfig) {
     return WishesMade
 }
 
+let Wishes = 0;
+let Lost5050s;
+let Start = Date.now();
+let NonGuaranteeCharacterWinChance;
+let CapturingRadiancePity;
+
+let CharacterPity;
+let CharacterGuarantee;
+let Characters;
+let CharacterRate;
+
+let WeaponPity;
+let WeaponGuarantee;
+let WeaponFatePoints;
+let Weapons;
+let WeaponRate;
+
+let ChronicledPity;
+let ChronicledFatePoints;
+let ChronicledItems;
+let ChronicledRate;
+
 function NumericWishCalculations(WishConfig, MaxWishes) {
     // TODO: Add comments.
 
     let Successes = 0;
-    let DynamicMaxWishes;
-    let Lost5050s;
-    let Start = Date.now();
-    let NonGuaranteeCharacterWinChance;
-    let CapturingRadiancePity = 0;
-    for (let TrialCount = 0; TrialCount < Trials; TrialCount++) {
-        if (Date.now() - Start > 5000) {
-            break;
-        }
+
+    let TrialCount;
+    for (TrialCount = 1; TrialCount <= Trials; TrialCount++) {
 
         Lost5050s = 0
-        DynamicMaxWishes = MaxWishes
-        let Wishes = 0;
+        Wishes = 0;
 
-        let Pity = WishConfig.CharacterPity;
-        let Guarantee = WishConfig.CharacterGuarantee;
-        let Characters = 0;
-        let p = 0.006;
+        CharacterPity = WishConfig.CharacterPity;
+        CharacterGuarantee = WishConfig.CharacterGuarantee;
+        Characters = 0;
+        CharacterRate = 0.006 + Math.max(0, .06*(CharacterPity-73));
         
         if (WishConfig.EnableCapturingRadiance) {
             CapturingRadiancePity = WishConfig.CapturingRadiancePity;
         }
 
-        while (Characters < WishConfig.CharacterGoal && Wishes < DynamicMaxWishes) {
-            Wishes++;
-            Pity++;
+        CharacterWishSim(WishConfig, WishConfig.CharacterGoal, MaxWishes);
 
-            if (Pity >= 74) {
-                p += 0.06;
-            }
-
-            if (Math.random() <= p) {
-                p = 0.006;
-                Pity = 0;
-
-                if (!WishConfig.EnableCapturingRadiance) {
-                    NonGuaranteeCharacterWinChance = 0.500
-                }
-                else {  
-                    switch (CapturingRadiancePity) {
-                        case 0:  NonGuaranteeCharacterWinChance = 0.500;  break;
-                        case 1:  NonGuaranteeCharacterWinChance = 0.525; break;
-                        case 2:  NonGuaranteeCharacterWinChance = 0.750; break;
-                        case 3:  NonGuaranteeCharacterWinChance = 1.000; break;
-                    };
-                };
-
-                if (Guarantee || (Math.random() < NonGuaranteeCharacterWinChance)) {
-                    if (!Guarantee) {
-                        CapturingRadiancePity = 0;
-                    }
-
-                    Characters++;
-                    Guarantee = 0;
-                } else {
-                    Guarantee = 1;
-                    Lost5050s++;
-                    CapturingRadiancePity++;
-
-                    if ( WishConfig.UsingStarglitter && (Lost5050s > WishConfig.MissingFiveStars) ){
-                        DynamicMaxWishes += 2
-                    }
-                }
-            }
-        }
-
-        Pity = WishConfig.WeaponPity;
+        WeaponPity = WishConfig.WeaponPity;
         Guarantee = WishConfig.WeaponGuarantee;
-        let WeaponFatePoints = WishConfig.WeaponFatePoints;
-        let Weapons = 0;
-        p = 0.007;
+        WeaponFatePoints = WishConfig.WeaponFatePoints;
+        Weapons = 0;
+        WeaponRate = 0.007 + Math.max(.07*(WeaponPity-63), 0);
 
-        while (Weapons < WishConfig.WeaponGoal && Wishes < DynamicMaxWishes) {
-            Wishes++;
-            Pity++;
+        WeaponWishSim(WishConfig, WishConfig.WeaponGoal, MaxWishes);
 
-            if (Pity >= 63) {
-                p += 0.07;
-            }
+        ChronicledPity = WishConfig.ChronicledPity;
+        ChronicledFatePoints = WishConfig.ChronicledFatePoints;
+        ChronicledItems = 0;
+        ChronicledRate = 0.006 + Math.max(0, .06*(ChronicledPity-73));
 
-            if (Math.random() <= p) {
-                p = 0.007;
-                Pity = 0;
-                
-                if (WishConfig.UsingStarglitter) {
-                    DynamicMaxWishes += 2
-                }
-
-                let r = Math.random();
-
-                if (WeaponFatePoints === 1 || (Guarantee && r <= 0.5) || (r <= 0.375)) {
-                    Weapons++;
-                    Guarantee = 0;
-                    WeaponFatePoints = 0;
-                } else if (Guarantee || (r <= 0.75)) {
-                    Guarantee = 0;
-                    WeaponFatePoints++;
-                } else {
-                    Guarantee = 1;
-                    WeaponFatePoints++;
-                }
-            }
-        }
-
-        Pity = WishConfig.ChronicledPity;
-        let ChronicledFatePoints = WishConfig.ChronicledFatePoints;
-        let ChronicledItems = 0;
-        p = 0.006;
-
-        while (ChronicledItems < WishConfig.ChronicledGoal && Wishes < DynamicMaxWishes) {
-            Wishes++;
-            Pity++;
-
-            if (Pity >= 74) {
-                p += 0.06;
-            }
-
-            if (Math.random() <= p) {
-                p = 0.006;
-                Pity = 0;
-
-                if (ChronicledFatePoints >= 1 || (Math.random() < 0.5)) {
-                    ChronicledItems++;
-                    ChronicledFatePoints = 0;
-                } else {
-                    ChronicledFatePoints++;
-                }
-            }
-        }
+        ChronicledWishSim(WishConfig, WishConfig.WeaponGoal, MaxWishes);
 
         if (Characters >= WishConfig.CharacterGoal && Weapons >= WishConfig.WeaponGoal && ChronicledItems >= WishConfig.ChronicledGoal) {
             Successes++;
         }
+
+        if (Date.now() - Start > 5000) {
+            break;
+        }
     }
 
     // TODO: See if there is a built in function for this.
-    return ((Successes / Trials)*100).toFixed(2);
+    return ((Successes / TrialCount)*100).toFixed(2);
 }
+
+function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
+    while (Characters < WishConfig.CharacterGoal && Wishes < MaxWishes) {
+        Wishes++;
+        CharacterPity++;
+
+        if (CharacterPity >= 74) {
+            CharacterRate += 0.06;
+        }
+
+        if (Math.random() <= CharacterRate) {
+            CharacterRate = 0.006;
+            CharacterPity = 0;
+
+            if (!WishConfig.EnableCapturingRadiance) {
+                NonGuaranteeCharacterWinChance = 0.500
+            }
+            else {  
+                switch (CapturingRadiancePity) {
+                    case 0: NonGuaranteeCharacterWinChance = 0.500; break;
+                    case 1: NonGuaranteeCharacterWinChance = 0.525; break;
+                    case 2: NonGuaranteeCharacterWinChance = 0.750; break;
+                    case 3: NonGuaranteeCharacterWinChance = 1.000; break;
+                };
+            };
+
+            if (CharacterGuarantee || (Math.random() < NonGuaranteeCharacterWinChance)) {
+                if (!CharacterGuarantee) {
+                    CapturingRadiancePity = 0;
+                }
+
+                Characters++;
+                CharacterGuarantee = 0;
+            } else {
+                CharacterGuarantee = 1;
+                Lost5050s++;
+                CapturingRadiancePity++;
+
+                if ( WishConfig.UsingStarglitter && (Lost5050s > WishConfig.MissingFiveStars) ){
+                    Wishes -= 2 // You get enough starglitter from five star cons to make two additional wishes.
+                }
+            }
+        }
+    }
+}
+
+function WeaponWishSim(WishConfig, CharacterGoal, MaxWishes) {
+    while (Weapons < WishConfig.WeaponGoal && Wishes < MaxWishes) {
+        Wishes++;
+        WeaponPity++;
+
+        if (WeaponPity >= 63) {
+            WeaponRate += 0.07;
+        }
+
+        if (Math.random() <= WeaponRate) {
+            WeaponRate = 0.007;
+            WeaponPity = 0;
+            
+            if (WishConfig.UsingStarglitter) {
+                Wishes -= 2 // You get enough starglitter from five stars to make two additional wishes.
+            }
+
+            let r = Math.random();
+
+            if (WeaponFatePoints === 1 || (WeaponGuarantee && r <= 0.5) || (r <= 0.375)) {
+                Weapons++;
+                WeaponGuarantee = 0;
+                WeaponFatePoints = 0;
+            } else if (WeaponGuarantee || (r <= 0.75)) {
+                WeaponGuarantee = 0;
+                WeaponFatePoints++;
+            } else {
+                WeaponGuarantee = 1;
+                WeaponFatePoints++;
+            }
+        }
+    }
+}
+
+function ChronicledWishSim(WishConfig, CharacterGoal, MaxWishes) {
+    while (ChronicledItems < WishConfig.ChronicledGoal && Wishes < MaxWishes) {
+        Wishes++;
+        ChronicledPity++;
+
+        if (ChronicledPity >= 74) {
+            ChronicledRate += 0.06;
+        }
+
+        if (Math.random() <= ChronicledRate) {
+            ChronicledRate = 0.006;
+            ChronicledPity = 0;
+
+            if (ChronicledFatePoints >= 1 || (Math.random() < 0.5)) {
+                ChronicledItems++;
+                ChronicledFatePoints = 0;
+            } else {
+                ChronicledFatePoints++;
+            }
+        }
+    }
+}
+
+
 
 // Stub function. Will use this in the future for wish simulations.
 function GetWishNumberDistributions() {
