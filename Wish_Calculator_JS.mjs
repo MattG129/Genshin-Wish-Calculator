@@ -169,14 +169,17 @@ function SavingsCalculator(WishConfig) {
 
                 Primos += (900 + 3*420) * (LastBannerInfo.PatchDiff - 1);
 
+                let FlagshipEventCompletable = WishConfig.FlagshipEventCompletable;
+                let SecondaryEventsCompletable = WishConfig.SecondaryEventsCompletable;
+
                 // User's should only know the events schedule as far out as the end of the next banner. 
                 // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
                 if (LastBannerInfo.PhaseDiff > 1) {
-                    WishConfig.FlagshipEventCompletable = false;
-                    WishConfig.SecondaryEventsCompletable = 1;
+                    FlagshipEventCompletable = false;
+                    SecondaryEventsCompletable = 1;
                 }
 
-                if ((LastBannerInfo.Phase == 2) || WishConfig.FlagshipEventCompletable) {
+                if ((LastBannerInfo.Phase == 2) || FlagshipEventCompletable) {
                     Primos += 900;
                 };
 
@@ -184,7 +187,7 @@ function SavingsCalculator(WishConfig) {
                     Primos += 3*420;
                 }
                 else {
-                    Primos += WishConfig.SecondaryEventsCompletable * 420;
+                    Primos += SecondaryEventsCompletable * 420;
                 };
             }
             else {
