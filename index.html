@@ -906,15 +906,26 @@
                     });
 
                     $(`.WishPlanBannerEnd`).each(function() {
+                        let ExpiredWishPlanRows = false; // We will only set this to true when advanced wish planning mode is activated.
+
                         if ($(this).val() == null) {
                             if (JSONImport['AdvancedWishPlanning']) {
                                 WishPlanRowID = $(this).attr('data-wishplan-rowid');
 
                                 $(`#WishPlanRow${WishPlanRowID}`).remove()
+
+                                ExpiredWishPlanRows = true;
                             }
                             else {
                                 $(this).val($('#BannerEnd')[0].options[0].value)
                             };
+                        };
+
+                        if (ExpiredWishPlanRows) {
+                            swal({
+                                text: 'Expired wish plan row(s) were detected in the import. These row(s) have been automatically set to inactive. All other information has been successfully imported.',
+                                icon: 'info'
+                            });
                         };
                     });
 
