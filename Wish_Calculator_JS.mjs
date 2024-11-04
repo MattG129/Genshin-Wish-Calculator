@@ -640,6 +640,12 @@ function WishCalcs(WishConfig) {
             $('#WishPlanningResultsBody').append(newRow);
         };
 
+        $('#WishPlanningResultsTable tfoot').append($(
+            `<tr class="WishPlanResultsRow">`+
+                `<td colspan="5"><b>Chances of reaching all wish goals: ${wishResults.TotalSuccessRate}</b></td>`+
+            `</tr>`
+        ));
+
         $('#WishPlanningResultsTable').show();
     };
 }
