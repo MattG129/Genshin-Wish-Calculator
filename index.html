@@ -667,6 +667,11 @@
 
                         $('#LoadingGroup').hide();
 
+                        $('html, body').animate({
+                            scrollTop: document.body.scrollHeight,
+                            easing: 'linear'
+                        }, 250)
+
                         UpdateCalculateButton();
                     }, 500);
                 }
