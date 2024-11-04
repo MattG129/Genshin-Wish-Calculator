@@ -7,6 +7,12 @@ let Trials = 100000;
 let Today = new Date();
 Today.setHours(0,0,0,0);
 
+let BannerTypeDropdownOptions = {
+    CHARACTER:       {value: 1, text: 'Character'},
+    WEAPON:          {value: 2, text: 'Weapon'},
+    CHRONICLED_WISH: {value: 3, text: 'Chronicled Wish'}
+}
+
 function DateAdd(date, days) {
     const newDate = new Date(date);
     
@@ -301,53 +307,123 @@ function NumericWishCalculations(WishConfig) {
     let Successes = 0;
     let Start = Date.now();
 
-    let TrialCount;
-    for (TrialCount = 1; TrialCount <= Trials; TrialCount++) {
+    let wishPlanResults = {};
+    for (const i of WishConfig.wishPlanMapper) {
+        wishPlanResults[i] = 0;
+    }
 
+    let TrialCount;
+    for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
+
+        let MissedFiveStars = 0;
         Lost5050s = 0
         Wishes = 0;
 
         CharacterPity = WishConfig.CharacterPity;
         CharacterGuarantee = WishConfig.CharacterGuarantee;
-        Characters = 0;
         CharacterRate = 0.006 + Math.max(0, .06*(CharacterPity-73));
         
         if (WishConfig.EnableCapturingRadiance) {
             CapturingRadiancePity = WishConfig.CapturingRadiancePity;
         }
 
-        CharacterWishSim(WishConfig, WishConfig.CharacterGoal);
-
         WeaponPity = WishConfig.WeaponPity;
         Guarantee = WishConfig.WeaponGuarantee;
         WeaponFatePoints = WishConfig.WeaponFatePoints;
-        Weapons = 0;
         WeaponRate = 0.007 + Math.max(.07*(WeaponPity-61), 0);
-
-        WeaponWishSim(WishConfig, WishConfig.WeaponGoal);
 
         ChronicledPity = WishConfig.ChronicledPity;
         ChronicledFatePoints = WishConfig.ChronicledFatePoints;
-        ChronicledItems = 0;
         ChronicledRate = 0.006 + Math.max(0, .06*(ChronicledPity-73));
 
-        ChronicledWishSim(WishConfig, WishConfig.WeaponGoal);
 
-        if (Characters >= WishConfig.CharacterGoal && Weapons >= WishConfig.WeaponGoal && ChronicledItems >= WishConfig.ChronicledGoal) {
-            Successes++;
+        if (!WishConfig.AdvancedWishPlanning) {
+            Characters = 0;
+            Weapons = 0;
+            ChronicledItems = 0;
+
+            CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
+
+            WeaponWishSim(WishConfig, WishConfig.WeaponGoal, WishConfig.MaxWishes);
+
+            ChronicledWishSim(WishConfig, WishConfig.ChronicledGoal, WishConfig.MaxWishes);
+
+            if (Characters >= WishConfig.CharacterGoal && Weapons >= WishConfig.WeaponGoal && ChronicledItems >= WishConfig.ChronicledGoal) {
+                Successes++;
+            }
+            
+        }
+        else {
+            for (const i of WishConfig.wishPlanMapper) {
+                switch (WishConfig[`WishPlanType${i}`]) {
+                    case BannerTypeDropdownOptions['CHARACTER'].value:
+                        Characters = 0
+
+                        CharacterWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishConfig[`WishPlanMaxWishes${i}`]);
+                        
+                        if (Characters >= WishConfig[`WishPlanGoal${i}`]) {
+                            wishPlanResults[i]++;
+                        }
+                        else {
+                            MissedFiveStars++
+                        }
+
+                        break;
+                    case BannerTypeDropdownOptions['WEAPON'].value: 
+                        Weapons = 0
+                        
+                        WeaponWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishConfig[`WishPlanMaxWishes${i}`]);
+
+                        if (Weapons >= WishConfig[`WishPlanGoal${i}`]) {
+                            wishPlanResults[i]++;
+                        }
+                        else {
+                            MissedFiveStars++
+                        }
+
+                        WeaponFatePoints = 0;
+
+                        break;
+                    case BannerTypeDropdownOptions['CHRONICLED_WISH'].value: 
+                        ChronicledItems = 0
+                        
+                        ChronicledWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishConfig[`WishPlanMaxWishes${i}`]);
+
+                        if (ChronicledItems >= WishConfig[`WishPlanGoal${i}`]) {
+                            wishPlanResults[i]++;
+                        }
+                        else {
+                            MissedFiveStars++
+                        }
+
+                        ChronicledFatePoints = WishConfig.ChronicledFatePoints;
+
+                        break;
+                };
+            };
+
+            if (MissedFiveStars == 0) {
+                Successes++
+            };
         }
 
         if (Date.now() - Start > 5000) {
             break;
         }
     }
+    
+    for (const i of WishConfig.wishPlanMapper) {
+        wishPlanResults[i] = ((wishPlanResults[i] / TrialCount)*100).toFixed(2)+'%';
+    };
 
-    // TODO: See if there is a built in function for this.
-    return ((Successes / TrialCount)*100).toFixed(2);
-}
+    return ({
+        TotalSuccessRate: ((Successes / TrialCount)*100).toFixed(2)+'%', 
+        wishPlanResults: wishPlanResults
+    });
+};
 
-function CharacterWishSim(WishConfig, CharacterGoal) {
-    while (Characters < WishConfig.CharacterGoal && Wishes < WishConfig.MaxWishes) {
+function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
+    while (Characters < CharacterGoal && Wishes < MaxWishes) {
         Wishes++;
         CharacterPity++;
 
@@ -391,8 +467,8 @@ function CharacterWishSim(WishConfig, CharacterGoal) {
     }
 }
 
-function WeaponWishSim(WishConfig, CharacterGoal) {
-    while (Weapons < WishConfig.WeaponGoal && Wishes < WishConfig.MaxWishes) {
+function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
+    while (Weapons < WeaponGoal && Wishes < MaxWishes) {
         Wishes++;
         WeaponPity++;
 
@@ -425,8 +501,8 @@ function WeaponWishSim(WishConfig, CharacterGoal) {
     }
 }
 
-function ChronicledWishSim(WishConfig, CharacterGoal) {
-    while (ChronicledItems < WishConfig.ChronicledGoal && Wishes < WishConfig.MaxWishes) {
+function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
+    while (ChronicledItems < ChronicledGoal && Wishes < MaxWishes) {
         Wishes++;
         ChronicledPity++;
 
@@ -500,29 +576,70 @@ function GetWishNumberDistributions() {
 }
 
 function WishCalcs(WishConfig) {
-    LastBannerInfo = BannerInfo[WishConfig.BannerEnd];
+    if (!WishConfig.AdvancedWishPlanning) {
 
-    $('#BannerEnded').hide();
-    $('#WishEndDate').hide();
-    
-    if (!WishConfig.SimpleMode) {
-        // While the Banner End dropdown should prevent the user from selecting an end date that is in the past, we will leave it here for any edge cases that may occur.
-        if (LastBannerInfo.BannerEndDate < Today) {
-            $('#BannerEnded').show().html('Banner has already ended.');
-            $('#MaxWishes,#WishingGoals,#Chance').hide();
-            return ''
+        LastBannerInfo = BannerInfo[WishConfig.BannerEnd];
+
+        if (!WishConfig.SimpleMode) {
+            // While the Banner End dropdown should prevent the user from selecting an end date that is in the past, we will leave it here for any edge cases that may occur.
+            if (LastBannerInfo.BannerEndDate < Today) {
+                $('#BannerEnded').show().html('Banner has already ended.');
+                return ''
+            }
+            
+            $('#WishEndDate').show().html(`Wishing End Date: ${moment(LastBannerInfo.BannerEndDate, "YYYY-MM-DD").format('L')}`);
         }
-        
-        $('#WishEndDate').show().html(`Wishing End Date: ${moment(LastBannerInfo.BannerEndDate, "YYYY-MM-DD").format('L')}`);
+
+        WishConfig.MaxWishes = SavingsCalculator(WishConfig);
+
+        $('#MaxWishes').show().html(`Max Number of Wishes: ${WishConfig.MaxWishes}`);
+
+        let WishingFor = `Wishing for ${WishConfig.CharacterGoal} characters, ${WishConfig.WeaponGoal} weapons, and ${WishConfig.ChronicledGoal} chronicled items.`;
+
+        $('#WishingGoals').show().html(WishingFor);
+
+        $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig).TotalSuccessRate}`);
     }
+    else {
+        let ixBannerEnd = -1;
+        let ixMaxWishes;
+        for (const i of WishConfig.wishPlanMapper) {
+            if (WishConfig[`WishPlanBannerEnd${i}`] > ixBannerEnd) {
+                ixBannerEnd = WishConfig[`WishPlanBannerEnd${i}`];
+                LastBannerInfo = BannerInfo[ixBannerEnd];
 
-    WishConfig.MaxWishes = SavingsCalculator(WishConfig);
+                WishConfig[`WishPlanMaxWishes${i}`] = SavingsCalculator(WishConfig);
+                ixMaxWishes = WishConfig[`WishPlanMaxWishes${i}`]
+            }
+            else if (WishConfig[`WishPlanBannerEnd${i}`] == ixBannerEnd) {
+                WishConfig[`WishPlanMaxWishes${i}`] = ixMaxWishes
+            }
+            else {
+                return '' // Will add onto this validation in a future commit.
+            };
+        };
 
-    $('#MaxWishes').show().html(`Max Number of Wishes: ${WishConfig.MaxWishes}`);
+        wishResults = NumericWishCalculations(WishConfig);
 
-    let WishingFor = `Wishing for ${WishConfig.CharacterGoal} characters, ${WishConfig.WeaponGoal} weapons, and ${WishConfig.ChronicledGoal} chronicled items.`;
+        $('#WishPlanningResultsTable .WishPlanResultsRow').remove();
 
-    $('#WishingGoals').show().html(WishingFor);
+        for (const i of WishConfig.wishPlanMapper) {
+            let BannerEndVal = WishConfig[`WishPlanBannerEnd${i}`]
+            let BannerEndText = $(`#BannerEnd option[value=${BannerEndVal}]`).text();
 
-    $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig)}%`);
+            let newRow = $(
+                `<tr class="WishPlanResultsRow">`+
+                    `<td>${WishConfig[`WishPlanItem${i}`]}</td>`+
+                    `<td>${BannerEndText}</td>`+
+                    `<td>${WishConfig[`WishPlanGoal${i}`]}</td>`+
+                    `<td>${WishConfig['WishPlanMaxWishes'+i]}</td>`+
+                    `<td>${wishResults.wishPlanResults[i]}</td>`+
+                `</tr>`
+            );
+
+            $('#WishPlanningResultsBody').append(newRow);
+        };
+
+        $('#WishPlanningResultsTable').show();
+    };
 }

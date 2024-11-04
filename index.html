@@ -100,6 +100,16 @@
             .btn-add:not([disabled]):hover {
                 background: #90d5ff;
             }
+
+            #WishPlanningResultsTable {
+                width: 75%;
+            }
+
+            @media only screen and (max-width: 600px) {
+                #WishPlanningResultsTable {
+                    width: 100%;
+                }
+            };
         </style>
 
         <center><h1>Genshin Wish And Gacha Calculator</h1><center>
@@ -382,9 +392,9 @@
                                 `<td>`+
                                     `<center>`+
                                         `<select id="WishPlanType${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}" class="form-select TableInput" style="max-width: 175px;">`+
-                                            `<option value=1> Character </option>`+
-                                            `<option value=2> Weapon </option>`+
-                                            `<option value=3> Chronicled Wish </option>`+
+                                            `<option value=${BannerTypeDropdownOptions['CHARACTER'].value}>       ${BannerTypeDropdownOptions['CHARACTER'].text}       </option>`+
+                                            `<option value=${BannerTypeDropdownOptions['WEAPON'].value}>          ${BannerTypeDropdownOptions['WEAPON'].text}          </option>`+
+                                            `<option value=${BannerTypeDropdownOptions['CHRONICLED_WISH'].value}> ${BannerTypeDropdownOptions['CHRONICLED_WISH'].text} </option>`+
                                         `</select>`+
                                     `</center>`+
                                 `</td>`+
@@ -546,7 +556,7 @@
             </div>
         </form>
 
-        <div>
+        <div class="container">
             <center>
                 <div id="LoadingGroup" style="display: none;">
                     <div id="LoadingSpinner"></div>
@@ -554,17 +564,32 @@
                     <span id="LoadingText"></span>
                 </div>
 
-                <div id="Results" style="display: none;">
-                    <div id="WishEndDate" style="display: none;"></div>
+                <div>
+                    <div id="WishEndDate" class="WishResults" style="display: none;"></div>
 
-                    <div id="BannerEnded" style="display: none;"></div>
+                    <div id="BannerEnded" class="WishResults" style="display: none;"></div>
 
-                    <div id="MaxWishes" style="display: none;"></div>
+                    <div id="MaxWishes" class="WishResults" style="display: none;"></div>
 
-                    <div id="WishingGoals" style="display: none;"></div>
+                    <div id="WishingGoals" class="WishResults" style="display: none;"></div>
 
-                    <div id="Chance" style="display: none;"></div>
+                    <div id="Chance" class="WishResults" style="display: none;"></div>
                 </div>
+
+                <table id="WishPlanningResultsTable" class="table table-bordered WishResults" style="font-size: min(3vw, 16px); text-align: center; border: 1px; display: none;">
+                    <thead>
+                        <tr>
+                            <th style="width: 35%">Name</th>
+                            <th style="width: 35%">Wishing End Date</th>
+                            <th style="width: 10%">Copies</th>
+                            <th style="width: 10%">Max Wishes</th>
+                            <th style="width: 10%">Chance of Success</th>
+                        </tr>
+                    </thead>
+                    <tbody id="WishPlanningResultsBody">
+                        <!--- Rows will be added by jquery. --->
+                    </tbody>
+                </table>
             </center>
         </div>
 
@@ -605,7 +630,7 @@
 
             // TODO: Disable the button when clicked and reenable once its done processing.
             $("#Calculate").on('click', function() {
-                $('#Results').hide();
+                $('.WishResults').hide();
 
                 let InvalidFields = getInvalidFields();
 
@@ -641,8 +666,6 @@
                         ResultsLoaded = true
 
                         $('#LoadingGroup').hide();
-
-                        $('#Results').show();
 
                         UpdateCalculateButton();
                     }, 500);
