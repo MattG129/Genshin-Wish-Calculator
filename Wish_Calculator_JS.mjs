@@ -7,7 +7,7 @@ let Trials = 100000;
 let Today = new Date();
 Today.setHours(0,0,0,0);
 
-let BannerTypeDropdownOptions = {
+const BannerTypeDropdownOptions = {
     CHARACTER:       {value: 1, text: 'Character'},
     WEAPON:          {value: 2, text: 'Weapon'},
     CHRONICLED_WISH: {value: 3, text: 'Chronicled Wish'}
