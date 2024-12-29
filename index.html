@@ -119,41 +119,27 @@
         <form id="form" data-parsley-validate="true">
             <div class="container">
                 <hr><center><h2>Calculator Settings</h2></center><br>
-                
+
                 <div class="accordion">
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="ImportAccordion">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ImportAccordionContent" aria-expanded="false" aria-controls="ImportAccordionContent">
-                                <h4 class="d-block w-100 text-center">Import</h4>
+                        <h2 class="accordion-header" id="ImportExportAccordion">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ImportExportAccordionContent" aria-expanded="false" aria-controls="ImportExportAccordionContent">
+                                <h4 class="d-block w-100 text-center">Import/Export</h4>
                             </button>
                         </h2>
-                        <div id="ImportAccordionContent" class="accordion-collapse collapse" aria-labelledby="ImportAccordion" data-bs-parent="#ImportAccordion">
+                        <div id="ImportExportAccordionContent" class="accordion-collapse collapse" aria-labelledby="ImportExportAccordion" data-bs-parent="#ImportExportAccordion">
                             <div class="accordion-body">
-                                <label for="ImportState" class="form-label">[PLACE HOLDER DESCRIPTION]</label><br>
-                                <textarea id="ImportState" class="form-control"></textarea><br>
+                                <label for="ImportState" class="form-label">
+                                    You can click the <b>Export</b> button below to copy all your wish info for future use. When you are ready to use the calculator again, you can paste that info into the text box below and click <b>Import</b> or <b>Import and Run</b>.
+                                </label><br>
+                                <textarea id="ImportState" class="form-control" style="border-color: black;"></textarea><br>
                                 <p id="InvalidImportMessage" style="color: red; display: none;">Invalid Import.</p>
                                 <center>
-                                    <a id="Import" class="btn btn-primary" style="border-color: black;" onclick="Import(Scroll=true)"> Import </a>
-                                    <a class="btn btn-primary" style="border-color: black;" onclick="Import(Scroll=false); $('#Calculate').trigger('click');"> Import and Run </a>
+                                    <a class="btn btn-primary" style="border-color: black;" onclick="Import(RunCalcs=false)"> Import </a>
+                                    <a class="btn btn-primary" style="border-color: black;" onclick="Import(RunCalcs=true);"> Import and Run </a>
+                                    <a class="btn btn-primary" style="border-color: black;" onclick="Export()"> Export </a>
                                 </center>
                                 <br>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="ExportAccordion">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ExportAccordionContent" aria-expanded="false" aria-controls="ExportAccordionContent">
-                                <h4 class="d-block w-100 text-center">Export</h4>
-                            </button>
-                        </h2>
-                        <div id="ExportAccordionContent" class="accordion-collapse collapse" aria-labelledby="ExportAccordion" data-bs-parent="#ExportAccordion">
-                            <div class="accordion-body">
-                                <label for="ExportState" class="form-label">[PLACE HOLDER DESCRIPTION]</label><br>
-                                <textarea id="ExportState" class="form-control" disabled></textarea><br>
-                                
-
-
                             </div>
                         </div>
                     </div>
@@ -409,7 +395,7 @@
                                     `</center>`+
                                 `</td>`+
                                 `<td>`+
-                                    `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove(); UpdateExportState();">`+
+                                    `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove();">`+
                                         `<i class="bi bi-x-lg" style=" font-weight: bold;"></i>`+
                                     `</button>`+
                                 `</td>`+
@@ -422,8 +408,6 @@
                         $(`#WishPlanBannerEnd${NewWishPlanRowID}`).html($('#BannerEnd').html());
 
                         NewWishPlanRowID++;
-
-                        UpdateExportState();
                     };
 
                     $(function() {
@@ -808,15 +792,6 @@
                 }
             });
 
-            function UpdateExportState(){
-                if (getInvalidFields().length == 0) {
-                    $('#ExportState').val(JSON.stringify(CompileForm()))
-                }
-                else {
-                    $('#ExportState').val('Invalid information detected. Cannot generate export.')
-                }
-            };
-
             function CompileForm(){
                 let FormValues = {};
                 
@@ -843,9 +818,9 @@
                 return FormValues
             };
 
-            $('#form').on('input', UpdateExportState);
+            $('#form').on('input');
 
-            function Import(Scroll) {
+            function Import(RunCalcs) {
                 let isValidImport = true;
                 let JSONImport;
 
@@ -934,7 +909,10 @@
 
                     $('input').change().trigger('input');
 
-                    if (Scroll == true) {
+                    if (RunCalcs == true) {
+                        $('#Calculate').trigger('click');
+                    }
+                    else {
                         $('html, body').animate({
                             scrollTop: $("#CalculatorHeaderAnchor").offset().top,
                             easing: 'linear'
@@ -943,6 +921,26 @@
                 }
                 else {
                     $('#InvalidImportMessage').show();
+                }
+            };
+
+            function Export(){
+                if (getInvalidFields().length != 0) {
+                    swal({text: 'Invalid information detected. Cannot generate export.', icon: 'error'});
+                }
+                else {
+                    let ExportState = JSON.stringify(CompileForm());
+                    var temp = $("<input>");
+                    $("body").append(temp);
+                    temp.val(ExportState).select();
+                    document.execCommand("copy");
+                    temp.remove();
+
+                    swal({
+                        text: 'Export copied to clipboard.',
+                        icon: 'success',
+                        timer: 2000
+                    });
                 }
             };
 
