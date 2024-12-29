@@ -85,6 +85,10 @@
                 border-color: black;
             }
 
+            td.td-label:hover {
+                background-color: #E1EDF0;
+            }
+
             .swal-button {
                 background-color: #4962B3;
             }
@@ -291,11 +295,15 @@
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;"><b>Guarantee</b></td>
-                                <td>
-                                    <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput">
+                                <td class="td-label" >
+                                    <label style="display: block;">
+                                        <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput">
+                                    </label>
                                 </td>
-                                <td>
-                                    <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput">
+                                <td class="td-label">
+                                    <label style="display: block;">
+                                        <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput">
+                                    </label>
                                 </td>
                                 <td></td>
                             </tr>
