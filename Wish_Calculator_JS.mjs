@@ -2,7 +2,7 @@
 const v4StartDate = moment('2023-8-15', "YYYY-MM-DD").toDate();
 let BannerInfo = [];
 let LastBannerInfo;
-let Trials = 100000;
+let Trials = 10**5;
 
 let Today = new Date();
 Today.setHours(0,0,0,0);
@@ -328,7 +328,7 @@ function NumericWishCalculations(WishConfig) {
         }
 
         WeaponPity = WishConfig.WeaponPity;
-        Guarantee = WishConfig.WeaponGuarantee;
+        WeaponGuarantee = WishConfig.WeaponGuarantee;
         WeaponFatePoints = WishConfig.WeaponFatePoints;
         WeaponRate = 0.007 + Math.max(.07*(WeaponPity-61), 0);
 
@@ -354,7 +354,19 @@ function NumericWishCalculations(WishConfig) {
             
         }
         else {
+            let First = true
+            let WishGroupMaxWishes = 0
             for (const i of WishConfig.wishPlanMapper) {
+                if (WishGroupMaxWishes != WishConfig[`WishPlanMaxWishes${i}`]) {
+                    WishGroupMaxWishes = WishConfig[`WishPlanMaxWishes${i}`];
+
+                    if (!First) {
+                        WeaponFatePoints = 0;
+                        ChronicledFatePoints = 0;
+                    }
+                    First = false;
+                };
+
                 switch (WishConfig[`WishPlanType${i}`]) {
                     case BannerTypeDropdownOptions['CHARACTER'].value:
                         Characters = 0
@@ -381,8 +393,6 @@ function NumericWishCalculations(WishConfig) {
                             MissedFiveStars++
                         }
 
-                        WeaponFatePoints = 0;
-
                         break;
                     case BannerTypeDropdownOptions['CHRONICLED_WISH'].value: 
                         ChronicledItems = 0
@@ -396,8 +406,6 @@ function NumericWishCalculations(WishConfig) {
                             MissedFiveStars++
                         }
 
-                        ChronicledFatePoints = WishConfig.ChronicledFatePoints;
-
                         break;
                 };
             };
@@ -408,6 +416,7 @@ function NumericWishCalculations(WishConfig) {
         }
 
         if (Date.now() - Start > 5000) {
+            TrialCount += 1
             break;
         }
     }
@@ -479,7 +488,7 @@ function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
         if (Math.random() <= WeaponRate) {
             WeaponRate = 0.007;
             WeaponPity = 0;
-            
+
             if (WishConfig.UsingStarglitter) {
                 Wishes -= 2 // You get enough starglitter from five stars to make two additional wishes.
             }
@@ -524,57 +533,6 @@ function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
     }
 }
 
-
-
-// Stub function. Will use this in the future for wish simulations.
-function GetWishNumberDistributions() {
-    let MaxPity = 90;
-
-    let states = {};
-    let FiveStarChance;
-
-    for (let i = 0; i <= MaxPity; i++) {
-        states[i] = {};
-
-        // This needs to be updated for weapon and chronicled banners.
-        FiveStarChance = Math.min(.006 + .06*Math.max(0, i-72), 1);
-
-        if (i < MaxPity) {
-            states[i][i+1] = 1-FiveStarChance;
-        }
-        
-        states[i][90] = FiveStarChance;
-    }
-
-    let stateTransformations = [];
-    let rowTransformations;
-
-    for (const [key, value] of Object.entries(states)) {
-        rowTransformations = new Array(Object.keys(states).length).fill(0);
-
-        for (const [SubKey, SubValue] of Object.entries(value)) {
-            rowTransformations[SubKey] = SubValue
-        };
-
-        stateTransformations.push(rowTransformations);
-    };
-
-    let stateTransformationsMatrix = math.matrix(stateTransformations.slice(), 'sparse')
-    const OriginalStateTransformationsMatrix = math.matrix(stateTransformations.slice(), 'sparse')
-
-    let Pities = Array.from(Array(MaxPity), () => [0]);
-
-    for (let i = 1; i < MaxPity; i++) {
-        for (let CharacterPity = 0; CharacterPity <= MaxPity-i; CharacterPity++) {
-            Pities[CharacterPity].push(math.subset(stateTransformationsMatrix, math.index(CharacterPity, Object.keys(states).length-1)).toFixed(6));
-        }
-        
-        stateTransformationsMatrix = math.multiply(stateTransformationsMatrix, OriginalStateTransformationsMatrix)
-    }
-
-    console.dir(Pities, {'maxArrayLength': null})
-}
-
 function WishCalcs(WishConfig) {
     if (!WishConfig.AdvancedWishPlanning) {
 
@@ -598,8 +556,8 @@ function WishCalcs(WishConfig) {
 
         $('#WishingGoals').show().html(WishingFor);
 
-        $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig).TotalSuccessRate}`);
-    }
+            $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig).TotalSuccessRate}`);
+        }
     else {
         let ixBannerEnd = -1;
         let ixMaxWishes;
@@ -619,7 +577,7 @@ function WishCalcs(WishConfig) {
             };
         };
 
-        wishResults = NumericWishCalculations(WishConfig);
+            wishResults = NumericWishCalculations(WishConfig);
 
         $('#WishPlanningResultsTable .WishPlanResultsRow').remove();
 
