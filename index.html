@@ -83,6 +83,7 @@
 
             .TableInput {
                 border-color: black;
+                font-size: min(3vw, 16px);
             }
 
             td.td-label:hover {
@@ -438,7 +439,7 @@
                         $('#WishPlanningTableBody').sortable("refresh");
 
                         $(`#WishPlanBannerEnd${NewWishPlanRowID}`).html($('#BannerEnd').html());
-                        $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).attr('data-wishplan-rowid', NewWishPlanRowID).css('font-size', 'min(3vw, 16px)')
+                        $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).attr('data-wishplan-rowid', NewWishPlanRowID)
 
                         NewWishPlanRowID++;
                     };
