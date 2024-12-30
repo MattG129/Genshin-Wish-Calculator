@@ -98,13 +98,13 @@ function SavingsCalculator(WishConfig) {
         const FloorVals = [WishConfig.ExpectedStarsFloor9, WishConfig.ExpectedStarsFloor10, WishConfig.ExpectedStarsFloor11, WishConfig.ExpectedStarsFloor12]
         
         for (let i = 0; i <= FloorVals.length; i++) {
-            if (FloorVals[i] == 9) {
+            if (FloorVals[i] == 3) { // 9 Stars
                 ExpectedAbyssPrimos += 200;
             }
-            else if (FloorVals[i] >= 6) {
+            else if (FloorVals[i] >= 2) { // 6-8 Stars
                 ExpectedAbyssPrimos += 100;
             }
-            else if (FloorVals[i] >= 3) {
+            else if (FloorVals[i] >= 1) { // 3-5 Stars
                 ExpectedAbyssPrimos += 50;
             }
         }
@@ -238,14 +238,14 @@ function SavingsCalculator(WishConfig) {
 
         // TODO: Could maybe go a bit more in depth.
         if (WishConfig.BPPurchased) {
-            IntertwinedFates += Math.max(0, (LastBannerInfo.Phase === 1 ? 3 : 4) + 4 * LastBannerInfo.PatchDiff - Math.min(4, Math.floor(WishConfig.BPLevel / 10))); 
+            IntertwinedFates += Math.max(0, (LastBannerInfo.Phase === 1 ? 3 : 4) + 4 * LastBannerInfo.PatchDiff - Math.min(4, WishConfig.BPLevel)); 
             // Assumes that the user will only be able to claim 3 of the 4 fates for that pass, if the banner ends in the first phase. 
             // Also, subtracts the amount of fates already claimed from this battle pass.
             // Subtracting the claimed interwined fates has to be done on the same line so it can be wrapped in the max function as there is an edge case where
             //      the user can earn 4 intertwined from the pass while the system is only expecting 3 to be claimable and so it would result in -1 fates being expected from the pass.
 
             Primos += 680 * ((LastBannerInfo.Phase === 2 ? 1 : 0) + LastBannerInfo.PatchDiff); // Assumes that the user won't reach level 50 for that pass, if the banner ends in the first phase.
-            if (WishConfig.BPLevel === 50) { // Subtracts 680, if the primos have already been claimed for this pass.
+            if (WishConfig.BPLevel === 5) { // Subtracts 680, if the primos have already been claimed for this pass.
                 Primos -= 680;
             }
         }
