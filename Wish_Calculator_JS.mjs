@@ -275,6 +275,10 @@ function SavingsCalculator(WishConfig) {
                 Primos -= 680;
             }
         }
+
+        // There are three bp missions to "Enhance 5-star artifacts a total of 30/60/100 levels".
+        // The rewards add up to 60 primos, are not time gated, and don't require purchasing the pass.
+        Primos += 60*LastBannerInfo.PatchDiff; 
     }
 
 
