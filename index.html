@@ -582,9 +582,9 @@
                 </div>
 
                 <div>
-                    <div id="WishEndDate" class="WishResults" style="display: none;"></div>
+                    <div id="WishError" class="WishResults" style="display: none; color: #800000;"></div>
 
-                    <div id="BannerEnded" class="WishResults" style="display: none;"></div>
+                    <div id="WishEndDate" class="WishResults" style="display: none;"></div>
 
                     <div id="MaxWishes" class="WishResults" style="display: none;"></div>
 
@@ -681,9 +681,12 @@
                     }, 250)
 
                     setTimeout(function () {
-                        WishCalcs(CompileForm());
+                        let Results = WishCalcs(CompileForm());
 
-                        ResultsLoaded = true
+                        if (Results.Success) {
+                            ResultsLoaded = true
+                            UpdateCalculateButton();
+                        };
 
                         $('#LoadingGroup').hide();
 
@@ -691,8 +694,7 @@
                             scrollTop: document.body.scrollHeight,
                             easing: 'linear'
                         }, 250)
-
-                        UpdateCalculateButton();
+                    
                     }, 500);
                 }
             })

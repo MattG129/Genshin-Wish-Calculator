@@ -547,8 +547,8 @@ function WishCalcs(WishConfig) {
         if (!WishConfig.SimpleMode) {
             // While the Banner End dropdown should prevent the user from selecting an end date that is in the past, we will leave it here for any edge cases that may occur.
             if (LastBannerInfo.BannerEndDate < Today) {
-                $('#BannerEnded').show().html('Banner has already ended.');
-                return ''
+                $('#WishError').show().html('Banner has already ended.');
+                return {Success: false}
             }
             
             $('#WishEndDate').show().html(`Wishing End Date: ${moment(LastBannerInfo.BannerEndDate, "YYYY-MM-DD").format('L')}`);
@@ -562,8 +562,10 @@ function WishCalcs(WishConfig) {
 
         $('#WishingGoals').show().html(WishingFor);
 
-            $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig).TotalSuccessRate}`);
-        }
+        $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig).TotalSuccessRate}`);
+
+        return {Success: true}
+    }
     else {
         let ixBannerEnd = -1;
         let ixMaxWishes;
@@ -580,12 +582,13 @@ function WishCalcs(WishConfig) {
                     WishConfig[`WishPlanMaxWishes${i}`] = ixMaxWishes
                 }
                 else {
-                    return '' // Will add onto this validation in a future commit.
+                    $('#WishError').show().html('Banner end dates must be in ascending order.');
+                    return {Success: false};
                 };
             };
         };
 
-            wishResults = NumericWishCalculations(WishConfig);
+        wishResults = NumericWishCalculations(WishConfig);
 
         $('#WishPlanningResultsTable .WishPlanResultsRow').remove();
 
@@ -615,5 +618,7 @@ function WishCalcs(WishConfig) {
         ));
 
         $('#WishPlanningResultsTable').show();
+
+        return {Success: true}
     };
 }
