@@ -179,12 +179,12 @@
                     <div class="row">
                         <div class="col-sm">
                             <label for="Primos" class="form-label">Primogems</label><br>
-                            <input type="number" id="Primos" class="form-control" data-parsley-trigger="change" data-parsley-required="true" Value="0"><br>
+                            <input type="number" id="Primos" class="form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
                         </div>
                     
                         <div class="col-sm">
                             <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
-                            <input type="number" id="IntertwinedFates" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                            <input type="number" id="IntertwinedFates" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
 
                         <div class="col-sm SimpleModeSkipGroup">
@@ -195,7 +195,7 @@
                                 <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
                             </a>
                             <br>
-                            <input type="number" id="Stardust" class="form-control" data-parsley-trigger="change" data-parsley-min="0" min="0"><br>
+                            <input type="number" id="Stardust" class="form-control" data-parsley-trigger="input" data-parsley-min="0" min="0"><br>
                         </div>
                     </div>
                     <br>
@@ -208,7 +208,7 @@
                     <div class="row" id="StarglitterSkipGroup" style="display: none;">
                         <div class="col-sm">
                             <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
-                            <input type="number" id="Starglitter" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                            <input type="number" id="Starglitter" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
                     
                         <div class="col-sm">
@@ -219,7 +219,7 @@
                                 <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
                             </a>
                             <br>
-                            <input type="number" id="MissingFourStars" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="38"><br>
+                            <input type="number" id="MissingFourStars" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="38"><br>
                         </div>
 
                         <div class="col-sm">
@@ -230,7 +230,7 @@
                                 <i class="d-flex bi bi-question-lg tooltip-question-icon"></i>
                             </a>
                             <br>
-                            <input type="number" id="MissingFiveStars" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="7"><br>
+                            <input type="number" id="MissingFiveStars" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="7"><br>
                         </div>
                     </div>
                 </div>
@@ -273,25 +273,25 @@
                             <tr class='SimpleWishPlanningSkipGroup'>
                                 <td style="vertical-align: middle;"><b>Number of 5&#9733;s Wishing For</b></td>
                                 <td>
-                                    <input type="number" id="CharacterGoal" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    <input type="number" id="CharacterGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
                                 </td>
                                 <td>
-                                    <input type="number" id="WeaponGoal" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    <input type="number" id="WeaponGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
                                 </td>
                                 <td>
-                                    <input type="number" id="ChronicledGoal" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    <input type="number" id="ChronicledGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
                                 </td>
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;"><b>Pity</b></td>
                                 <td>
-                                    <input type="number" id="CharacterPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
+                                    <input type="number" id="CharacterPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
                                 </td>
                                 <td>
-                                    <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
+                                    <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
                                 </td>
                                 <td>
-                                    <input type="number" id="ChronicledPity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
+                                    <input type="number" id="ChronicledPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
                                 </td>
                             </tr>
                             <tr>
@@ -312,10 +312,10 @@
                                 <td style="vertical-align: middle;"><b>Fate Points</b></td>
                                 <td></td>
                                 <td>
-                                    <input type="number" id="WeaponFatePoints" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                    <input type="number" id="WeaponFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
                                 </td>
                                 <td>
-                                    <input type="number" id="ChronicledFatePoints" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                    <input type="number" id="ChronicledFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
                                 </td>
                             </tr>
                             <tr>
@@ -343,7 +343,7 @@
                                 </td>
                                 <td>
                                     <div id="CapturingRadiancePitySkipGroup">
-                                        <input type="number" id="CapturingRadiancePity" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
+                                        <input type="number" id="CapturingRadiancePity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
                                     </div>
                                 </td>
                                 <td></td>
@@ -419,7 +419,7 @@
                                 `</td>`+
                                 `<td>`+
                                     `<center>`+
-                                        `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
+                                        `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
                                     `</center>`+
                                 `</td>`+
                                 `<td class="td-label">`+
@@ -517,7 +517,7 @@
                         <center>
                             <div class="col-sm-2">
                                 <label for="ExpectedAct" class="form-label">Expected Act</label>
-                                <input type="number" id="ExpectedAct" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0"><br>
+                                <input type="number" id="ExpectedAct" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0"><br>
                             </div>
                             <div class="col-sm-3">
                                 <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
@@ -576,12 +576,12 @@
 
                     <center id="SecondaryEventsCompletableSkipGroup" style="max-width: 30%;">
                         <label for="SecondaryEventsCompletable" class="form-label"></label>
-                        <input type="number" id="SecondaryEventsCompletable" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0"><br>
+                        <input type="number" id="SecondaryEventsCompletable" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0"><br>
                     </center>
 
                     <center style="max-width: 30%;">
                         <label for="SecondaryEventsCompleted" class="form-label">Current Patch's Secondary Events Completed</label>
-                        <input type="number" id="SecondaryEventsCompleted" class="form-control" data-parsley-trigger="change" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0"><br>
+                        <input type="number" id="SecondaryEventsCompleted" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0"><br>
                     </center>
 
                     <center id="FlagshipEventCompletableSkipGroup">
