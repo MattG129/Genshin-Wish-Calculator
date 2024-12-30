@@ -359,17 +359,20 @@
                                 <th style="width: 5%;">
                                     <!-- Veritcal Grip -->
                                 </th>
-                                <th style="width: 32.5%; min-width: 175px;">
+                                <th style="width: 30%; min-width: 175px;">
                                     Name
                                 </th>
                                 <th style="width: 15%; min-width: 155px;">
                                     Banner Type
                                 </th>
-                                <th style="width: 32.5%; min-width: 125px;">
+                                <th style="width: 30%; min-width: 125px;">
                                     Wishing End Date
                                 </th>
                                 <th style="width: 10%; min-width: 80px;">
                                     Copies
+                                </th>
+                                <th style="width: 5%;">
+                                    Enabled
                                 </th>
                                 <th style="width: 5%;">
                                     <!-- Remove Button -->
@@ -381,7 +384,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="6">
+                                <td colspan="7">
                                     <button id="AddRowButton" type="button" style="width: 100%" class="btn btn-add">
                                         <b><i class="bi bi-plus-lg" style="font-size: 30px; font-weight: bold; color: white;"></i></b>
                                     </button>
@@ -397,11 +400,11 @@
                             `<tr id="WishPlanRow${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}">`+
                                 `<td style="vertical-align: middle;"><i class="bi bi-arrows-move handle" style="font-size: 20px"></i></td>`+
                                 `<td>`+
-                                    `<input id="WishPlanItem${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}" type="text" class="form-control TableInput" style="width: 100%; font-size: min(3vw, 16px);">`+
+                                    `<input id="WishPlanItem${NewWishPlanRowID}" type="text" class="form-control TableInput" style="width: 100%;">`+
                                 `</td>`+
                                 `<td>`+
                                     `<center>`+
-                                        `<select id="WishPlanType${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}" class="form-select TableInput" style="font-size: min(3vw, 16px);">`+
+                                        `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableInput">`+
                                             `<option value=${BannerTypeDropdownOptions['CHARACTER'].value}>       ${BannerTypeDropdownOptions['CHARACTER'].text}       </option>`+
                                             `<option value=${BannerTypeDropdownOptions['WEAPON'].value}>          ${BannerTypeDropdownOptions['WEAPON'].text}          </option>`+
                                             `<option value=${BannerTypeDropdownOptions['CHRONICLED_WISH'].value}> ${BannerTypeDropdownOptions['CHRONICLED_WISH'].text} </option>`+
@@ -410,13 +413,18 @@
                                 `</td>`+
                                 `<td>`+
                                     `<center>`+
-                                        `<select id="WishPlanBannerEnd${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}" style="font-size: min(3vw, 16px);" class="form-select TableInput WishPlanBannerEnd" style="max-width: 300px;"></select>`+
+                                        `<select id="WishPlanBannerEnd${NewWishPlanRowID}" class="form-select TableInput WishPlanBannerEnd" style="max-width: 300px;"></select>`+
                                     `</center>`+
                                 `</td>`+
                                 `<td>`+
                                     `<center>`+
-                                        `<input id="WishPlanGoal${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}" style="font-size: min(3vw, 16px);" type="number" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
+                                        `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="change" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
                                     `</center>`+
+                                `</td>`+
+                                `<td class="td-label">`+
+                                    `<label style="display: block;">`+
+                                        `<input id="WishPlanEnabled${NewWishPlanRowID}" type="checkbox" class="form-check-input TableInput" onchange="ToggleWishPlanRow(this)" checked>`+
+                                    `</label>`+
                                 `</td>`+
                                 `<td>`+
                                     `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove();">`+
@@ -430,6 +438,7 @@
                         $('#WishPlanningTableBody').sortable("refresh");
 
                         $(`#WishPlanBannerEnd${NewWishPlanRowID}`).html($('#BannerEnd').html());
+                        $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).attr('data-wishplan-rowid', NewWishPlanRowID).css('font-size', 'min(3vw, 16px)')
 
                         NewWishPlanRowID++;
                     };
@@ -738,6 +747,12 @@
                     $('#WishPlanningTable').hide();
                 }
             })
+
+            function ToggleWishPlanRow(caller) {
+                let WishPlanRowID = $(caller).attr('data-wishplan-rowid');
+
+                $(`input[data-wishplan-rowid=${WishPlanRowID}], select[data-wishplan-rowid=${WishPlanRowID}]`).css('color', $(caller).is(':checked')?'black':'gray');
+            };
 
             $('#EnableEventCalcs').on('change', function () {
                 if ( $('#EnableEventCalcs').is(':checked') && !$('#SimpleMode').is(':checked')) {
