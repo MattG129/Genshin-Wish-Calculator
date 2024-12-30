@@ -2,7 +2,7 @@
 const v4StartDate = moment('2023-8-15', "YYYY-MM-DD").toDate();
 let BannerInfo = [];
 let LastBannerInfo;
-let Trials = 10**5;
+let Trials = 10**6;
 
 let Today = new Date();
 Today.setHours(0,0,0,0);
@@ -424,15 +424,15 @@ function NumericWishCalculations(WishConfig) {
             break;
         }
     }
-    
+
     for (const i of WishConfig.wishPlanMapper) {
         if (WishConfig[`WishPlanEnabled${i}`]) {
-            wishPlanResults[i] = ((wishPlanResults[i] / TrialCount)*100).toFixed(2)+'%';
+            wishPlanResults[i] = ((wishPlanResults[i] / TrialCount)*100).toFixed(1)+'%';
         };
     };
 
     return ({
-        TotalSuccessRate: ((Successes / TrialCount)*100).toFixed(2)+'%', 
+        TotalSuccessRate: ((Successes / TrialCount)*100).toFixed(1)+'%', 
         wishPlanResults: wishPlanResults
     });
 };
