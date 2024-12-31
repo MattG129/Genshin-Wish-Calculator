@@ -173,7 +173,7 @@
                 </script>
                 <br>
 
-                <div class="SimpleModeSkipGroup">
+                <div class="SimpleModeSkipGroup form-check form-check-inline form-switch">
                     <input type="checkbox" id="EnableEventCalcs" class="form-check-input">
                     <label for="EnableEventCalcs" class="form-label">Factor in events</label>
                     <a data-toggle="tooltip"
@@ -189,17 +189,17 @@
                     <hr><center><h2>Currency</h2></center><br>
 
                     <div class="row">
-                        <div class="col-sm">
+                        <div class="col-sm-4">
                             <label for="Primos" class="form-label">Primogems</label><br>
-                            <input type="number" id="Primos" class="form-control" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
+                            <input type="number" id="Primos" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
                         </div>
                     
-                        <div class="col-sm">
+                        <div class="col-sm-4">
                             <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
-                            <input type="number" id="IntertwinedFates" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                            <input type="number" id="IntertwinedFates" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
 
-                        <div class="col-sm SimpleModeSkipGroup">
+                        <div class="col-sm-4 SimpleModeSkipGroup">
                             <label for="Stardust" class="form-label">Masterless Stardust</label>
                             <a data-toggle="tooltip"
                                 title="This will be used to calculate how many of the available Intertwined Fates you can purchase from the Stardust Exchange between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month's Intertwined Fates have already been purchased."
@@ -207,23 +207,23 @@
                                 <i class="bi bi-question-circle"></i>
                             </a>
                             <br>
-                            <input type="number" id="Stardust" class="form-control" data-parsley-trigger="input" data-parsley-min="0" min="0"><br>
+                            <input type="number" id="Stardust" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-min="0" min="0"><br>
                         </div>
                     </div>
                     <br>
 
-                    <center>
+                    <div class="form-check form-check-inline form-switch">
                         <input type="checkbox" id="UsingStarglitter" class="form-check-input">
                         <label for="UsingStarglitter" class="form-label">Using Masterless Starglitter</label><br>
-                    </center>
+                    </div>
 
                     <div class="row" id="StarglitterSkipGroup" style="display: none;">
-                        <div class="col-sm">
+                        <div class="col-sm-4">
                             <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
-                            <input type="number" id="Starglitter" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                            <input type="number" id="Starglitter" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
                     
-                        <div class="col-sm">
+                        <div class="col-sm-4">
                             <label for="MissingFourStars" class="form-label">Missing 4&#9733; Characters</label>
                             <a data-toggle="tooltip"
                                 title="If all 4&#9733; characters have been acquired then every 4&#9733; pulled should give at least 2 Masterless Starglitter. The calculator will assume that a 4&#9733; is given once every 10 wishes, and so if all 4&#9733;s are acquired before or during the wishing process then 2 additional Masterless Starglitter will be awarded per subsequent wish."
@@ -231,10 +231,10 @@
                                 <i class="bi bi-question-circle"></i>
                             </a>
                             <br>
-                            <input type="number" id="MissingFourStars" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="38"><br>
+                            <input type="number" id="MissingFourStars" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="38"><br>
                         </div>
 
-                        <div class="col-sm">
+                        <div class="col-sm-4">
                             <label for="MissingFiveStars" class="form-label">Missing Standard Banner 5&#9733; Characters</label>
                             <a data-toggle="tooltip"
                                 title="5&#9733; character constellations will award 10 Masterless Starglitter and so if all standard banner 5&#9733;s are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you pull a standard banner 5&#9733;. Additional wishes gained from this won't be factored into the <b>Max Number of Wishes</b>."
@@ -242,7 +242,7 @@
                                 <i class="bi bi-question-circle"></i>
                             </a>
                             <br>
-                            <input type="number" id="MissingFiveStars" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="7"><br>
+                            <input type="number" id="MissingFiveStars" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="7"><br>
                         </div>
                     </div>
                 </div>
@@ -337,8 +337,10 @@
                                     </a>
                                     <br>
 
-                                    <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableInput">
-                                    <label for="EnableCapturingRadiance" class="form-label">Enable</label>
+                                    <div class="form-check form-check-inline form-switch">
+                                        <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableInput">
+                                        <label for="EnableCapturingRadiance" class="form-label">Enable</label>
+                                    </div>
                                 </td>
                                 <td>
                                     <div id="CapturingRadiancePitySkipGroup">
@@ -458,8 +460,8 @@
                     <center><h3>Expected Stars:</h3></center>
 
                     <div class="row">
-                        <div class="col-sm">
-                            <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label><br>
+                        <div class="col-sm-3">
+                            <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label>
                             <select id="ExpectedStarsFloor9" class="form-select" style="max-width: 300px;">
                                 <option value="0"> 0-2 &#x2736; </option>
                                 <option value="1"> 3-5 &#x2736; </option>
@@ -468,8 +470,8 @@
                             </select>
                         </div>
                     
-                        <div class="col-sm">
-                            <label for="ExpectedStarsFloor10" class="form-label">Floor 10</label><br>
+                        <div class="col-sm-3">
+                            <label for="ExpectedStarsFloor10" class="form-label">Floor 10</label>
                             <select id="ExpectedStarsFloor10" class="form-select" style="max-width: 300px;">
                                 <option value="0"> 0-2 &#x2736; </option>
                                 <option value="1"> 3-5 &#x2736; </option>
@@ -478,8 +480,8 @@
                             </select>
                         </div>
 
-                        <div class="col-sm">
-                            <label for="ExpectedStarsFloor11" class="form-label">Floor 11</label><br>
+                        <div class="col-sm-3">
+                            <label for="ExpectedStarsFloor11" class="form-label">Floor 11</label>
                             <select id="ExpectedStarsFloor11" class="form-select" style="max-width: 300px;">
                                 <option value="0"> 0-2 &#x2736; </option>
                                 <option value="1"> 3-5 &#x2736; </option>
@@ -488,8 +490,8 @@
                             </select>
                         </div>
 
-                        <div class="col-sm">
-                            <label for="ExpectedStarsFloor12" class="form-label">Floor 12</label><br>
+                        <div class="col-sm-3">
+                            <label for="ExpectedStarsFloor12" class="form-label">Floor 12</label>
                             <select id="ExpectedStarsFloor12" class="form-select" style="max-width: 300px;">
                                 <option value="0"> 0-2 &#x2736; </option>
                                 <option value="1"> 3-5 &#x2736; </option>
@@ -500,27 +502,22 @@
                     </div>
                     <br>
 
-                    <center>
+                    <div class="form-check form-check-inline">
                         <input type="checkbox" id="AbyssCurrentCycleCompleted" class="form-check-input">
                         <label for="AbyssCurrentCycleCompleted" class="form-label">Current cycle completed?</label><br>
-                    </center>
+                    </div>
                 </div>
 
 
                 <div class="WishSection SimpleModeSkipGroup">
                     <hr><center><h2>Imaginarium Theater</h2></center><br>
 
-                    <div class="row">
-                        <center>
-                            <div class="col-sm-2">
-                                <label for="ExpectedAct" class="form-label">Expected Act</label>
-                                <input type="number" id="ExpectedAct" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0"><br>
-                            </div>
-                            <div class="col-sm-3">
-                                <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
-                                <label for="ITCurrentCycleCompleted" class="form-label">Current cycle completed</label><br>
-                            </div>
-                        </center>
+                    <label for="ExpectedAct" class="form-label">Expected Act</label>
+                    <input type="number" id="ExpectedAct" class="form-control" style="max-width: 100px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0">
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
+                        <label for="ITCurrentCycleCompleted" class="form-label">Current cycle completed</label>
                     </div>
                 </div>
 
@@ -537,33 +534,26 @@
                         </h2>
                     </center>
                     <br>
-                    <div class="row">
-                        <center>
-                            <div class="col-sm">
-                                <input type="checkbox" id="HasWelkin" class="form-check-input">
-                                <label for="HasWelkin" class="form-label">Purchasing Blessing of the Welking Moon</label>
-                            </div>
-                            <div class="col-sm-3">
-                                <input type="checkbox" id="BPPurchased" class="form-check-input">
-                                <label for="BPPurchased" class="form-label">Purchasing Battle Pass</label>
-                            </div>
-                        </center>
-                    </div>
 
-                    <div class="row">
-                        <center>
-                            <div class="col-sm-2" id="BPLevelSkipGroup" style="display: none;">
-                                <label for="BPLevel" class="form-label">Battle Pass Level</label>
-                                <select id="BPLevel" class="form-select" style="max-width: 300px;">
-                                    <option value="0"> 0-9   </option>
-                                    <option value="1"> 10-19 </option>
-                                    <option value="2"> 20-29 </option>
-                                    <option value="3"> 30-39 </option>
-                                    <option value="4"> 40-49 </option>
-                                    <option value="5"> 50    </option>
-                                </select>
-                            </div>
-                        </center>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" id="HasWelkin" class="form-check-input">
+                        <label for="HasWelkin" class="form-label">Purchasing Blessing of the Welking Moon</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" id="BPPurchased" class="form-check-input">
+                        <label for="BPPurchased" class="form-label">Purchasing Battle Pass</label>
+                    </div>
+               
+                    <div id="BPLevelSkipGroup" class="form-group" style="display: none;">
+                        <label for="BPLevel" class="form-label">Battle Pass Level</label>
+                        <select id="BPLevel" class="form-select" style="max-width: 100px;">
+                            <option value="0"> 0-9   </option>
+                            <option value="1"> 10-19 </option>
+                            <option value="2"> 20-29 </option>
+                            <option value="3"> 30-39 </option>
+                            <option value="4"> 40-49 </option>
+                            <option value="5"> 50    </option>
+                        </select>
                     </div>
                 </div>
 
@@ -571,28 +561,30 @@
                 <div id="EventCalcs" class="WishSection SimpleModeSkipGroup">
                     <hr><center><h2>Events</h2></center><br>
 
-                    <center id="SecondaryEventsCompletableSkipGroup" style="max-width: 30%;">
+                    <div id="SecondaryEventsCompletableSkipGroup">
                         <label for="SecondaryEventsCompletable" class="form-label"></label>
-                        <input type="number" id="SecondaryEventsCompletable" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0"><br>
-                    </center>
+                        <input type="number" id="SecondaryEventsCompletable" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
+                        <br>
+                    </div>
 
-                    <center style="max-width: 30%;">
+                    <div id="SecondaryEventsCompleted">
                         <label for="SecondaryEventsCompleted" class="form-label">Current Patch's Secondary Events Completed</label>
-                        <input type="number" id="SecondaryEventsCompleted" class="form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0"><br>
-                    </center>
-
-                    <center id="FlagshipEventCompletableSkipGroup">
-                        <input type="checkbox" id="FlagshipEventCompletable" class="form-check-input">
-                        <label for="FlagshipEventCompletable" class="form-label"></label>
-                    </center>
-
-                    <center id="FlagshipEventCompletedSkipGroup">
-                        <input type="checkbox" id="FlagshipEventCompleted" class="form-check-input">
-                        <label for="FlagshipEventCompleted" class="form-label">Current Patch's Flagship Event Completed</label><br>
-                    </center>
+                        <input type="number" id="SecondaryEventsCompleted" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
+                    </div>
                     <br>
 
-                    <center>
+                    <div id="FlagshipEventCompletableSkipGroup" class="form-check form-check-inline">
+                        <input type="checkbox" id="FlagshipEventCompletable" class="form-check-input">
+                        <label for="FlagshipEventCompletable" class="form-label"></label>
+                    </div>
+
+                    <div id="FlagshipEventCompletedSkipGroup" class="form-check form-check-inline">
+                        <input type="checkbox" id="FlagshipEventCompleted" class="form-check-input">
+                        <label for="FlagshipEventCompleted" class="form-label">Current Patch's Flagship Event Completed</label>
+                    </div>
+                    <br><br>
+
+                    <div class="form-check form-check-inline">
                         <input type="checkbox" id="UsingHoyoLabCheckin" class="form-check-input">
                         <label for="UsingHoyoLabCheckin" class="form-label">Using <b>HoYoLAB Community Daily Check-In</b></label>
                         <a data-toggle="tooltip"
@@ -600,7 +592,7 @@
                         >
                             <i class="bi bi-question-circle"></i>
                         </a>
-                    </center>
+                    </div>
                 </div>
 
                 <hr>
