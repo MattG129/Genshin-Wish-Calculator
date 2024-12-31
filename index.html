@@ -607,6 +607,8 @@
                     <span id="LoadingText"></span>
                 </div>
 
+                <a id="WishResultsAnchor"></a>
+
                 <div>
                     <div id="WishError" class="WishResults" style="display: none; color: #800000;"></div>
 
@@ -720,7 +722,7 @@
                         $('#LoadingGroup').hide();
 
                         $('html, body').animate({
-                            scrollTop: document.body.scrollHeight,
+                            scrollTop: $("#WishResultsAnchor").offset().top,
                             easing: 'linear'
                         }, 250)
                     
