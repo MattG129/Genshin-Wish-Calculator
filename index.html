@@ -103,7 +103,7 @@
                 #WishPlanningResultsTable {
                     width: 100%;
                 }
-            };
+            }
         </style>
 
         <center><h1>Genshin Wish And Gacha Calculator</h1><center>
@@ -128,9 +128,16 @@
                                 </label><br>
                                 <textarea id="ImportState" class="form-control" style="border-color: black;"></textarea><br>
                                 <p id="InvalidImportMessage" style="color: red; display: none;">Invalid Import.</p>
-                                <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=false)"> Import </a>
-                                <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Export()"> Export </a>
-                                <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=true);"> Import and Run </a>
+                                
+                                <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=false);">
+                                    Import
+                                </a>
+                                <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Export();">
+                                    Export
+                                </a>
+                                <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=true);">
+                                    Import and Run
+                                </a>
                                 <br>
                             </div>
                         </div>
