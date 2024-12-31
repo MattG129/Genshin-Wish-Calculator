@@ -87,7 +87,7 @@ function SavingsCalculator(WishConfig) {
     // TODO: Could maybe go a bit more in depth.
     let Primos = WishConfig.Primos;
 
-    if(!WishConfig.SimpleMode) {
+    if(WishConfig.WishMode != WishModes.SIMPLE.value) {
         // 40 primos from character trials, every banner. Assumes that this banner's trial primos have already been claimed.
         Primos += 40*(LastBannerInfo.PhaseDiff);
         
@@ -250,7 +250,7 @@ function SavingsCalculator(WishConfig) {
         Starglitter = WishConfig.Starglitter % 5;
     }
     
-    if (!WishConfig.SimpleMode) {
+    if (WishConfig.WishMode != WishModes.SIMPLE.value) {
 
         // Up to five Intertwined Fates can be purchased every month from the Stardust Exchange.
         // Assumes that the current month's supply has already been purchased.
@@ -365,7 +365,7 @@ function NumericWishCalculations(WishConfig) {
         ChronicledRate = 0.006 + Math.max(0, .06*(ChronicledPity-73));
 
 
-        if (!WishConfig.AdvancedWishPlanning) {
+        if (WishConfig.WishMode != WishModes.ADVANCED.value) {
             let Characters = CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
 
             let Weapons = WeaponWishSim(WishConfig, WishConfig.WeaponGoal, WishConfig.MaxWishes);
@@ -553,11 +553,11 @@ function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
 }
 
 function WishCalcs(WishConfig) {
-    if (!WishConfig.AdvancedWishPlanning) {
+    if (WishConfig.WishMode != WishModes.ADVANCED.value) {
 
         LastBannerInfo = BannerInfo[WishConfig.BannerEnd];
 
-        if (!WishConfig.SimpleMode) {
+        if (WishConfig.WishMode != WishModes.SIMPLE.value) {
             // While the Banner End dropdown should prevent the user from selecting an end date that is in the past, we will leave it here for any edge cases that may occur.
             if (LastBannerInfo.BannerEndDate < Today) {
                 $('#WishError').show().html('Banner has already ended.');

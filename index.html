@@ -28,6 +28,12 @@
 
         <script>
             let NewWishPlanRowID;
+
+            const WishModes = {
+                'SIMPLE': {value: 1, text: 'Simple'},
+                'NORMAL': {value: 2, text: 'Normal'},
+                'ADVANCED': {value: 3, text: 'Advanced'}
+            };
         </script>
     </head>
     <body>
@@ -145,17 +151,29 @@
                 </div>
                 <br>
 
-                <center>
-                    <input type="checkbox" id="SimpleMode" class="form-check-input">
-                    <label for="SimpleMode" class="form-label">Simple Wishing Mode</label>
-                    <a data-toggle="tooltip"
-                        title="This mode will allow you to run the calculator with just the ammount of resources you have at the moment."
-                    >
-                        <i class="bi bi-question-circle"></i>
-                    </a>
-                </center>
+                <label for="WishMode" class="form-label">Wish Mode</label>
+                <a data-toggle="tooltip"
+                    title="
+                        <ul>
+                            <li><b>Simple Mode:</b> Allows you to run the calculator with just your current resources.</li>
+                            <li><b>Normal Mode:</b> Allows you to specify how many characters, weapons, and chronicled wish items you will be wishing for and when you will complete your wishing by.</li>
+                            <li><b>Advanced Mode:</b> Allows you to specify which items you want to wish for, when you will wish for them by, and in what order.</li>
+                        </ul>
+                    "
+                >
+                    <i class="bi bi-question-circle"></i>
+                </a>
 
-                <center class="SimpleModeSkipGroup">
+                <select id="WishMode" class="form-select" style="max-width: 125px;"></select>
+                <script type="text/javascript">
+                    for (const [Key, Mode] of Object.entries(WishModes)) {
+                        $('#WishMode').append($('<option>', Mode));
+                    };
+                    $(`#WishMode option[value=${WishModes.ADVANCED.value}]`).prop('selected', true);
+                </script>
+                <br>
+
+                <div class="SimpleModeSkipGroup">
                     <input type="checkbox" id="EnableEventCalcs" class="form-check-input">
                     <label for="EnableEventCalcs" class="form-label">Factor in events</label>
                     <a data-toggle="tooltip"
@@ -163,7 +181,7 @@
                     >
                         <i class="bi bi-question-circle"></i>
                     </a>
-                </center>
+                </div>
 
                 <a id="CalculatorHeaderAnchor"></a>
 
@@ -232,17 +250,7 @@
                 <div class="WishSection">
                     <hr><center><h2>Wishing Info</h2></center><br>
 
-                    <center class="SimpleModeSkipGroup">
-                        <input type="checkbox" id="AdvancedWishPlanning" class="form-check-input">
-                        <label for="AdvancedWishPlanning" class="form-label">Advanced Wish Planning</label>
-                        <a data-toggle="tooltip"
-                            title="<b>Advanced wish planning</b> will allow you to specify which items you want to wish for, when you will wish for them, and in what order."
-                        >
-                            <i class="bi bi-question-circle"></i>
-                        </a>
-                    </center>
-
-                    <div class="justify-content-md-center SimpleModeSkipGroup SimpleWishPlanningSkipGroup">
+                    <div class="justify-content-md-center SimpleModeSkipGroup BasicWishPlanningSkipGroup">
                         <center>
                             <div style="align-content: center;">
                                 <label for="EndPatch" class="form-label">What banner will you have made all your wishes by?</label>
@@ -264,7 +272,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class='SimpleWishPlanningSkipGroup'>
+                            <tr class='BasicWishPlanningSkipGroup'>
                                 <td style="vertical-align: middle;"><b>Number of 5&#9733;s Wishing For</b></td>
                                 <td>
                                     <input type="number" id="CharacterGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
@@ -666,8 +674,14 @@
                 let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
                 if ( 
-                    (!$('#AdvancedWishPlanning').is(':checked') && ($('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 || $('#ChronicledGoal').val() > 0 ))
-                    || ($('#AdvancedWishPlanning').is(':checked') && $('#WishPlanningTable tr[data-wishplan-rowid]').length > 0)
+                    (
+                        $('#WishMode').val() != WishModes.ADVANCED.value
+                        && ($('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 || $('#ChronicledGoal').val() > 0 )
+                    )
+                    || (
+                        $('#WishMode').val() == WishModes.ADVANCED.value
+                        && $('#WishPlanningTable tr[data-wishplan-rowid]').length > 0
+                    )
                 ) {
                     $("#Calculate").html(CalculateText);
                     $("#Calculate").removeClass('disabled');
@@ -761,27 +775,19 @@
                 }
             })
 
-            // Skip Logic
-            $('#SimpleMode').on('change', function () {
-                if ($('#SimpleMode').is(':checked')) {
-                    $('.SimpleModeSkipGroup').hide();
-                    $('#AdvancedWishPlanning').prop('checked', false).change();
-                }
-                else {
-                    $('.SimpleModeSkipGroup').show();
-                }
-            })
+            $('#WishMode').on('change', function () {
+                $('.SimpleModeSkipGroup').show();
+                $('.BasicWishPlanningSkipGroup').show();
+                $('#WishPlanningTable').hide();
 
-            $('#AdvancedWishPlanning').on('change', function () {
-                if ($('#AdvancedWishPlanning').is(':checked')) {
-                    $('.SimpleWishPlanningSkipGroup').hide();
+                if ($('#WishMode').val() == WishModes.SIMPLE.value) {
+                    $('.SimpleModeSkipGroup').hide();
+                }
+                else if ($('#WishMode').val() == WishModes.ADVANCED.value) {
+                    $('.BasicWishPlanningSkipGroup').hide();
                     $('#WishPlanningTable').show();
-                }
-                else {
-                    $('.SimpleWishPlanningSkipGroup').show();
-                    $('#WishPlanningTable').hide();
-                }
-            })
+                };
+            });
 
             function ToggleWishPlanRow(caller) {
                 let WishPlanRowID = $(caller).attr('data-wishplan-rowid');
@@ -802,30 +808,32 @@
                 }
             })
 
-            $(document).on('change', '#BannerEnd, .WishPlanBannerEnd, #AdvancedWishPlanning', function() {
-                // User's should only know the events schedule as far out as the end of the next banner. 
-                // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
-                if (
-                    (!$('#AdvancedWishPlanning').is(':checked') && BannerInfo[$('#BannerEnd').val()].Phase == 1 && BannerInfo[$('#BannerEnd').val()].PhaseDiff <= 1)
-                    || ($('#AdvancedWishPlanning').is(':checked') && $(`.WishPlanBannerEnd option[value=${NextPhase1.value}]:selected`).length >= 1)
-                ) {
-                    $('#FlagshipEventCompletableSkipGroup').show();
-                    $('#FlagshipEventCompletable').trigger('input').change();
-                    $('#SecondaryEventsCompletableSkipGroup').show();
-                    $('#SecondaryEventsCompletable').trigger('input').change();
-                }
-                else {
-                    $('#FlagshipEventCompletableSkipGroup').hide();
-                    $('#SecondaryEventsCompletableSkipGroup').hide();
+            $(document).on('change', '#BannerEnd, .WishPlanBannerEnd, #WishMode', function() {
+                if ($('#WishMode').val() != WishModes.SIMPLE.value) {
+                    // User's should only know the events schedule as far out as the end of the next banner. 
+                    // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
+                    if (
+                        ($('#WishMode').val() == WishModes.NORMAL.value && $('#BannerEnd').val() == NextPhase1.value)
+                        || (($('#WishMode').val() == WishModes.ADVANCED.value) && $(`.WishPlanBannerEnd option[value=${NextPhase1.value}]:selected`).length >= 1)
+                    ) {
+                        $('#FlagshipEventCompletableSkipGroup').show();
+                        $('#FlagshipEventCompletable').trigger('input').change();
+                        $('#SecondaryEventsCompletableSkipGroup').show();
+                        $('#SecondaryEventsCompletable').trigger('input').change();
+                    }
+                    else {
+                        $('#FlagshipEventCompletableSkipGroup').hide();
+                        $('#SecondaryEventsCompletableSkipGroup').hide();
 
-                    $('#FlagshipEventCompletedSkipGroup').show();
+                        $('#FlagshipEventCompletedSkipGroup').show();
 
-                    $('#SecondaryEventsCompleted').attr('max', 3);
+                        $('#SecondaryEventsCompleted').attr('max', 3);
 
-                    $('#SecondaryEventsCompleted').parsley({range: '[0, 3]'});
+                        $('#SecondaryEventsCompleted').parsley({range: '[0, 3]'});
 
-                    $('#SecondaryEventsCompleted').trigger('input');
-                }
+                        $('#SecondaryEventsCompleted').trigger('input');
+                    }
+                };
             });
 
             $('#EnableCapturingRadiance').on('change', function () {
