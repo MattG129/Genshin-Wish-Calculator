@@ -415,7 +415,7 @@
                                     `</label>`+
                                 `</td>`+
                                 `<td>`+
-                                    `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove();">`+
+                                    `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove(); UpdateCalculateButton();">`+
                                         `<i class="bi bi-x-lg" style=" font-weight: bold;"></i>`+
                                     `</button>`+
                                 `</td>`+
@@ -436,7 +436,7 @@
 
                         $('#WishPlanningTableBody').sortable({handle: ".handle"});
 
-                        $("#AddRowButton").click(AddWishPlanRow);
+                        $("#AddRowButton").click(function() {AddWishPlanRow(); UpdateCalculateButton();});
 
                         // We will trigger 3 clicks so the table will by default start with 3 rows.
                         for (let i = 0; i < 3; i++) AddWishPlanRow();
@@ -661,18 +661,21 @@
             function UpdateCalculateButton() {
                 let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
-                if ( $('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 || $('#ChronicledGoal').val() > 0 ) {
+                if ( 
+                    (!$('#AdvancedWishPlanning').is(':checked') && ($('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 || $('#ChronicledGoal').val() > 0 ))
+                    || ($('#AdvancedWishPlanning').is(':checked') && $('#WishPlanningTable tr[data-wishplan-rowid]').length > 0)
+                ) {
                     $("#Calculate").html(CalculateText);
                     $("#Calculate").removeClass('disabled');
                 }
                 else {
-                    $("#Calculate").html(CalculateText + "<br> <span style='font-size: small'>(Please select at least one character or weapon)</span>");
+                    $("#Calculate").html(CalculateText + "<br><span style='font-size: small;'>(Must add wish goals.)</span>");
                     $("#Calculate").addClass('disabled');
                 }
             }
 
             UpdateCalculateButton();
-            $('#CharacterGoal, #WeaponGoal, #ChronicledGoal').on('change', UpdateCalculateButton)
+            $('#CharacterGoal, #WeaponGoal, #ChronicledGoal, #AdvancedWishPlanning').on('input', UpdateCalculateButton)
 
             // TODO: Disable the button when clicked and reenable once its done processing.
             $("#Calculate").on('click', function() {
