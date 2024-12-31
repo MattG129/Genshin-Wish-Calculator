@@ -283,15 +283,12 @@
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;"><b>Guarantee</b></td>
-                                <td class="td-label" >
-                                    <label style="display: block;">
-                                        <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput">
-                                    </label>
+                                <!-- Have to toggle the checkbox instead of triggering a click as this would result in the onclick event being run recursively. -->
+                                <td class="td-label" onclick="ToggleCheckBox('CharacterGuarantee');">
+                                    <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput">
                                 </td>
-                                <td class="td-label">
-                                    <label style="display: block;">
-                                        <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput">
-                                    </label>
+                                <td class="td-label" onclick="ToggleCheckBox('WeaponGuarantee');">
+                                    <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput">
                                 </td>
                                 <td></td>
                             </tr>
@@ -409,10 +406,8 @@
                                         `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
                                     `</center>`+
                                 `</td>`+
-                                `<td class="td-label">`+
-                                    `<label style="display: block;">`+
-                                        `<input id="WishPlanEnabled${NewWishPlanRowID}" type="checkbox" class="form-check-input TableInput" onchange="ToggleWishPlanRow(this)" checked>`+
-                                    `</label>`+
+                                `<td class="td-label" onclick="ToggleCheckBox('WishPlanEnabled${NewWishPlanRowID}');">`+
+                                    `<input id="WishPlanEnabled${NewWishPlanRowID}" type="checkbox" class="form-check-input TableInput" onchange="ToggleWishPlanRow(this)" checked>`+
                                 `</td>`+
                                 `<td>`+
                                     `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove(); UpdateCalculateButton();">`+
@@ -785,6 +780,10 @@
                 let WishPlanRowID = $(caller).attr('data-wishplan-rowid');
 
                 $(`input[data-wishplan-rowid=${WishPlanRowID}], select[data-wishplan-rowid=${WishPlanRowID}]`).css('color', $(caller).is(':checked')?'black':'gray');
+            };
+
+            function ToggleCheckBox(CheckBoxID) {
+                $('#'+CheckBoxID).prop('checked', !$('#'+CheckBoxID).is(':Checked'));
             };
 
             $('#EnableEventCalcs').on('change', function () {
