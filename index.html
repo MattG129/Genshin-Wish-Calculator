@@ -953,8 +953,8 @@
                         }
                     });
 
+                    let ExpiredWishPlanRows = false; // We will only set this to true when advanced wish planning mode is activated.
                     $(`.WishPlanBannerEnd`).each(function() {
-                        let ExpiredWishPlanRows = false; // We will only set this to true when advanced wish planning mode is activated.
 
                         if ($(this).val() == null) {
                             if (JSONImport['WishMode'] == WishModes.ADVANCED.value) {
@@ -963,18 +963,18 @@
                                 $(`#WishPlanEnabled${WishPlanRowID}`).prop('checked', false);
 
                                 ExpiredWishPlanRows = true;
-                            }
+                            };
 
-                            $(this).val($('#BannerEnd')[0].options[0].value)
-                        };
-
-                        if (ExpiredWishPlanRows) {
-                            swal({
-                                text: 'Expired wish plan row(s) were detected in the import. These row(s) have been automatically set to inactive. All other information has been successfully imported.',
-                                icon: 'info'
-                            });
+                            $(this).val($('#BannerEnd')[0].options[0].value);
                         };
                     });
+                    
+                    if (ExpiredWishPlanRows) {
+                        swal({
+                            text: 'Expired wish plan row(s) were detected in the import. These row(s) have been automatically set to inactive. All other information has been successfully imported.',
+                            icon: 'info'
+                        });
+                    };
 
                     $('input').change().trigger('input');
 
