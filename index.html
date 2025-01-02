@@ -466,7 +466,7 @@
                     };
 
                     $(function() {
-                        NewWishPlanRowID = 1;
+                        NewWishPlanRowID = 0;
 
                         $('#WishPlanningTableBody').sortable({handle: ".handle"});
 
@@ -671,21 +671,21 @@
 
         <script type="text/javascript">
             GetBannerInfo();
-
-            let ResultsLoaded = false;
+            let CurrentBannerVal = $('#BannerEnd')[0].options[0].value;
 
             function getInvalidFields() {
                 let InvalidFields = [];
                 
                 $('input').each(function() {
-                    if ( !$(this).parsley().isValid() && $(this).is(":visible") ) {
+                    if (!$(this).parsley().isValid() && $(this).is(":visible")) {
                         InvalidFields.push($(this).attr('id'));
-                    }
-                })
+                    };
+                });
 
                 return InvalidFields;
-            }
+            };
 
+            let ResultsLoaded = false;
             function UpdateCalculateButton() {
                 let CalculateText = ResultsLoaded ? 'Recalculate' : 'Calculate'
 
@@ -705,8 +705,8 @@
                 else {
                     $("#Calculate").html(CalculateText + "<br><span style='font-size: small;'>(Must add wish goals.)</span>");
                     $("#Calculate").addClass('disabled');
-                }
-            }
+                };
+            };
 
             UpdateCalculateButton();
             $('#CharacterGoal, #WeaponGoal, #ChronicledGoal, #WishMode').on('input', UpdateCalculateButton)
@@ -716,72 +716,54 @@
                 $('.WishResults').hide();
 
                 let InvalidFields = getInvalidFields();
-
                 if (InvalidFields.length > 0) {
-                    swal({
-                        text: 'Please correct invalid data before running calculations.',
-                        icon: 'error'
-                    });
+                    swal({icon: 'error', text: 'Please correct invalid data before running calculations.'});
 
-                    $('html, body').animate({
-                        scrollTop: $(`#${InvalidFields[0]}`).offset().top-100,
-                        easing: 'linear'
-                    }, 250)
+                    $('html, body').animate({scrollTop: $(`#${InvalidFields[0]}`).offset().top-100, easing: 'linear'}, 250);
                 }
                 else {
                     $('#LoadingGroup').show();
 
-                    $('html, body').animate({
-                        scrollTop: $("#LoadingGroup").offset().top,
-                        easing: 'linear'
-                    }, 100)
+                    $('html, body').animate({scrollTop: $("#LoadingGroup").offset().top, easing: 'linear'}, 100);
 
                     setTimeout(function () {
-                        let Results = WishCalcs(CompileForm());
-
-                        if (Results.Success) {
-                            ResultsLoaded = true
+                        if (WishCalcs(CompileForm()).Success) {
+                            ResultsLoaded = true;
                             UpdateCalculateButton();
                         };
 
                         $('#LoadingGroup').hide();
 
-                        $('html, body').animate({
-                            scrollTop: $("#WishResultsAnchor").offset().top,
-                            easing: 'linear'
-                        }, 250)
-                    
+                        $('html, body').animate({scrollTop: $("#WishResultsAnchor").offset().top, easing: 'linear'}, 250);
                     }, 500);
-                }
-            })
+                };
+            });
 
-            let NextPhase1;
+            let NearestPhase1;
             for (let i = 0; i < BannerInfo.length; i++) {
-                if (i >= $('#BannerEnd')[0].options[0].value && BannerInfo[i].Phase == 1) {
-                    NextPhase1 = BannerInfo[i];
-                    NextPhase1['value'] = i;
+                if (i >= CurrentBannerVal && BannerInfo[i].Phase == 1) {
+                    NearestPhase1 = BannerInfo[i];
+                    NearestPhase1['value'] = i;
                     break;
                 };
             };
-
-            $("label[for='FlagshipEventCompletable']").html(`${NextPhase1.Patch} Flagship Event Completable by first half.`);
-            $("label[for='SecondaryEventsCompletable']").html(`${NextPhase1.Patch} Secondary Events Completable by first half.`);
+            $("label[for='FlagshipEventCompletable']").html(`${NearestPhase1.Patch} Flagship Event Completable by first half.`);
+            $("label[for='SecondaryEventsCompletable']").html(`${NearestPhase1.Patch} Secondary Events Completable by first half.`);
 
             $('#FlagshipEventCompletable').on('change', function () {
-                if (BannerInfo[$('#BannerEnd')[0].options[0].value].Phase == 1 && !$('#FlagshipEventCompletable').is(':checked')) {
+                if (BannerInfo[CurrentBannerVal].Phase == 1 && !$('#FlagshipEventCompletable').is(':checked')) {
                     $('#FlagshipEventCompleted').attr('disabled', true).prop('checked', false);
                     $('label[for="FlagshipEventCompleted"]').css('color', '#505050');
                 }
                 else {
                     $('#FlagshipEventCompleted').attr('disabled', false);
                     $('label[for="FlagshipEventCompleted"]').css('color', 'black');
-                }
+                };
             });
 
             $('#SecondaryEventsCompletable').on('change', function() {
-                
                 let SecondaryEventsMax;
-                if (BannerInfo[$('#BannerEnd')[0].options[0].value].Phase == 1) {
+                if (BannerInfo[CurrentBannerVal].Phase == 1) {
                     SecondaryEventsMax = $('#SecondaryEventsCompletable').val();
                 }
                 else {
@@ -790,7 +772,7 @@
 
                 $('#SecondaryEventsCompleted').attr('max', SecondaryEventsMax).parsley({range: `[0, ${SecondaryEventsMax}]`});
                 $('#SecondaryEventsCompleted').trigger('input');
-            })
+            });
 
             $('#WishMode').on('change', function () {
                 $('.SimpleModeSkipGroup').show();
@@ -814,17 +796,17 @@
                 }
                 else {
                     $(`tr[data-wishplan-rowid=${WishPlanRowID}], input[data-wishplan-rowid=${WishPlanRowID}], select[data-wishplan-rowid=${WishPlanRowID}]`).addClass('DisabledWishPlanRow');
-                }
+                };
             };
 
             $('#EnableEventCalcs').on('change', function () {
-                if ( $('#EnableEventCalcs').is(':checked') && !$('#SimpleMode').is(':checked')) {
+                if ($('#EnableEventCalcs').is(':checked') && !$('#SimpleMode').is(':checked')) {
                     $('#EventCalcs').show();
                 }
                 else {
                     $('#EventCalcs').hide();
-                }
-            })
+                };
+            });
 
             $('#EnableCapturingRadiance').on('change', function () {
                 if ($('#EnableCapturingRadiance').is(':checked')) {
@@ -843,7 +825,7 @@
                 }
                 else {
                     $('#StarglitterSkipGroup').hide();
-                }
+                };
             });
 
             $('#BPPurchased').on('change', function(){
@@ -852,12 +834,12 @@
                 }
                 else {
                     $('#BPLevelSkipGroup').hide();
-                }
+                };
             });
 
             function CompileForm(){
                 let FormValues = {};
-                
+
                 $('#form input, #form select').each(function() {
                     if ($(this).is(':checkbox')) {
                         FormValues[this.id] = $(this).is(':checked')
@@ -870,13 +852,11 @@
                     }
                 });
 
-                let wishPlanMapper = [];
-
+                // TODO: Wish plan fields should not all be thrown into the wish config on their own but instead each row should be grouped into a struct. These structs should all be added to an array so we can hopefully get rid of wish plan mapping.
+                FormValues['wishPlanMapper'] = [];
                 $('#WishPlanningTable tr[data-wishplan-rowid]').each(function() {
-                    wishPlanMapper.push($(this).attr('data-wishplan-rowid'));
+                    FormValues['wishPlanMapper'].push($(this).attr('data-wishplan-rowid'));
                 });
-
-                FormValues['wishPlanMapper'] = wishPlanMapper;
 
                 return FormValues
             };
@@ -890,6 +870,7 @@
                 try {
                     JSONImport = JSON.parse($('#ImportState').val());
 
+                    // Since some of the import code explicitly references the wish plan mapper it needs to be defined.
                     if (JSONImport['wishPlanMapper'] == undefined) {
                         isValidImport = false;
                     }
@@ -897,47 +878,45 @@
                     isValidImport = false;
                 }
 
-                if (isValidImport) {
+                if (!isValidImport) {
+                    $('#InvalidImportMessage').show();
+                }
+                else {
                     $('#InvalidImportMessage').hide();
 
-                    if (JSONImport['BannerEnd'] < $('#BannerEnd')[0].options[0].value) {
+                    if (JSONImport['BannerEnd'] < CurrentBannerVal) {
                         if (JSONImport['WishMode'] != WishModes.ADVANCED.value) {
-                            swal({
-                                text: 'Banner end date was not imported as it has already passed. All other fields have been successfully imported.',
-                                icon: 'info'
-                            });
+                            swal({icon: 'info', text: 'Banner end date was not imported as it has already passed. All other fields have been successfully imported.'});
                         };
 
-                        JSONImport['BannerEnd'] = $('#BannerEnd')[0].options[0].value;
+                        JSONImport['BannerEnd'] = CurrentBannerVal;
                     }
                     else if (JSONImport['BannerEnd'] >= BannerInfo.length) {
                         if (JSONImport['WishMode'] != WishModes.ADVANCED.value) {
-                            swal({
-                                text: 'Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.',
-                                icon: 'info'
-                            });
+                            swal({icon: 'info', text: 'Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.'});
                         };
 
-                        JSONImport['BannerEnd'] = $('#BannerEnd')[0].options[0].value;
-                    }
+                        JSONImport['BannerEnd'] = CurrentBannerVal;
+                    };
 
                     // We will remove the existing wish planning rows to avoid any potential conflicts with the imported ones.
                     $('#WishPlanningTable tr[data-wishplan-rowid]').remove();
-                    NewWishPlanRowID = 1;
+                    NewWishPlanRowID = 0;
 
                     for(let i = 0; i < JSONImport['wishPlanMapper'].length; i++) AddWishPlanRow();
 
-                    let MappedImportKey;
                     $('#form input, #form select').each(function() {
+                        // Wish plan fields will need to have their import field's id mapped since the wish plan fields won't always be ordered numerically when the export is generated.
+                        let MappedImportKey;
                         if ($(this).attr('data-wishplan-rowid') !== undefined) {
                             WishPlanRowID = $(this).attr('data-wishplan-rowid');
 
-                            MappedImportKey = this.id.replace(WishPlanRowID, JSONImport['wishPlanMapper'][WishPlanRowID-1]);
+                            MappedImportKey = this.id.replace(WishPlanRowID, JSONImport['wishPlanMapper'][WishPlanRowID]);
                         }
                         else {
                             MappedImportKey = this.id
                         }
-
+                        
                         if ($(this).is(':checkbox')) {
                             $(this).prop('checked', JSONImport[MappedImportKey]);
                         }
@@ -946,27 +925,23 @@
                         }
                     });
 
-                    let ExpiredWishPlanRows = false; // We will only set this to true when advanced wish planning mode is activated.
+                    let AnnounceExpiredWishPlanRows = false; // We will only set this to true when there are expired wish plan rows and advanced wish planning mode is activated.
                     $(`.WishPlanBannerEnd`).each(function() {
-
                         if ($(this).val() == null) {
+                            let WishPlanRowID = $(this).attr('data-wishplan-rowid');
+
+                            $(`#WishPlanEnabled${WishPlanRowID}`).prop('checked', false);
+
+                            $(this).val(CurrentBannerVal);
+
                             if (JSONImport['WishMode'] == WishModes.ADVANCED.value) {
-                                WishPlanRowID = $(this).attr('data-wishplan-rowid');
-
-                                $(`#WishPlanEnabled${WishPlanRowID}`).prop('checked', false);
-
-                                ExpiredWishPlanRows = true;
+                                AnnounceExpiredWishPlanRows = true;
                             };
-
-                            $(this).val($('#BannerEnd')[0].options[0].value);
                         };
                     });
                     
-                    if (ExpiredWishPlanRows) {
-                        swal({
-                            text: 'Expired wish plan row(s) were detected in the import. These row(s) have been automatically set to inactive. All other information has been successfully imported.',
-                            icon: 'info'
-                        });
+                    if (AnnounceExpiredWishPlanRows) {
+                        swal({icon: 'info', text: 'Expired wish plan row(s) were detected in the import. These row(s) have been automatically set to inactive. All other information has been successfully imported.'});
                     };
 
                     $('input').change().trigger('input');
@@ -980,15 +955,12 @@
                             easing: 'linear'
                         }, 500);
                     };
-                }
-                else {
-                    $('#InvalidImportMessage').show();
-                }
+                };
             };
 
             function Export(){
                 if (getInvalidFields().length != 0) {
-                    swal({text: 'Invalid information detected. Cannot generate export.', icon: 'error'});
+                    swal({icon: 'error', text: 'Invalid information detected. Cannot generate export.'});
                 }
                 else {
                     let ExportState = JSON.stringify(CompileForm());
@@ -998,12 +970,8 @@
                     document.execCommand("copy");
                     temp.remove();
 
-                    swal({
-                        text: 'Export copied to clipboard.',
-                        icon: 'success',
-                        timer: 2000
-                    });
-                }
+                    swal({icon: 'success', text: 'Export copied to clipboard.', timer: 2000});
+                };
             };
 
             $(function () {
