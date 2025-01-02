@@ -960,13 +960,12 @@
                             if (JSONImport['WishMode'] == WishModes.ADVANCED.value) {
                                 WishPlanRowID = $(this).attr('data-wishplan-rowid');
 
-                                $(`#WishPlanRow${WishPlanRowID}`).remove()
+                                $(`#WishPlanEnabled${WishPlanRowID}`).prop('checked', false);
 
                                 ExpiredWishPlanRows = true;
                             }
-                            else {
-                                $(this).val($('#BannerEnd')[0].options[0].value)
-                            };
+
+                            $(this).val($('#BannerEnd')[0].options[0].value)
                         };
 
                         if (ExpiredWishPlanRows) {
