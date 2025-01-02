@@ -630,7 +630,7 @@
                 <div id="LoadingGroup" style="display: none;">
                     <div id="LoadingSpinner"></div>
                     <br>
-                    <span id="LoadingText"></span>
+                    Loading...
                 </div>
 
                 <a id="WishResultsAnchor"></a>
@@ -729,13 +729,6 @@
                     }, 250)
                 }
                 else {
-                    if (ResultsLoaded) {
-                        $('#LoadingText').html('Recalculating...');
-                    }
-                    else{
-                        $('#LoadingText').html('Loading...');
-                    }
-
                     $('#LoadingGroup').show();
 
                     $('html, body').animate({
