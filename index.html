@@ -117,6 +117,10 @@
                 width: 75%;
             }
 
+            .DisabledWishPlanRow {
+                color: gray;
+            }
+
             @media only screen and (max-width: 600px) {
                 #WishPlanningResultsTable {
                     width: 100%;
@@ -441,7 +445,7 @@
                                 `</td>`+
                                 `<td class="td-label">`+
                                     `<label class="td-label">`+
-                                        `<input id="WishPlanEnabled${NewWishPlanRowID}" type="checkbox" class="form-check-input TableInput align-middle" onchange="ToggleWishPlanRow(this)" checked>`+
+                                        `<input id="WishPlanEnabled${NewWishPlanRowID}" type="checkbox" class="form-check-input TableInput align-middle" onchange="ToggleWishPlanRow(this); UpdateCalculateButton();" checked>`+
                                     `</label>`+
                                 `</td>`+
                                 `<td>`+
@@ -690,7 +694,7 @@
                     )
                     || (
                         $('#WishMode').val() == WishModes.ADVANCED.value
-                        && $('#WishPlanningTable tr[data-wishplan-rowid]').length > 0
+                        && $('#WishPlanningTable tr[data-wishplan-rowid]:not(.DisabledWishPlanRow)').length > 0
                     )
                 ) {
                     $("#Calculate").html(CalculateText);
@@ -802,7 +806,12 @@
             function ToggleWishPlanRow(caller) {
                 let WishPlanRowID = $(caller).attr('data-wishplan-rowid');
 
-                $(`input[data-wishplan-rowid=${WishPlanRowID}], select[data-wishplan-rowid=${WishPlanRowID}]`).css('color', $(caller).is(':checked')?'black':'gray');
+                if ($(caller).is(':checked')) {
+                    $(`tr[data-wishplan-rowid=${WishPlanRowID}], input[data-wishplan-rowid=${WishPlanRowID}], select[data-wishplan-rowid=${WishPlanRowID}]`).removeClass('DisabledWishPlanRow');
+                }
+                else {
+                    $(`tr[data-wishplan-rowid=${WishPlanRowID}], input[data-wishplan-rowid=${WishPlanRowID}], select[data-wishplan-rowid=${WishPlanRowID}]`).addClass('DisabledWishPlanRow');
+                }
             };
 
             $('#EnableEventCalcs').on('change', function () {
