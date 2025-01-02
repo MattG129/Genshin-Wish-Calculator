@@ -166,52 +166,26 @@ function SavingsCalculator(WishConfig) {
 
         if (WishConfig.EnableEventCalcs) {
 
-            if (LastBannerInfo.PatchDiff > 0) {
-                if (!WishConfig.FlagshipEventCompleted) {
-                    Primos += 900;
-                }
+            Primos += (900 + 3*420) * (LastBannerInfo.PatchDiff + 1); // +1 for current patch.
 
-                Primos += (3 - WishConfig.SecondaryEventsCompleted) * 420
+            // Subtracts claimed event primos.
+            Primos -= WishConfig.FlagshipEventCompleted ? 900 : 0;
+            Primos -= 420*WishConfig.SecondaryEventsCompleted
 
-                Primos += (900 + 3*420) * (LastBannerInfo.PatchDiff - 1);
-
-                let FlagshipEventCompletable = WishConfig.FlagshipEventCompletable;
-                let SecondaryEventsCompletable = WishConfig.SecondaryEventsCompletable;
-
+            // Subtracts unclaimable event primos.
+            if (LastBannerInfo.Phase != 2) { // All events will be completable if the banner ends in the second half.
                 // User's should only know the events schedule as far out as the end of the next banner. 
                 // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
                 if (LastBannerInfo.PhaseDiff > 1) {
-                    FlagshipEventCompletable = false;
-                    SecondaryEventsCompletable = 1;
-                }
-
-                if ((LastBannerInfo.Phase == 2) || FlagshipEventCompletable) {
-                    Primos += 900;
-                };
-
-                if ((LastBannerInfo.Phase == 2) ) {
-                    Primos += 3*420;
+                    Primos -= 900;
+                    Primos -= 2*420;
                 }
                 else {
-                    Primos += SecondaryEventsCompletable * 420;
-                };
-            }
-            else {
-                if (
-                    ( (LastBannerInfo.Phase == 2) || WishConfig.FlagshipEventCompletable )
-                    && !WishConfig.FlagshipEventCompleted
-                ) {
-                    Primos += 900;
-                };
-
-                if ((LastBannerInfo.Phase == 2) ) {
-                    Primos += (3 - WishConfig.SecondaryEventsCompleted) * 420
-                }
-                else {
-                    Primos += (WishConfig.SecondaryEventsCompletable - WishConfig.SecondaryEventsCompleted) * 420
+                    Primos -= WishConfig.FlagshipEventCompletable ? 0 : 900;
+                    Primos -= 420*(3-WishConfig.SecondaryEventsCompletable);
                 };
             };
-
+        
             if (WishConfig.UsingHoyoLabCheckin) {
                 Primos += 60*(LastBannerInfo.MonthDiff + 1); // +1 for the current month.
                 
