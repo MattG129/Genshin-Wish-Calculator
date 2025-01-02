@@ -583,24 +583,26 @@
                 <div id="EventCalcs" class="WishSection SimpleModeSkipGroup">
                     <hr><center><h2>Events</h2></center><br>
 
-                    <div id="SecondaryEventsCompletableSkipGroup">
-                        <label for="SecondaryEventsCompletable" class="form-label"></label>
+                    <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3">
+                            <label for="SecondaryEventsCompletable" class="form-label"><!-- Text will be generated. --></label>
                             <input type="number" id="SecondaryEventsCompletable" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
-                        <br>
                         </div>
-
-                    <div id="SecondaryEventsCompleted">
+                        <div class="col-sm-3">
                             <label for="SecondaryEventsCompleted" class="form-label">Current Patch's Secondary Events Completed</label>
                             <input type="number" id="SecondaryEventsCompleted" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
                         </div>
+                        <div class="col-sm-3"></div>
+                    </div>
                     <br>
 
-                    <div id="FlagshipEventCompletableSkipGroup" class="form-check form-check-inline">
+                    <div class="form-check form-check-inline">
                         <input type="checkbox" id="FlagshipEventCompletable" class="form-check-input">
-                        <label for="FlagshipEventCompletable" class="form-label"></label>
+                        <label for="FlagshipEventCompletable" class="form-label"><!-- Text will be generated. --></label>
                     </div>
 
-                    <div id="FlagshipEventCompletedSkipGroup" class="form-check form-check-inline">
+                    <div class="form-check form-check-inline">
                         <input type="checkbox" id="FlagshipEventCompleted" class="form-check-input">
                         <label for="FlagshipEventCompleted" class="form-label">Current Patch's Flagship Event Completed</label>
                     </div>
@@ -772,21 +774,29 @@
             $("label[for='FlagshipEventCompletable']").html(`${NextPhase1.Patch} Flagship Event Completable by first half.`);
             $("label[for='SecondaryEventsCompletable']").html(`${NextPhase1.Patch} Secondary Events Completable by first half.`);
 
-            $('#SecondaryEventsCompletable').on('change', function() {
-                if ( $('#BannerEnd')[0].options[0].value == NextPhase1.value ) {
-                    $('#SecondaryEventsCompleted').attr('max', $('#SecondaryEventsCompletable').val());
-                    
-                    $('#SecondaryEventsCompleted').parsley({range: `[0, ${$('#SecondaryEventsCompletable').val()}]`});
-
-                    $('#SecondaryEventsCompleted').trigger('input');
+            $('#FlagshipEventCompletable').on('change', function () {
+                if (BannerInfo[$('#BannerEnd')[0].options[0].value].Phase == 1 && !$('#FlagshipEventCompletable').is(':checked')) {
+                    $('#FlagshipEventCompleted').attr('disabled', true).prop('checked', false);
+                    $('label[for="FlagshipEventCompleted"]').css('color', '#505050');
                 }
                 else {
-                    $('#SecondaryEventsCompleted').attr('max', 3);
-
-                    $('#SecondaryEventsCompleted').parsley({range: '[0, 3]'});
-
-                $('#SecondaryEventsCompleted').trigger('input');
+                    $('#FlagshipEventCompleted').attr('disabled', false);
+                    $('label[for="FlagshipEventCompleted"]').css('color', 'black');
                 }
+            });
+
+            $('#SecondaryEventsCompletable').on('change', function() {
+                
+                let SecondaryEventsMax;
+                if (BannerInfo[$('#BannerEnd')[0].options[0].value].Phase == 1) {
+                    SecondaryEventsMax = $('#SecondaryEventsCompletable').val();
+                }
+                else {
+                    SecondaryEventsMax = 3;
+                };
+
+                $('#SecondaryEventsCompleted').attr('max', SecondaryEventsMax).parsley({range: `[0, ${SecondaryEventsMax}]`});
+                $('#SecondaryEventsCompleted').trigger('input');
             })
 
             $('#WishMode').on('change', function () {
@@ -823,34 +833,6 @@
                 }
             })
 
-            $(document).on('change', '#BannerEnd, .WishPlanBannerEnd, #WishMode', function() {
-                if ($('#WishMode').val() != WishModes.SIMPLE.value) {
-                    // User's should only know the events schedule as far out as the end of the next banner. 
-                    // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
-                    if (
-                        ($('#WishMode').val() == WishModes.NORMAL.value && $('#BannerEnd').val() == NextPhase1.value)
-                        || (($('#WishMode').val() == WishModes.ADVANCED.value) && $(`.WishPlanBannerEnd option[value=${NextPhase1.value}]:selected`).length >= 1)
-                    ) {
-                        $('#FlagshipEventCompletableSkipGroup').show();
-                        $('#FlagshipEventCompletable').trigger('input').change();
-                        $('#SecondaryEventsCompletableSkipGroup').show();
-                        $('#SecondaryEventsCompletable').trigger('input').change();
-                    }
-                    else {
-                        $('#FlagshipEventCompletableSkipGroup').hide();
-                        $('#SecondaryEventsCompletableSkipGroup').hide();
-
-                        $('#FlagshipEventCompletedSkipGroup').show();
-
-                        $('#SecondaryEventsCompleted').attr('max', 3);
-
-                        $('#SecondaryEventsCompleted').parsley({range: '[0, 3]'});
-
-                        $('#SecondaryEventsCompleted').trigger('input');
-                    }
-                };
-            });
-
             $('#EnableCapturingRadiance').on('change', function () {
                 if ($('#EnableCapturingRadiance').is(':checked')) {
                     $('#CapturingRadianceLabel').css('color', 'black');
@@ -861,19 +843,6 @@
                     $('#CapturingRadiancePitySkipGroup').hide();
                 };
             });
-
-            $('#BannerEnd, #FlagshipEventCompletable').on('change', function () {
-                if ( 
-                    BannerInfo[$('#BannerEnd').val()].PhaseDiff > 0
-                    || BannerInfo[$('#BannerEnd').val()].Phase == 2
-                    || $('#FlagshipEventCompletable').is(':checked')
-                ) {
-                    $('#FlagshipEventCompletedSkipGroup').show();
-                }
-                else {
-                    $('#FlagshipEventCompletedSkipGroup').hide();
-                }
-            })
 
             $('#UsingStarglitter').on('change', function(){
                 if ($('#UsingStarglitter').is(':checked')) {
