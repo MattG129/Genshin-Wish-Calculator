@@ -581,14 +581,14 @@
 
                     <div id="SecondaryEventsCompletableSkipGroup">
                         <label for="SecondaryEventsCompletable" class="form-label"></label>
-                        <input type="number" id="SecondaryEventsCompletable" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
+                            <input type="number" id="SecondaryEventsCompletable" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
                         <br>
-                    </div>
+                        </div>
 
                     <div id="SecondaryEventsCompleted">
-                        <label for="SecondaryEventsCompleted" class="form-label">Current Patch's Secondary Events Completed</label>
-                        <input type="number" id="SecondaryEventsCompleted" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
-                    </div>
+                            <label for="SecondaryEventsCompleted" class="form-label">Current Patch's Secondary Events Completed</label>
+                            <input type="number" id="SecondaryEventsCompleted" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
+                        </div>
                     <br>
 
                     <div id="FlagshipEventCompletableSkipGroup" class="form-check form-check-inline">
@@ -703,7 +703,7 @@
             }
 
             UpdateCalculateButton();
-            $('#CharacterGoal, #WeaponGoal, #ChronicledGoal, #AdvancedWishPlanning').on('input', UpdateCalculateButton)
+            $('#CharacterGoal, #WeaponGoal, #ChronicledGoal, #WishMode').on('input', UpdateCalculateButton)
 
             // TODO: Disable the button when clicked and reenable once its done processing.
             $("#Calculate").on('click', function() {
@@ -781,7 +781,7 @@
 
                     $('#SecondaryEventsCompleted').parsley({range: '[0, 3]'});
 
-                    $('#SecondaryEventsCompleted').trigger('input');
+                $('#SecondaryEventsCompleted').trigger('input');
                 }
             })
 
@@ -930,7 +930,7 @@
                     $('#InvalidImportMessage').hide();
 
                     if (JSONImport['BannerEnd'] < $('#BannerEnd')[0].options[0].value) {
-                        if (!JSONImport['AdvancedWishPlanning']) {
+                        if (JSONImport['WishMode'] != WishModes.ADVANCED.value) {
                             swal({
                                 text: 'Banner end date was not imported as it has already passed. All other fields have been successfully imported.',
                                 icon: 'info'
@@ -940,7 +940,7 @@
                         JSONImport['BannerEnd'] = $('#BannerEnd')[0].options[0].value;
                     }
                     else if (JSONImport['BannerEnd'] >= BannerInfo.length) {
-                        if (!JSONImport['AdvancedWishPlanning']) {
+                        if (JSONImport['WishMode'] != WishModes.ADVANCED.value) {
                             swal({
                                 text: 'Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.',
                                 icon: 'info'
@@ -979,7 +979,7 @@
                         let ExpiredWishPlanRows = false; // We will only set this to true when advanced wish planning mode is activated.
 
                         if ($(this).val() == null) {
-                            if (JSONImport['AdvancedWishPlanning']) {
+                            if (JSONImport['WishMode'] == WishModes.ADVANCED.value) {
                                 WishPlanRowID = $(this).attr('data-wishplan-rowid');
 
                                 $(`#WishPlanRow${WishPlanRowID}`).remove()
