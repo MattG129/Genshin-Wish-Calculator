@@ -190,26 +190,14 @@ function SavingsCalculator(WishConfig) {
                 Primos += 60*(LastBannerInfo.MonthDiff + 1); // +1 for the current month.
                 
                 // Subtract based on the amount of primos we could claim.
-                if (Today.getDate() >= 18) {
-                    Primos -= 60
-                }
-                else if (Today.getDate() >= 11) {
-                    Primos -= 40
-                }
-                else if (Today.getDate() >= 4) {
-                    Primos -= 20
-                };
+                if      (Today.getDate() >= 18) {Primos -= 60}
+                else if (Today.getDate() >= 11) {Primos -= 40}
+                else if (Today.getDate() >=  4) {Primos -= 20};
 
                 // Subtracts primos based on how many could actually be claimed by the banner end date.
-                if (LastBannerInfo.BannerEndDate.getDate() < 4) {
-                    Primos -= 60
-                }
-                else if (LastBannerInfo.BannerEndDate.getDate() < 11) {
-                    Primos -= 40
-                }
-                else if (LastBannerInfo.BannerEndDate.getDate() < 18) {
-                    Primos -= 20
-                };
+                if      (LastBannerInfo.BannerEndDate.getDate() <  4) {Primos -= 60}
+                else if (LastBannerInfo.BannerEndDate.getDate() < 11) {Primos -= 40}
+                else if (LastBannerInfo.BannerEndDate.getDate() < 18) {Primos -= 20};
             };
         };
     }
