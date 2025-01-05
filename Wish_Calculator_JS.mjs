@@ -245,8 +245,7 @@ function SavingsCalculator(WishConfig) {
 }
 
 let Wishes;
-let Lost5050s;
-let NonGuaranteeCharacterWinChance;
+let LostCharacter5050s;
 let CapturingRadiancePity;
 
 let CharacterPity;
@@ -269,16 +268,18 @@ function NumericWishCalculations(WishConfig) {
     let Start = Date.now();
 
     let wishPlanResults = {};
+    let ModifiedWishPlanMapper = [];
     for (const i of WishConfig.wishPlanMapper) {
         if (WishConfig[`WishPlanEnabled${i}`]) {
             wishPlanResults[i] = 0;
+            ModifiedWishPlanMapper.push(i);
         }
     }
 
     let TrialCount;
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
 
-        Lost5050s = 0
+        LostCharacter5050s = 0
         Wishes = 0;
 
         CharacterPity = WishConfig.CharacterPity;
@@ -300,53 +301,47 @@ function NumericWishCalculations(WishConfig) {
 
 
         if (WishConfig.WishMode != WishModes.ADVANCED.value) {
-            let Characters = CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
+            let CharactersWon = CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
 
-            let Weapons = WeaponWishSim(WishConfig, WishConfig.WeaponGoal, WishConfig.MaxWishes);
+            let WeaponsWon = WeaponWishSim(WishConfig, WishConfig.WeaponGoal, WishConfig.MaxWishes);
 
-            let ChronicledItems = ChronicledWishSim(WishConfig, WishConfig.ChronicledGoal, WishConfig.MaxWishes);
+            let ChronicledItemsWon = ChronicledWishSim(WishConfig, WishConfig.ChronicledGoal, WishConfig.MaxWishes);
 
-            if (Characters >= WishConfig.CharacterGoal && Weapons >= WishConfig.WeaponGoal && ChronicledItems >= WishConfig.ChronicledGoal) {
+            if (CharactersWon && WeaponsWon && ChronicledItemsWon) {
                 Successes++;
             }
             
         }
         else {
-            let First = true
-            let WishGroupMaxWishes = 0
+            let WishGroupMaxWishes = WishConfig[`WishPlanMaxWishes${ModifiedWishPlanMapper[0]}`]
             let MissedFiveStars = false;
-            for (const i of WishConfig.wishPlanMapper) {
-                if (WishConfig[`WishPlanEnabled${i}`]) {
-                    if (WishGroupMaxWishes != WishConfig[`WishPlanMaxWishes${i}`]) {
-                        WishGroupMaxWishes = WishConfig[`WishPlanMaxWishes${i}`];
-
-                        if (!First) {
-                            WeaponFatePoints = 0;
-                            ChronicledFatePoints = 0;
-                        }
-                        First = false;
-                    };
-
-                    let WishItemsWon;
-                    switch (WishConfig[`WishPlanType${i}`]) {
-                        case BannerTypeDropdownOptions['CHARACTER'].value:
-                            WishItemsWon = CharacterWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishConfig[`WishPlanMaxWishes${i}`]);
-                            break;
-                        case BannerTypeDropdownOptions['WEAPON'].value: 
-                            WishItemsWon = WeaponWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishConfig[`WishPlanMaxWishes${i}`]);
-                            break;
-                        case BannerTypeDropdownOptions['CHRONICLED_WISH'].value: 
-                            WishItemsWon = ChronicledWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishConfig[`WishPlanMaxWishes${i}`]);
-                            break;
-                    };
-
-                    if (WishItemsWon >= WishConfig[`WishPlanGoal${i}`]) {
-                        wishPlanResults[i]++;
-                    }
-                    else {
-                        MissedFiveStars = true;
-                    }
+            for (const i of ModifiedWishPlanMapper) {
+                if (WishGroupMaxWishes < WishConfig[`WishPlanMaxWishes${i}`]) {
+                    WishGroupMaxWishes = WishConfig[`WishPlanMaxWishes${i}`];
+                    
+                    WeaponFatePoints = 0;
+                    ChronicledFatePoints = 0;
                 };
+
+                let WishItemsWon;
+                switch (WishConfig[`WishPlanType${i}`]) {
+                    case BannerTypeDropdownOptions['CHARACTER'].value:
+                        WishItemsWon = CharacterWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishGroupMaxWishes);
+                        break;
+                    case BannerTypeDropdownOptions['WEAPON'].value: 
+                        WishItemsWon = WeaponWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishGroupMaxWishes);
+                        break;
+                    case BannerTypeDropdownOptions['CHRONICLED_WISH'].value: 
+                        WishItemsWon = ChronicledWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishGroupMaxWishes);
+                        break;
+                };
+
+                if (WishItemsWon) {
+                    wishPlanResults[i]++;
+                }
+                else {
+                    MissedFiveStars = true;
+                }
             };
 
             if (MissedFiveStars == false) {
@@ -360,10 +355,8 @@ function NumericWishCalculations(WishConfig) {
         }
     }
 
-    for (const i of WishConfig.wishPlanMapper) {
-        if (WishConfig[`WishPlanEnabled${i}`]) {
-            wishPlanResults[i] = ((wishPlanResults[i] / TrialCount)*100).toFixed(1)+'%';
-        };
+    for (const i of ModifiedWishPlanMapper) {
+        wishPlanResults[i] = ((wishPlanResults[i] / TrialCount)*100).toFixed(1)+'%';
     };
 
     return ({
@@ -375,7 +368,10 @@ function NumericWishCalculations(WishConfig) {
 function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
     let Characters = 0;
 
-    while (Characters < CharacterGoal && Wishes < MaxWishes) {
+    let FiveStarChance = Math.random();
+    let NonFiveStarChance = 1;
+    let CharacterFiveStarWinRates = [0.5, 0.5, 0.75, 1];
+    while (Wishes < MaxWishes) {
         Wishes++;
         CharacterPity++;
 
@@ -383,48 +379,47 @@ function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
             CharacterRate += 0.06;
         }
 
-        if (Math.random() <= CharacterRate) {
+        NonFiveStarChance *= (1 - CharacterRate);
+
+        if (FiveStarChance > NonFiveStarChance) {
             CharacterRate = 0.006;
             CharacterPity = 0;
 
-            if (!WishConfig.EnableCapturingRadiance) {
-                NonGuaranteeCharacterWinChance = 0.500
-            }
-            else {  
-                switch (CapturingRadiancePity) {
-                    case 0: NonGuaranteeCharacterWinChance = 0.500; break;
-                    case 1: NonGuaranteeCharacterWinChance = 0.525; break;
-                    case 2: NonGuaranteeCharacterWinChance = 0.750; break;
-                    case 3: NonGuaranteeCharacterWinChance = 1.000; break;
-                };
-            };
-
-            if (CharacterGuarantee || (Math.random() < NonGuaranteeCharacterWinChance)) {
+            if (CharacterGuarantee || (Math.random() < CharacterFiveStarWinRates[ (WishConfig.EnableCapturingRadiance ? CapturingRadiancePity : 0) ])) {
                 if (!CharacterGuarantee) {
                     CapturingRadiancePity = 0;
                 }
 
                 Characters++;
                 CharacterGuarantee = 0;
+
+                if (Characters >= CharacterGoal) {
+                    return true;
+                };
             } else {
                 CharacterGuarantee = 1;
-                Lost5050s++;
+                LostCharacter5050s++;
                 CapturingRadiancePity++;
 
-                if ( WishConfig.UsingStarglitter && (Lost5050s > WishConfig.MissingFiveStars) ){
+                if (WishConfig.UsingStarglitter && (LostCharacter5050s > WishConfig.MissingFiveStars)){
                     Wishes -= 2 // You get enough starglitter from five star cons to make two additional wishes.
                 }
             }
+
+            FiveStarChance = Math.random();
+            NonFiveStarChance = 1;
         }
     }
 
-    return Characters;
+    return false;
 }
 
 function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
     let Weapons = 0;
 
-    while (Weapons < WeaponGoal && Wishes < MaxWishes) {
+    let FiveStarChance = Math.random();
+    let NonFiveStarChance = 1;
+    while (Wishes < MaxWishes) {
         Wishes++;
         WeaponPity++;
 
@@ -432,7 +427,9 @@ function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
             WeaponRate += 0.07;
         }
 
-        if (Math.random() <= WeaponRate) {
+        NonFiveStarChance *= (1 - WeaponRate);
+
+        if (FiveStarChance > NonFiveStarChance) {
             WeaponRate = 0.007;
             WeaponPity = 0;
 
@@ -441,11 +438,14 @@ function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
             }
 
             let r = Math.random();
-
             if (WeaponFatePoints === 1 || (WeaponGuarantee && r <= 0.5) || (r <= 0.375)) {
                 Weapons++;
                 WeaponGuarantee = 0;
                 WeaponFatePoints = 0;
+
+                if (Weapons >= WeaponGoal) {
+                    return true;
+                };
             } else if (WeaponGuarantee || (r <= 0.75)) {
                 WeaponGuarantee = 0;
                 WeaponFatePoints++;
@@ -453,16 +453,21 @@ function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
                 WeaponGuarantee = 1;
                 WeaponFatePoints++;
             }
+
+            FiveStarChance = Math.random();
+            NonFiveStarChance = 1;
         }
     }
 
-    return Weapons;
+    return false;
 }
 
 function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
     let ChronicledItems = 0;
 
-    while (ChronicledItems < ChronicledGoal && Wishes < MaxWishes) {
+    let FiveStarChance = Math.random();
+    let NonFiveStarChance = 1;
+    while (Wishes < MaxWishes) {
         Wishes++;
         ChronicledPity++;
 
@@ -470,20 +475,29 @@ function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
             ChronicledRate += 0.06;
         }
 
-        if (Math.random() <= ChronicledRate) {
+        NonFiveStarChance *= (1 - ChronicledRate);
+
+        if (FiveStarChance > NonFiveStarChance) {
             ChronicledRate = 0.006;
             ChronicledPity = 0;
 
             if (ChronicledFatePoints >= 1 || (Math.random() < 0.5)) {
                 ChronicledItems++;
                 ChronicledFatePoints = 0;
+
+                if (ChronicledItems >= ChronicledGoal) {
+                    return true;
+                };
             } else {
                 ChronicledFatePoints++;
             }
+            
+            FiveStarChance = Math.random();
+            NonFiveStarChance = 1;
         }
     }
 
-    return ChronicledItems;
+    return false;
 }
 
 function WishCalcs(WishConfig) {
