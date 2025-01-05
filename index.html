@@ -951,7 +951,7 @@
                         swal({icon: 'info', text: 'Expired wish plan row(s) were detected in the import. These row(s) have been automatically set to inactive. All other information has been successfully imported.'});
                     };
 
-                    $('input').change().trigger('input');
+                    $('input, select').change().trigger('input');
 
                     if (RunCalcs == true) {
                         $('#Calculate').trigger('click');
