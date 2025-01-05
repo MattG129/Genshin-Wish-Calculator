@@ -1,7 +1,7 @@
-// NA region's start date for version 4 in est. Since (almost) all patches are exactly six weeks, we can use this date to calculate the start and end dates for other patches.
-const v4StartDate = moment('2023-8-15', "YYYY-MM-DD").toDate();
+// North America region's start date for version 5 in est. Since almost all patches are exactly six weeks, we can use this date to calculate the start and end dates for other patches.
+const v5StartDate = moment('2024-8-27', "YYYY-MM-DD").toDate();
 let BannerInfo = [];
-let LastBannerInfo;
+let TargetBannerInfo;
 let Trials = 10**6;
 
 let Today = new Date();
@@ -25,73 +25,52 @@ function DateDiff(DateFrom, DateTo) {
     return Math.floor((DateTo - DateFrom)/(1000 * 60 * 60 * 24));
 }
 
-function GetBannerInfo() {
-    let Patch = 40; // Using integers so we don't have to deal with floats.
+let Patch = 50; // Using ints to make things easier.
+let PatchDiff = 0; // This will track how many patches are between the current patch and any subsequent patches.
+let PatchStartDate = v5StartDate;
+let CurrentBannerVal;
+while (BannerInfo.length < 50) {
+    for (let Phase = 1; Phase <= 2; Phase++) {
+        let BannerEndDate = DateAdd(PatchStartDate, 21*Phase);
 
-    let PatchDiff = 0; // This will track how many patches are between the current patch and any subsequent patches.
-    let BannerEndDate = DateAdd(v4StartDate, 21);
+        if (BannerEndDate >= Today && CurrentBannerVal == undefined) {
+            CurrentBannerVal = BannerInfo.length;
+        };
 
-    let TotalPhaseDiff = 0;
-    let PhaseDiffFromCurrentBanner = -1; //Since we only care about this value for active banners so we can have it start at -1.
-
-    let First = true
-    while (PatchDiff <= 25) {
-        if (!First) { // Since we are starting with 4.0 phase 1, we don't want to increae the patch/phase on the first iteration.
-            BannerEndDate = DateAdd(BannerEndDate, 21);
-            TotalPhaseDiff++;
-            
-            // Increase the patch everytime we reach a phase 1 banner. If the patch is a ".8" then the next patch should be a ".0".
-            if (TotalPhaseDiff % 2 == 0) {
-                if ((Patch % 10) == 8) {
-                    Patch += 2;
-                }
-                else {
-                  Patch++;
-                }
-            }
-        }
-        else {
-            First = false
-        }
-
-        if (BannerEndDate > Today) {
-            // Increase the patch diff everytime we reach a phase 1 banner, unless its the current banner.
-            if ((TotalPhaseDiff % 2 == 0) && DateDiff(Today, BannerEndDate) > 21) {
-                PatchDiff += 1;  
-            }
-
-            $('#BannerEnd').append($('<option>', {
-                value: TotalPhaseDiff,
-                text: `${(Patch/10).toFixed(1)} Phase ${(TotalPhaseDiff % 2) + 1} (Ends on ${moment(BannerEndDate, "YYYY-MM-DD").format('L')})`,
-            }));
-
-            PhaseDiffFromCurrentBanner++
-        }
-
+        // We need to have banner info have consistent values since import values could have been exported during a previous banner.
         BannerInfo.push({
-            'MonthDiff': 12 * (BannerEndDate.getFullYear() - Today.getFullYear()) + (BannerEndDate.getMonth() - Today.getMonth()),
-            'PatchDiff': PatchDiff,
-            'Phase': (TotalPhaseDiff % 2) + 1,
-            'BannerEndDate': BannerEndDate,
-            'PatchStartDate': DateAdd(BannerEndDate, -21*((TotalPhaseDiff % 2) + 1)),
             'Patch': (Patch/10).toFixed(1),
-            'PhaseDiff': PhaseDiffFromCurrentBanner
+            'PatchDiff': PatchDiff,
+            'PatchStartDate': PatchStartDate,
+            'Phase': Phase,
+            'PhaseDiff': BannerInfo.length - CurrentBannerVal,
+            'BannerEndDate': BannerEndDate,
+            'MonthDiff': 12*(BannerEndDate.getFullYear() - Today.getFullYear()) + (BannerEndDate.getMonth() - Today.getMonth())
         });
+    };
 
+    PatchStartDate = DateAdd(PatchStartDate, 42);
+    if ((Patch % 10) == 8) { // Almost all patches end after x.8 so we will go with this assumption.
+        Patch += 2;
     }
-}
+    else {
+        Patch += 1;
+    };
+
+    if (PatchStartDate >= Today) {
+        PatchDiff++
+    };
+};
 
 function SavingsCalculator(WishConfig) {
-    let CurrentBannerVal = $('#BannerEnd')[0].options[0].value;
-
     // TODO: Could maybe go a bit more in depth.
     let Primos = WishConfig.Primos;
 
     if(WishConfig.WishMode != WishModes.SIMPLE.value) {
         // 40 primos from character trials, every banner. Assumes that this banner's trial primos have already been claimed.
-        Primos += 40*(LastBannerInfo.PhaseDiff);
+        Primos += 40*(TargetBannerInfo.PhaseDiff);
         
-        Primos += DateDiff(Today, LastBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
+        Primos += DateDiff(Today, TargetBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
 
         let ExpectedAbyssPrimos = 0
 
@@ -110,10 +89,10 @@ function SavingsCalculator(WishConfig) {
         }
 
         // TODO: Might want to add a comment here explaining the whole process.
-        let AbyssCycles = LastBannerInfo.MonthDiff - WishConfig.AbyssCurrentCycleCompleted;
+        let AbyssCycles = TargetBannerInfo.MonthDiff - WishConfig.AbyssCurrentCycleCompleted;
         
         // Since the abyss resets on the 16th of each month, the calculations needed to get the number of abyss cycles, are slightly different.
-        if (LastBannerInfo.BannerEndDate.getDate() >= 16) {
+        if (TargetBannerInfo.BannerEndDate.getDate() >= 16) {
             AbyssCycles += 1;
         }
         if (Today.getDate() < 16) {
@@ -138,45 +117,38 @@ function SavingsCalculator(WishConfig) {
         }
 
         // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
-        Primos += ExpectedTheaterPrimos * (LastBannerInfo.MonthDiff + (1 - WishConfig.ITCurrentCycleCompleted));
-        
-        // Live Stream Primos
-        // If there are any patches after the current patch, then we will add 300 primos for each of them, unless the final banner ends in the first phase. In which case we will add 300 for all but the final patch as we would finish wishing before the it's live stream airs.
-        // TODO: Could maybe go a bit more in depth.
-        if (LastBannerInfo.PatchDiff > 0) {
-            if (LastBannerInfo.Phase == 1) {
-                Primos += 300 * (LastBannerInfo.PatchDiff - 1);
+        Primos += ExpectedTheaterPrimos * (TargetBannerInfo.MonthDiff + (1 - WishConfig.ITCurrentCycleCompleted));
 
-            }
-            else {
-                Primos += 300 * LastBannerInfo.PatchDiff;
-            }
-        }
 
-        // Adding in the current patches primos for the live steam, if applicable. Live streams generally air on the second to last Friday of a patch, or 31 days into the patch. 
-        // If we are 31 or more days into the patch, then the user should have already been able to claim the primos, thus we no longer need to account for them. 
-        // If the current patch is also the final patch, for wishing, then wishing will have to go into the second phase in order to claim the primos.
-        if ( (LastBannerInfo.PatchDiff > 0 || LastBannerInfo.Phase === 2) && (DateDiff(BannerInfo[CurrentBannerVal].PatchStartDate, Today) < 31) ) {
-            Primos += 300;
+        // Live Stream Primos - Every patch there is a live stream that will give away 300 primos to viewers.
+        Primos += 300 * (TargetBannerInfo.PatchDiff + 1); // +1 for current patch.
+        // Subtracting primos for current patch, if claimed. Live streams generally air 31 days into the patch so we will assume the primos are claimed on that date.
+        if (DateDiff(BannerInfo[CurrentBannerVal].PatchStartDate, Today) >= 31) {
+            Primos -= 300;
         }
+        // Subtract primos from the last patch if the target banner is in the first phase, as then the ls primos wouldn't be claimable.
+        if (TargetBannerInfo.Phase == 1) {
+            Primos -= 300
+        };
+
 
         // Maintenance
         // TODO: Could maybe go a bit more in depth.
-        Primos += 300 * LastBannerInfo.PatchDiff;
+        Primos += 300 * TargetBannerInfo.PatchDiff;
 
         if (WishConfig.EnableEventCalcs) {
 
-            Primos += (900 + 3*420) * (LastBannerInfo.PatchDiff + 1); // +1 for current patch.
+            Primos += (900 + 3*420) * (TargetBannerInfo.PatchDiff + 1); // +1 for current patch.
 
             // Subtracts claimed event primos.
             Primos -= WishConfig.FlagshipEventCompleted ? 900 : 0;
             Primos -= 420*WishConfig.SecondaryEventsCompleted
 
             // Subtracts unclaimable event primos.
-            if (LastBannerInfo.Phase != 2) { // All events will be completable if the banner ends in the second half.
+            if (TargetBannerInfo.Phase != 2) { // All events will be completable if the banner ends in the second half.
                 // User's should only know the events schedule as far out as the end of the next banner. 
                 // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
-                if (LastBannerInfo.PhaseDiff > 1) {
+                if (TargetBannerInfo.PhaseDiff > 1) {
                     Primos -= 900;
                     Primos -= 2*420;
                 }
@@ -187,7 +159,7 @@ function SavingsCalculator(WishConfig) {
             };
         
             if (WishConfig.UsingHoyoLabCheckin) {
-                Primos += 60*(LastBannerInfo.MonthDiff + 1); // +1 for the current month.
+                Primos += 60*(TargetBannerInfo.MonthDiff + 1); // +1 for the current month.
                 
                 // Subtract based on the amount of primos we could claim.
                 if      (Today.getDate() >= 18) {Primos -= 60}
@@ -195,9 +167,9 @@ function SavingsCalculator(WishConfig) {
                 else if (Today.getDate() >=  4) {Primos -= 20};
 
                 // Subtracts primos based on how many could actually be claimed by the banner end date.
-                if      (LastBannerInfo.BannerEndDate.getDate() <  4) {Primos -= 60}
-                else if (LastBannerInfo.BannerEndDate.getDate() < 11) {Primos -= 40}
-                else if (LastBannerInfo.BannerEndDate.getDate() < 18) {Primos -= 20};
+                if      (TargetBannerInfo.BannerEndDate.getDate() <  4) {Primos -= 60}
+                else if (TargetBannerInfo.BannerEndDate.getDate() < 11) {Primos -= 40}
+                else if (TargetBannerInfo.BannerEndDate.getDate() < 18) {Primos -= 20};
             };
         };
     }
@@ -218,21 +190,21 @@ function SavingsCalculator(WishConfig) {
         // Assumes that the current month's supply has already been purchased.
         // If the Stardust field is left empty then it will be assumed that all available Intertwined Fates can be purchased.
         if (WishConfig.Stardust === '') {
-            IntertwinedFates += 5 * LastBannerInfo.MonthDiff;
+            IntertwinedFates += 5 * TargetBannerInfo.MonthDiff;
         }
         else {
-            IntertwinedFates += Math.min(5 * LastBannerInfo.MonthDiff, Math.floor(WishConfig.Stardust / 75));
+            IntertwinedFates += Math.min(5 * TargetBannerInfo.MonthDiff, Math.floor(WishConfig.Stardust / 75));
         }
 
         // TODO: Could maybe go a bit more in depth.
         if (WishConfig.BPPurchased) {
-            IntertwinedFates += Math.max(0, (LastBannerInfo.Phase === 1 ? 3 : 4) + 4 * LastBannerInfo.PatchDiff - Math.min(4, WishConfig.BPLevel)); 
+            IntertwinedFates += Math.max(0, (TargetBannerInfo.Phase === 1 ? 3 : 4) + 4 * TargetBannerInfo.PatchDiff - Math.min(4, WishConfig.BPLevel)); 
             // Assumes that the user will only be able to claim 3 of the 4 fates for that pass, if the banner ends in the first phase. 
             // Also, subtracts the amount of fates already claimed from this battle pass.
             // Subtracting the claimed interwined fates has to be done on the same line so it can be wrapped in the max function as there is an edge case where
             //      the user can earn 4 intertwined from the pass while the system is only expecting 3 to be claimable and so it would result in -1 fates being expected from the pass.
 
-            Primos += 680 * ((LastBannerInfo.Phase === 2 ? 1 : 0) + LastBannerInfo.PatchDiff); // Assumes that the user won't reach level 50 for that pass, if the banner ends in the first phase.
+            Primos += 680 * ((TargetBannerInfo.Phase === 2 ? 1 : 0) + TargetBannerInfo.PatchDiff); // Assumes that the user won't reach level 50 for that pass, if the banner ends in the first phase.
             if (WishConfig.BPLevel === 5) { // Subtracts 680, if the primos have already been claimed for this pass.
                 Primos -= 680;
             }
@@ -240,7 +212,7 @@ function SavingsCalculator(WishConfig) {
 
         // There are three bp missions to "Enhance 5-star artifacts a total of 30/60/100 levels".
         // The rewards add up to 60 primos, are not time gated, and don't require purchasing the pass.
-        Primos += 60*LastBannerInfo.PatchDiff; 
+        Primos += 60*TargetBannerInfo.PatchDiff; 
     }
 
 
@@ -252,7 +224,7 @@ function SavingsCalculator(WishConfig) {
         let FourStars = Math.floor(WishesMade / 10);
         let FourStarPity = WishesMade % 10;
         // TODO: Add a comment regarding why this doesn't differentiate for on banner and off banner four stars.
-        Starglitter += Math.max(0, 2 * (FourStars - (WishConfig.MissingFourStars + LastBannerInfo.PatchDiff)));
+        Starglitter += Math.max(0, 2 * (FourStars - (WishConfig.MissingFourStars + TargetBannerInfo.PatchDiff)));
         // Won't get starglitter for newly acquired four stars. Adds up the number of currently missing four stars plus those that may be added in future patches. 
         // Assumes that one will be added per patch to err on the side of caution, although this often won't be the case.
 
@@ -517,16 +489,16 @@ function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
 function WishCalcs(WishConfig) {
     if (WishConfig.WishMode != WishModes.ADVANCED.value) {
 
-        LastBannerInfo = BannerInfo[WishConfig.BannerEnd];
+        TargetBannerInfo = BannerInfo[WishConfig.BannerEnd];
 
         if (WishConfig.WishMode != WishModes.SIMPLE.value) {
             // While the Banner End dropdown should prevent the user from selecting an end date that is in the past, we will leave it here for any edge cases that may occur.
-            if (LastBannerInfo.BannerEndDate < Today) {
+            if (TargetBannerInfo.BannerEndDate < Today) {
                 $('#WishError').show().html('Banner has already ended.');
                 return {Success: false}
             }
             
-            $('#WishEndDate').show().html(`Wishing End Date: ${moment(LastBannerInfo.BannerEndDate, "YYYY-MM-DD").format('L')}`);
+            $('#WishEndDate').show().html(`Wishing End Date: ${moment(TargetBannerInfo.BannerEndDate, "YYYY-MM-DD").format('L')}`);
         }
 
         WishConfig.MaxWishes = SavingsCalculator(WishConfig);
@@ -548,7 +520,7 @@ function WishCalcs(WishConfig) {
             if (WishConfig[`WishPlanEnabled${i}`]) {
                 if (WishConfig[`WishPlanBannerEnd${i}`] > ixBannerEnd) {
                     ixBannerEnd = WishConfig[`WishPlanBannerEnd${i}`];
-                    LastBannerInfo = BannerInfo[ixBannerEnd];
+                    TargetBannerInfo = BannerInfo[ixBannerEnd];
 
                     WishConfig[`WishPlanMaxWishes${i}`] = SavingsCalculator(WishConfig);
                     ixMaxWishes = WishConfig[`WishPlanMaxWishes${i}`]

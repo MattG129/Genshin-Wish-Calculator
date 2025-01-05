@@ -270,9 +270,17 @@
                         <center>
                             <div style="align-content: center;">
                                 <label for="EndPatch" class="form-label">What banner will you have made all your wishes by?</label>
-                                <select id="BannerEnd" class="form-select" style="max-width: 300px;">
-                                    <!-- Filled in by GetBannerInfo. -->
-                                </select>
+                                <select id="BannerEnd" class="form-select" style="max-width: 300px;"></select>
+                                <script type="text/javascript">
+                                    $(function() {
+                                        for (let i = CurrentBannerVal; i < BannerInfo.length; i++) {
+                                            $('#BannerEnd').append($('<option>', {
+                                                value: i,
+                                                text: `${BannerInfo[i].Patch} Phase ${BannerInfo[i].Phase} (Ends on ${moment(BannerInfo[i].BannerEndDate, "YYYY-MM-DD").format('L')})`,
+                                            }));
+                                        };
+                                    });
+                                </script>
                             </div>
                         </center>
                     </div>
@@ -586,7 +594,7 @@
                     <div class="row">
                         <div class="col-sm-3"></div>
                         <div class="col-sm-3">
-                            <label for="SecondaryEventsCompletable" class="form-label"><!-- Text will be generated. --></label>
+                            <label for="SecondaryEventsCompletable" class="form-label"><!-- Text generated below. --></label>
                             <input type="number" id="SecondaryEventsCompletable" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
                         </div>
                         <div class="col-sm-3">
@@ -599,7 +607,7 @@
 
                     <div class="form-check form-check-inline">
                         <input type="checkbox" id="FlagshipEventCompletable" class="form-check-input">
-                        <label for="FlagshipEventCompletable" class="form-label"><!-- Text will be generated. --></label>
+                        <label for="FlagshipEventCompletable" class="form-label"><!-- Text generated below. --></label>
                     </div>
 
                     <div class="form-check form-check-inline">
@@ -607,6 +615,19 @@
                         <label for="FlagshipEventCompleted" class="form-label">Current Patch's Flagship Event Completed</label>
                     </div>
                     <br><br>
+
+                    <script type="text/javascript">
+                        $(function() {
+                            for (let i = CurrentBannerVal; i < BannerInfo.length; i++) {
+                                if (BannerInfo[i].Phase == 1) {
+                                    let NearestPhase1 = BannerInfo[i];
+                                    $("label[for='FlagshipEventCompletable']").html(`${NearestPhase1.Patch} Flagship Event Completable by first half.`);
+                                    $("label[for='SecondaryEventsCompletable']").html(`${NearestPhase1.Patch} Secondary Events Completable by first half.`);
+                                    break;
+                                };
+                            };
+                        });
+                    </script>
 
                     <div class="form-check form-check-inline">
                         <input type="checkbox" id="UsingHoyoLabCheckin" class="form-check-input">
@@ -670,9 +691,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
         <script type="text/javascript">
-            GetBannerInfo();
-            let CurrentBannerVal = $('#BannerEnd')[0].options[0].value;
-
             function getInvalidFields() {
                 let InvalidFields = [];
                 
@@ -738,17 +756,6 @@
                     }, 500);
                 };
             });
-
-            let NearestPhase1;
-            for (let i = 0; i < BannerInfo.length; i++) {
-                if (i >= CurrentBannerVal && BannerInfo[i].Phase == 1) {
-                    NearestPhase1 = BannerInfo[i];
-                    NearestPhase1['value'] = i;
-                    break;
-                };
-            };
-            $("label[for='FlagshipEventCompletable']").html(`${NearestPhase1.Patch} Flagship Event Completable by first half.`);
-            $("label[for='SecondaryEventsCompletable']").html(`${NearestPhase1.Patch} Secondary Events Completable by first half.`);
 
             $('#FlagshipEventCompletable').on('change', function () {
                 if (BannerInfo[CurrentBannerVal].Phase == 1 && !$('#FlagshipEventCompletable').is(':checked')) {
