@@ -63,7 +63,7 @@ while (BannerInfo.length < 50) {
 };
 
 function SavingsCalculator(WishConfig) {
-    // TODO: Could maybe go a bit more in depth.
+    // Primos are a currency used to purchase intertwinded fates, which will be used to make wishes.
     let Primos = WishConfig.Primos;
 
     if(WishConfig.WishMode != WishModes.SIMPLE.value) {
@@ -72,35 +72,31 @@ function SavingsCalculator(WishConfig) {
         
         Primos += DateDiff(Today, TargetBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
 
-        let ExpectedAbyssPrimos = 0
-
-        const FloorVals = [WishConfig.ExpectedStarsFloor9, WishConfig.ExpectedStarsFloor10, WishConfig.ExpectedStarsFloor11, WishConfig.ExpectedStarsFloor12]
-        
+        // Abyss (Spiral Abyss) - A challenge that will give you a star ranking for how fast you beat each floor and the higher your star ranking the more primos awarded.
+        let ExpectedAbyssPrimos = 0;
+        const FloorVals = [WishConfig.ExpectedStarsFloor9, WishConfig.ExpectedStarsFloor10, WishConfig.ExpectedStarsFloor11, WishConfig.ExpectedStarsFloor12];
         for (let i = 0; i <= FloorVals.length; i++) {
             if (FloorVals[i] == 3) { // 9 Stars
                 ExpectedAbyssPrimos += 200;
             }
-            else if (FloorVals[i] >= 2) { // 6-8 Stars
+            else if (FloorVals[i] == 2) { // 6-8 Stars
                 ExpectedAbyssPrimos += 100;
             }
-            else if (FloorVals[i] >= 1) { // 3-5 Stars
+            else if (FloorVals[i] == 1) { // 3-5 Stars
                 ExpectedAbyssPrimos += 50;
-            }
-        }
-
-        // TODO: Might want to add a comment here explaining the whole process.
+            };
+        };
+        // The abyss resets on the 16th of each month.
         let AbyssCycles = TargetBannerInfo.MonthDiff - WishConfig.AbyssCurrentCycleCompleted;
-        
-        // Since the abyss resets on the 16th of each month, the calculations needed to get the number of abyss cycles, are slightly different.
         if (TargetBannerInfo.BannerEndDate.getDate() >= 16) {
             AbyssCycles += 1;
         }
         if (Today.getDate() < 16) {
             AbyssCycles += 1;
-        }
-
+        };
         Primos += ExpectedAbyssPrimos * AbyssCycles;
 
+        // Theater (Imaginarium Theater) - A monthly challenge where you can earn primos for the amount of acts, that you complete.
         let ExpectedTheaterPrimos = 0;
         switch (WishConfig.ExpectedAct) {
             case 0:  ExpectedTheaterPrimos = 0;   break;
@@ -114,35 +110,30 @@ function SavingsCalculator(WishConfig) {
             case 8:  ExpectedTheaterPrimos = 620; break;
             case 9:  ExpectedTheaterPrimos = 680; break;
             case 10: ExpectedTheaterPrimos = 800; break;
-        }
-
-        // Expected Primos times the number of months left to save plus the current month, if the challenge hasn't already been completed this month.
-        Primos += ExpectedTheaterPrimos * (TargetBannerInfo.MonthDiff + (1 - WishConfig.ITCurrentCycleCompleted));
-
+        };
+        Primos += ExpectedTheaterPrimos * (TargetBannerInfo.MonthDiff + (WishConfig.ITCurrentCycleCompleted ? 0 : 1));
 
         // Live Stream Primos - Every patch there is a live stream that will give away 300 primos to viewers.
         Primos += 300 * (TargetBannerInfo.PatchDiff + 1); // +1 for current patch.
         // Subtracting primos for current patch, if claimed. Live streams generally air 31 days into the patch so we will assume the primos are claimed on that date.
         if (DateDiff(BannerInfo[CurrentBannerVal].PatchStartDate, Today) >= 31) {
             Primos -= 300;
-        }
+        };
         // Subtract primos from the last patch if the target banner is in the first phase, as then the ls primos wouldn't be claimable.
         if (TargetBannerInfo.Phase == 1) {
             Primos -= 300
         };
 
-
-        // Maintenance
-        // TODO: Could maybe go a bit more in depth.
+        // Maintenance - 300 primos will be claimable at the start of each patch as compensation for the game going down for the update.
         Primos += 300 * TargetBannerInfo.PatchDiff;
 
         if (WishConfig.EnableEventCalcs) {
-
+            // Each patch there will be 1 flagship event, awarding 900 primogems and 3 secondary events, each awarding 420 primogems.
             Primos += (900 + 3*420) * (TargetBannerInfo.PatchDiff + 1); // +1 for current patch.
 
             // Subtracts claimed event primos.
             Primos -= WishConfig.FlagshipEventCompleted ? 900 : 0;
-            Primos -= 420*WishConfig.SecondaryEventsCompleted
+            Primos -= 420*WishConfig.SecondaryEventsCompleted;
 
             // Subtracts unclaimable event primos.
             if (TargetBannerInfo.Phase != 2) { // All events will be completable if the banner ends in the second half.
@@ -158,6 +149,7 @@ function SavingsCalculator(WishConfig) {
                 };
             };
         
+            // Hoyo lab check in - Awards 20 primos on the 4th, 11th, & 18th of each month for checking in daily.
             if (WishConfig.UsingHoyoLabCheckin) {
                 Primos += 60*(TargetBannerInfo.MonthDiff + 1); // +1 for the current month.
                 
@@ -174,10 +166,9 @@ function SavingsCalculator(WishConfig) {
         };
     }
 
-    // TODO: Could maybe go a bit more in depth.
     let IntertwinedFates = WishConfig.IntertwinedFates;
 
-    // TODO: Could maybe go a bit more in depth.
+    // Starglitter is given to players when they pull a character, that they already own, or a weapon. It can be used to purchase intertwined fates.
     let Starglitter;
     if (WishConfig.UsingStarglitter) {
         IntertwinedFates += Math.floor(WishConfig.Starglitter / 5);
@@ -185,7 +176,6 @@ function SavingsCalculator(WishConfig) {
     }
     
     if (WishConfig.WishMode != WishModes.SIMPLE.value) {
-
         // Up to five Intertwined Fates can be purchased every month from the Stardust Exchange.
         // Assumes that the current month's supply has already been purchased.
         // If the Stardust field is left empty then it will be assumed that all available Intertwined Fates can be purchased.
@@ -194,59 +184,65 @@ function SavingsCalculator(WishConfig) {
         }
         else {
             IntertwinedFates += Math.min(5 * TargetBannerInfo.MonthDiff, Math.floor(WishConfig.Stardust / 75));
-        }
+        };
 
-        // TODO: Could maybe go a bit more in depth.
+        // Battle pass - Allows you to earn primos and fates for completing missions and leveling your pass.
         if (WishConfig.BPPurchased) {
-            IntertwinedFates += Math.max(0, (TargetBannerInfo.Phase === 1 ? 3 : 4) + 4 * TargetBannerInfo.PatchDiff - Math.min(4, WishConfig.BPLevel)); 
-            // Assumes that the user will only be able to claim 3 of the 4 fates for that pass, if the banner ends in the first phase. 
+            // Fates are awarded on the 10th, 20th, 30th, & 40th levels of the pass.
+            // Assumes that the user will only be able to claim 3 of the 4 fates for a pass, if the banner ends in the first phase, as there is a cap on how much exp can be earned per week.
             // Also, subtracts the amount of fates already claimed from this battle pass.
-            // Subtracting the claimed interwined fates has to be done on the same line so it can be wrapped in the max function as there is an edge case where
-            //      the user can earn 4 intertwined from the pass while the system is only expecting 3 to be claimable and so it would result in -1 fates being expected from the pass.
+            // The max function accounts for the possibility of reaching level 40, while in the first phase, through special missions, which lets the claimed number of fates be greater than the claimable amount.
+            IntertwinedFates += 4 * TargetBannerInfo.PatchDiff + Math.max(0, (TargetBannerInfo.Phase == 1 ? 3 : 4) - Math.min(4, WishConfig.BPLevel)); 
 
-            Primos += 680 * ((TargetBannerInfo.Phase === 2 ? 1 : 0) + TargetBannerInfo.PatchDiff); // Assumes that the user won't reach level 50 for that pass, if the banner ends in the first phase.
-            if (WishConfig.BPLevel === 5) { // Subtracts 680, if the primos have already been claimed for this pass.
+            // 680 primos are awarded at level 50.
+            Primos += 680 * ((TargetBannerInfo.Phase === 2 ? 1 : 0) + TargetBannerInfo.PatchDiff); // Assumes that the user won't reach level 50 in the first phase.
+            if (WishConfig.BPLevel === 5) { // Subtracts if the primos have already been claimed for this pass.
                 Primos -= 680;
-            }
-        }
+            };
+        };
 
         // There are three bp missions to "Enhance 5-star artifacts a total of 30/60/100 levels".
         // The rewards add up to 60 primos, are not time gated, and don't require purchasing the pass.
-        Primos += 60*TargetBannerInfo.PatchDiff; 
-    }
+        Primos += 60*TargetBannerInfo.PatchDiff;
+    };
 
-
-    // TODO: Could maybe go a bit more in depth.
     let WishesMade = Math.floor(Primos/160) + IntertwinedFates;
 
-    // TODO: Could maybe go a bit more in depth.
+    // Adds starglitter for four stars that were pulled. Assumes that we would earn one four star every ten wishes.
+    // For simplicity this won't account for whether the four stars have a rate up. Assumes 2 starglitter for four star.
     if (WishConfig.UsingStarglitter) {
-        let FourStars = Math.floor(WishesMade / 10);
+        let FourStars = Math.floor(WishesMade/10);
         let FourStarPity = WishesMade % 10;
-        // TODO: Add a comment regarding why this doesn't differentiate for on banner and off banner four stars.
-        Starglitter += Math.max(0, 2 * (FourStars - (WishConfig.MissingFourStars + TargetBannerInfo.PatchDiff)));
+
         // Won't get starglitter for newly acquired four stars. Adds up the number of currently missing four stars plus those that may be added in future patches. 
         // Assumes that one will be added per patch to err on the side of caution, although this often won't be the case.
+        Starglitter += Math.max(0, 2 * (FourStars - (WishConfig.MissingFourStars + TargetBannerInfo.PatchDiff)));
 
         let AdditionalWishesMade;
         let AdditionalFourStars;
         while (Starglitter >= 5) {
-            AdditionalWishesMade = Math.floor(Starglitter / 5);
+            AdditionalWishesMade = Math.floor(Starglitter/5);
             Starglitter %= 5;
-            AdditionalFourStars = Math.floor((AdditionalWishesMade + FourStarPity) / 10);
+            AdditionalFourStars = Math.floor((AdditionalWishesMade + FourStarPity)/10);
             FourStarPity = (AdditionalWishesMade + FourStarPity) % 10;
-            Starglitter += 2 * AdditionalFourStars;
+            Starglitter += 2 * AdditionalFourStars; // Missing four stars don't factor in here since this code wouldn't run if we were still missing any.
 
             WishesMade += AdditionalWishesMade;
-        }
-    }
+        };
+    };
 
-    return WishesMade
-}
+    return WishesMade;
+};
 
+// Declaring variables outside the function scope so they can be used by both NumericWishCalculations and the wish sim functions.
 let Wishes;
-let LostCharacter5050s;
-let CapturingRadiancePity;
+let LostCharacter5050s; // A "50:50" is the unofficial term for when you pull a five star without having a 100% chance of getting the desired five star.
+let CapturingRadiancePity; // Explained in a tool tip on the calculator's site.
+
+// Pity: Builds up as you wish for an item and increases your chance of success after reaching a certain amount. Resets when you get a five star.
+// Guarantee: Chance of getting an event item.
+// Rate: Current chance of success for an individual pull.
+// Fate points: Builds when you get a five star other than the one you wanted. Will guarantee you get the one you want once it reaches a certain amount. Resets when you get the one you want.
 
 let CharacterPity;
 let CharacterGuarantee;
@@ -262,8 +258,6 @@ let ChronicledFatePoints;
 let ChronicledRate;
 
 function NumericWishCalculations(WishConfig) {
-    // TODO: Add comments.
-    Wishes = 0;
     let Successes = 0;
     let Start = Date.now();
 
@@ -273,22 +267,18 @@ function NumericWishCalculations(WishConfig) {
         if (WishConfig[`WishPlanEnabled${i}`]) {
             wishPlanResults[i] = 0;
             ModifiedWishPlanMapper.push(i);
-        }
-    }
+        };
+    };
 
     let TrialCount;
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
-
-        LostCharacter5050s = 0
         Wishes = 0;
+        LostCharacter5050s = 0;
 
         CharacterPity = WishConfig.CharacterPity;
         CharacterGuarantee = WishConfig.CharacterGuarantee;
         CharacterRate = 0.006 + Math.max(0, .06*(CharacterPity-73));
-        
-        if (WishConfig.EnableCapturingRadiance) {
-            CapturingRadiancePity = WishConfig.CapturingRadiancePity;
-        }
+        CapturingRadiancePity = WishConfig.CapturingRadiancePity;
 
         WeaponPity = WishConfig.WeaponPity;
         WeaponGuarantee = WishConfig.WeaponGuarantee;
@@ -299,7 +289,6 @@ function NumericWishCalculations(WishConfig) {
         ChronicledFatePoints = WishConfig.ChronicledFatePoints;
         ChronicledRate = 0.006 + Math.max(0, .06*(ChronicledPity-73));
 
-
         if (WishConfig.WishMode != WishModes.ADVANCED.value) {
             let CharactersWon = CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
 
@@ -309,12 +298,11 @@ function NumericWishCalculations(WishConfig) {
 
             if (CharactersWon && WeaponsWon && ChronicledItemsWon) {
                 Successes++;
-            }
-            
+            };
         }
         else {
-            let WishGroupMaxWishes = WishConfig[`WishPlanMaxWishes${ModifiedWishPlanMapper[0]}`]
             let MissedFiveStars = false;
+            let WishGroupMaxWishes = WishConfig[`WishPlanMaxWishes${ModifiedWishPlanMapper[0]}`];
             for (const i of ModifiedWishPlanMapper) {
                 if (WishGroupMaxWishes < WishConfig[`WishPlanMaxWishes${i}`]) {
                     WishGroupMaxWishes = WishConfig[`WishPlanMaxWishes${i}`];
@@ -341,19 +329,19 @@ function NumericWishCalculations(WishConfig) {
                 }
                 else {
                     MissedFiveStars = true;
-                }
+                };
             };
 
             if (MissedFiveStars == false) {
                 Successes++
             };
-        }
+        };
 
-        if (Date.now() - Start > 5000) {
+        if (Date.now() - Start > 5000) { // Sets a 5 second time limit on wish calcs.
             TrialCount += 1
             break;
-        }
-    }
+        };
+    };
 
     for (const i of ModifiedWishPlanMapper) {
         wishPlanResults[i] = ((wishPlanResults[i] / TrialCount)*100).toFixed(1)+'%';
@@ -377,7 +365,7 @@ function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
 
         if (CharacterPity >= 74) {
             CharacterRate += 0.06;
-        }
+        };
 
         NonFiveStarChance *= (1 - CharacterRate);
 
@@ -388,7 +376,7 @@ function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
             if (CharacterGuarantee || (Math.random() < CharacterFiveStarWinRates[ (WishConfig.EnableCapturingRadiance ? CapturingRadiancePity : 0) ])) {
                 if (!CharacterGuarantee) {
                     CapturingRadiancePity = 0;
-                }
+                };
 
                 Characters++;
                 CharacterGuarantee = 0;
@@ -396,23 +384,24 @@ function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
                 if (Characters >= CharacterGoal) {
                     return true;
                 };
-            } else {
+            }
+            else {
                 CharacterGuarantee = 1;
                 LostCharacter5050s++;
                 CapturingRadiancePity++;
 
                 if (WishConfig.UsingStarglitter && (LostCharacter5050s > WishConfig.MissingFiveStars)){
                     Wishes -= 2 // You get enough starglitter from five star cons to make two additional wishes.
-                }
-            }
+                };
+            };
 
             FiveStarChance = Math.random();
             NonFiveStarChance = 1;
-        }
-    }
+        };
+    };
 
     return false;
-}
+};
 
 function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
     let Weapons = 0;
@@ -425,7 +414,7 @@ function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
 
         if (WeaponPity >= 63) {
             WeaponRate += 0.07;
-        }
+        };
 
         NonFiveStarChance *= (1 - WeaponRate);
 
@@ -434,10 +423,11 @@ function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
             WeaponPity = 0;
 
             if (WishConfig.UsingStarglitter) {
-                Wishes -= 2 // You get enough starglitter from five stars to make two additional wishes.
-            }
+                Wishes -= 2 // You get enough starglitter from five star weapons to make two additional wishes.
+            };
 
             let r = Math.random();
+            // 1 fate point will get you your desired weapon, while having the guarantee will make it a 50:50 between your desired weapon and the other event weapon, while having neither will make it a 3/8 chance.
             if (WeaponFatePoints === 1 || (WeaponGuarantee && r <= 0.5) || (r <= 0.375)) {
                 Weapons++;
                 WeaponGuarantee = 0;
@@ -446,21 +436,25 @@ function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
                 if (Weapons >= WeaponGoal) {
                     return true;
                 };
-            } else if (WeaponGuarantee || (r <= 0.75)) {
+            }
+            // If you got an event weapon, either through the guarantee or the 75% chance, but didn't get your desired weapon then you must have gotten the other event weapon.
+            else if (WeaponGuarantee || (r <= 0.75)) {
                 WeaponGuarantee = 0;
                 WeaponFatePoints++;
-            } else {
+            }
+            // 25% chance to have gotten a standard banner weapon.
+            else {
                 WeaponGuarantee = 1;
                 WeaponFatePoints++;
-            }
+            };
 
             FiveStarChance = Math.random();
             NonFiveStarChance = 1;
-        }
-    }
+        };
+    };
 
     return false;
-}
+};
 
 function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
     let ChronicledItems = 0;
@@ -473,7 +467,7 @@ function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
 
         if (ChronicledPity >= 74) {
             ChronicledRate += 0.06;
-        }
+        };
 
         NonFiveStarChance *= (1 - ChronicledRate);
 
@@ -488,21 +482,22 @@ function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
                 if (ChronicledItems >= ChronicledGoal) {
                     return true;
                 };
-            } else {
-                ChronicledFatePoints++;
             }
+            else {
+                ChronicledFatePoints++;
+            };
             
             FiveStarChance = Math.random();
             NonFiveStarChance = 1;
-        }
-    }
+        };
+    };
 
     return false;
-}
+};
 
 function WishCalcs(WishConfig) {
     if (WishConfig.WishMode != WishModes.ADVANCED.value) {
-
+        
         TargetBannerInfo = BannerInfo[WishConfig.BannerEnd];
 
         if (WishConfig.WishMode != WishModes.SIMPLE.value) {
@@ -513,25 +508,24 @@ function WishCalcs(WishConfig) {
             }
             
             $('#WishEndDate').show().html(`Wishing End Date: ${moment(TargetBannerInfo.BannerEndDate, "YYYY-MM-DD").format('L')}`);
-        }
+        };
 
         WishConfig.MaxWishes = SavingsCalculator(WishConfig);
 
         $('#MaxWishes').show().html(`Max Number of Wishes: ${WishConfig.MaxWishes}`);
 
-        let WishingFor = `Wishing for ${WishConfig.CharacterGoal} characters, ${WishConfig.WeaponGoal} weapons, and ${WishConfig.ChronicledGoal} chronicled items.`;
-
-        $('#WishingGoals').show().html(WishingFor);
+        $('#WishingGoals').show().html(`Wishing for ${WishConfig.CharacterGoal} characters, ${WishConfig.WeaponGoal} weapons, and ${WishConfig.ChronicledGoal} chronicled items.`);
 
         $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig).TotalSuccessRate}`);
 
-        return {Success: true}
+        return {Success: true};
     }
     else {
-        let ixBannerEnd = -1;
         let ixMaxWishes;
+        let ixBannerEnd = -1;
         for (const i of WishConfig.wishPlanMapper) {
             if (WishConfig[`WishPlanEnabled${i}`]) {
+
                 if (WishConfig[`WishPlanBannerEnd${i}`] > ixBannerEnd) {
                     ixBannerEnd = WishConfig[`WishPlanBannerEnd${i}`];
                     TargetBannerInfo = BannerInfo[ixBannerEnd];
@@ -555,7 +549,7 @@ function WishCalcs(WishConfig) {
 
         for (const i of WishConfig.wishPlanMapper) {
             if (WishConfig[`WishPlanEnabled${i}`]) {
-                let BannerEndVal = WishConfig[`WishPlanBannerEnd${i}`]
+                let BannerEndVal = WishConfig[`WishPlanBannerEnd${i}`];
                 let BannerEndText = $(`#BannerEnd option[value=${BannerEndVal}]`).text();
 
                 let newRow = $(
@@ -580,6 +574,6 @@ function WishCalcs(WishConfig) {
 
         $('#WishPlanningResultsTable').show();
 
-        return {Success: true}
+        return {Success: true};
     };
-}
+};
