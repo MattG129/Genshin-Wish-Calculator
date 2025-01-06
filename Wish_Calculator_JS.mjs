@@ -370,7 +370,7 @@ function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
 
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
-    let CharacterFiveStarWinRates = [0.5, 0.5, 0.75, 1];
+    let CharacterFiveStarWinRates = [0.5, 0.525, 0.75, 1];
     while (Wishes < MaxWishes) {
         Wishes++;
         CharacterPity++;
