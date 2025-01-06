@@ -2,28 +2,28 @@
 const v5StartDate = moment('2024-8-27', "YYYY-MM-DD").toDate();
 let BannerInfo = [];
 let TargetBannerInfo;
-let Trials = 10**6;
+const Trials = 10**6;
 
-let Today = new Date();
+const Today = new Date(); // TODO: Update date/banner calcs to work if day/banner changes between when the page is loaded and when calcs are run.
 Today.setHours(0,0,0,0);
 
 const BannerTypeDropdownOptions = {
     CHARACTER:       {value: 1, text: 'Character'},
     WEAPON:          {value: 2, text: 'Weapon'},
     CHRONICLED_WISH: {value: 3, text: 'Chronicled Wish'}
-}
+};
 
 function DateAdd(date, days) {
-    const newDate = new Date(date);
+    let NewDate = new Date(date);
     
-    newDate.setDate(date.getDate() + days);
+    NewDate.setDate(date.getDate() + days);
     
-    return newDate;
-}
+    return NewDate;
+};
 
 function DateDiff(DateFrom, DateTo) {
     return Math.floor((DateTo - DateFrom)/(1000 * 60 * 60 * 24));
-}
+};
 
 let Patch = 50; // Using ints to make things easier.
 let PatchDiff = 0; // This will track how many patches are between the current patch and any subsequent patches.
@@ -259,8 +259,8 @@ let ChronicledFatePoints;
 let ChronicledRate;
 
 function NumericWishCalculations(WishConfig) {
+    const Start = Date.now();
     let Successes = 0;
-    let Start = Date.now();
 
     let wishPlanResults = {};
     let ModifiedWishPlanMapper = [];
@@ -359,7 +359,7 @@ function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
 
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
-    let CharacterFiveStarWinRates = [0.5, 0.525, 0.75, 1];
+    const CharacterFiveStarWinRates = [0.5, 0.525, 0.75, 1];
     while (Wishes < MaxWishes) {
         Wishes++;
         CharacterPity++;
@@ -553,7 +553,7 @@ function WishCalcs(WishConfig) {
                 let BannerEndVal = WishConfig[`WishPlanBannerEnd${i}`];
                 let BannerEndText = $(`#BannerEnd option[value=${BannerEndVal}]`).text();
 
-                let newRow = $(
+                let NewRow = $(
                     `<tr class="WishPlanResultsRow">`+
                         `<td>${WishConfig[`WishPlanItem${i}`]}</td>`+
                         `<td>${BannerEndText}</td>`+
@@ -563,7 +563,7 @@ function WishCalcs(WishConfig) {
                     `</tr>`
                 );
 
-                $('#WishPlanningResultsBody').append(newRow);
+                $('#WishPlanningResultsBody').append(NewRow);
             };
         };
 

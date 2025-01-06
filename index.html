@@ -22,7 +22,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.0/jquery-ui.min.js"></script>
         <script src="assets\js\jquery-ui-touch-punch\jquery.ui.touch-punch.js"></script>
 
-        <script>
+        <script type="text/javascript">
             let NewWishPlanRowID;
 
             const WishModes = {
@@ -417,9 +417,9 @@
                     </table>
                 </div>
 
-                <script>
+                <script type="text/javascript">
                     function AddWishPlanRow() {
-                        let newRow = $(
+                        let NewRow = $(
                             `<tr id="WishPlanRow${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}">`+
                                 `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
                                 `<td>`+
@@ -457,7 +457,7 @@
                             `</tr>`
                         );
 
-                        $('#WishPlanningTableBody').append(newRow);
+                        $('#WishPlanningTableBody').append(NewRow);
                         $('#WishPlanningTableBody').sortable("refresh");
 
                         $(`#WishPlanBannerEnd${NewWishPlanRowID}`).html($('#BannerEnd').html());
@@ -736,7 +736,7 @@
                         $('#LoadingGroup').hide();
 
                         $('html, body').animate({scrollTop: $("#WishResultsAnchor").offset().top, easing: 'linear'}, 250);
-
+                        
                         $("#Calculate").show();
                     }, 500);
                 };
