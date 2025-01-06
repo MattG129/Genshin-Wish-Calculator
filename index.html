@@ -9,29 +9,25 @@
         <meta name="description" content="" />
         
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        
         <link href="https://cdn.jsdelivr.net/npm/modern-normalize@v2.0.0/modern-normalize.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-
-        <script src="https://cdn.jsdelivr.net/npm/mathjs@13.0.3/lib/browser/math.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 
+        <script src="https://cdn.jsdelivr.net/npm/mathjs@13.0.3/lib/browser/math.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
         <script src="Wish_Calculator_JS.mjs" type="text/javascript"></script>
+
         <script src="https://parsleyjs.org/dist/parsley.js"></script>
-
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.0/jquery-ui.min.js"></script>
-
         <script src="assets\js\jquery-ui-touch-punch\jquery.ui.touch-punch.js"></script>
 
         <script>
             let NewWishPlanRowID;
 
             const WishModes = {
-                'SIMPLE': {value: 1, text: 'Simple'},
-                'NORMAL': {value: 2, text: 'Normal'},
+                'SIMPLE':   {value: 1, text: 'Simple'},
+                'NORMAL':   {value: 2, text: 'Normal'},
                 'ADVANCED': {value: 3, text: 'Advanced'}
             };
         </script>
@@ -179,7 +175,6 @@
                 >
                     <i class="bi bi-question-circle"></i>
                 </a>
-
                 <select id="WishMode" class="form-select" style="max-width: 125px;"></select>
                 <script type="text/javascript">
                     for (const [Key, Mode] of Object.entries(WishModes)) {
@@ -218,7 +213,7 @@
                         <div class="col-sm-4 SimpleModeSkipGroup">
                             <label for="Stardust" class="form-label">Masterless Stardust</label>
                             <a data-toggle="tooltip"
-                                title="This will be used to calculate how many of the available Intertwined Fates you can purchase from the Stardust Exchange between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month's Intertwined Fates have already been purchased."
+                                title="This will be used to calculate how many of the available <b>Intertwined Fates</b> you can purchase from the <b>Stardust Exchange</b> between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month's Intertwined Fates have already been purchased."
                             >
                                 <i class="bi bi-question-circle"></i>
                             </a>
@@ -236,29 +231,29 @@
                     <div class="row" id="StarglitterSkipGroup" style="display: none;">
                         <div class="col-sm-4">
                             <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
-                            <input type="number" id="Starglitter" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                            <input type="number" id="Starglitter" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
                     
                         <div class="col-sm-4">
-                            <label for="MissingFourStars" class="form-label">Missing 4&#9733; Characters</label>
+                            <label for="MissingFourStarCharacters" class="form-label">Missing 4&#9733; Characters</label>
                             <a data-toggle="tooltip"
                                 title="If all 4&#9733; characters have been acquired then every 4&#9733; pulled should give at least 2 Masterless Starglitter. The calculator will assume that a 4&#9733; is given once every 10 wishes, and so if all 4&#9733;s are acquired before or during the wishing process then 2 additional Masterless Starglitter will be awarded per subsequent wish."
                             >
                                 <i class="bi bi-question-circle"></i>
                             </a>
                             <br>
-                            <input type="number" id="MissingFourStars" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="38"><br>
+                            <input type="number" id="MissingFourStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="40"><br>
                         </div>
 
                         <div class="col-sm-4">
-                            <label for="MissingFiveStars" class="form-label">Missing Standard Banner 5&#9733; Characters</label>
+                            <label for="MissingStandardFiveStarCharacters" class="form-label">Missing Standard Banner 5&#9733; Characters</label>
                             <a data-toggle="tooltip"
-                                title="5&#9733; character constellations will award 10 Masterless Starglitter and so if all standard banner 5&#9733;s are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you pull a standard banner 5&#9733;. Additional wishes gained from this won't be factored into the <b>Max Number of Wishes</b>."
+                                title="5&#9733; character constellations will award 10 Masterless Starglitter and so if all standard banner 5&#9733;s are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you pull a standard banner 5&#9733;. Additional wishes gained from this won't be reflected in the <b>Max Number of Wishes</b>."
                             >
                                 <i class="bi bi-question-circle"></i>
                             </a>
                             <br>
-                            <input type="number" id="MissingFiveStars" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="7"><br>
+                            <input type="number" id="MissingStandardFiveStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="8"><br>
                         </div>
                     </div>
                 </div>
@@ -322,7 +317,6 @@
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;"><b>Guarantee</b></td>
-                                <!-- Have to toggle the checkbox instead of triggering a click as this would result in the onclick event being run recursively. -->
                                 <td class="td-label">
                                     <label class="td-label">
                                         <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput align-middle">
@@ -350,7 +344,7 @@
                                     <b id="CapturingRadianceLabel">Capturing Radiance Pity</b>
                                     <a data-toggle="tooltip"
                                         title="
-                                            When pulling on a character banner, if you obtain a 5&#9733; character and they are not the event character, you will gain one <b>Capturing Radiance Pity</b>. If you obtain the event character without the <b>Guarantee</b>, then your <b>Capturing Radiance Pity</b> will be reset to 0. Your <b>Capturing Radiance Pity</b> will alter your chances of obtaining the event character without the <b>Guarantee</b>, as follows:
+                                            When pulling on a character banner, if you obtain a 5&#9733; character and they are not the event character, you will gain one <b>Capturing Radiance Pity</b>. If you obtain the event character without the <b>Guarantee</b>, then your <b>Capturing Radiance Pity</b> will be reset to 0. Your <b>Capturing Radiance Pity</b> will alter your chances of obtaining the event character, without the <b>Guarantee</b>, as follows:
                                             <br><br>
                                             <ul>
                                                 <li> 0 Pity: 50% Chance   </li>
@@ -358,13 +352,12 @@
                                                 <li> 2 Pity: 75% Chance   </li>
                                                 <li> 3 Pity: 100% Chance  </li>
                                             </ul>
-                                            These numbers come from a speculative model, based on wish results following this mechanics addition to the game, and as such may not be entirely accurate.
+                                            These numbers come from a speculative model, based on wish results observed following this mechanics addition to the game, and as such may not be entirely accurate.
                                         "
                                     >
                                         <i class="bi bi-question-circle" style="color: black;"></i>
                                     </a>
                                     <br>
-
                                     <div class="form-check form-check-inline form-switch">
                                         <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableInput">
                                         <label for="EnableCapturingRadiance" class="form-label">Enable</label>
@@ -410,7 +403,7 @@
                             </tr>
                         </thead>
                         <tbody id="WishPlanningTableBody">
-                            <!--- Rows will be added by jquery. --->
+                            <!--- Rows will be added by the script below. --->
                         </tbody>
                         <tfoot>
                             <tr>
@@ -480,7 +473,7 @@
 
                         $("#AddRowButton").click(function() {AddWishPlanRow(); UpdateCalculateButton();});
 
-                        // We will trigger 3 clicks so the table will by default start with 3 rows.
+                        // We want the table to load with 3 rows by default.
                         for (let i = 0; i < 3; i++) AddWishPlanRow();
                     });
                 </script>
@@ -489,6 +482,7 @@
                     <hr><center><h2>Spiral Abyss</h2></center><br>
                     <center><h3>Expected Stars:</h3></center>
 
+                    <!-- TODO: See if there is a way to generate these iteratively since they are basically all the same. -->
                     <div class="row">
                         <div class="col-sm-3">
                             <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label>
@@ -538,7 +532,6 @@
                     </div>
                 </div>
 
-
                 <div class="WishSection SimpleModeSkipGroup">
                     <hr><center><h2>Imaginarium Theater</h2></center><br>
 
@@ -552,18 +545,7 @@
                 </div>
 
                 <div class="WishSection SimpleModeSkipGroup">
-                    <hr>
-                    <center>
-                        <h2>
-                            Battle Pass & Welkin
-                            <a data-toggle="tooltip"
-                                title="This calculator will assume that the <b>Blessing of the Welkin Moon</b>/<b>Battle Pass</b> will either be purchased from now until the <b>Wishing End Date</b> or not at all."
-                            >
-                                <i class="bi bi-question-circle"></i>
-                            </a>
-                        </h2>
-                    </center>
-                    <br>
+                    <hr><center><h2>Battle Pass & Welkin</h2></center><br>
 
                     <div class="form-check form-check-inline">
                         <input type="checkbox" id="HasWelkin" class="form-check-input">
@@ -614,7 +596,6 @@
                             <i class="bi bi-question-circle"></i>
                         </a>
                     </div>
-
                     <div class="form-check form-check-inline">
                         <input type="checkbox" id="FlagshipEventCompleted" class="form-check-input">
                         <label for="FlagshipEventCompleted" class="form-label">Current Patch's Flagship Event Completed</label>
@@ -683,12 +664,8 @@
                             <th style="width: 10%">Chance of Success</th>
                         </tr>
                     </thead>
-                    <tbody id="WishPlanningResultsBody">
-                        <!--- Rows will be added by jquery. --->
-                    </tbody>
-                    <tfoot id="WishPlanningResultsFoot">
-                        <!--- Rows will be added by jquery. --->
-                    </tfoot>
+                    <tbody id="WishPlanningResultsBody"> <!--- Will be filled in by WishCalcs. ---> </tbody>
+                    <tfoot id="WishPlanningResultsFoot"> <!--- Will be filled in by WishCalcs. ---> </tfoot>
                 </table>
             </center>
         </div>

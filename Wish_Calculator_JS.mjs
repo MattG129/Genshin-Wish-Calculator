@@ -210,13 +210,14 @@ function SavingsCalculator(WishConfig) {
 
     // Adds starglitter for four stars that were pulled. Assumes that we would earn one four star every ten wishes.
     // For simplicity this won't account for whether the four stars have a rate up. Assumes 2 starglitter for four star.
+    // TODO: Shouldn't factor in missing four star characters beyond the maximum possible number of character wishes.
     if (WishConfig.UsingStarglitter) {
         let FourStars = Math.floor(WishesMade/10);
         let FourStarPity = WishesMade % 10;
 
         // Won't get starglitter for newly acquired four stars. Adds up the number of currently missing four stars plus those that may be added in future patches. 
         // Assumes that one will be added per patch to err on the side of caution, although this often won't be the case.
-        Starglitter += Math.max(0, 2 * (FourStars - (WishConfig.MissingFourStars + TargetBannerInfo.PatchDiff)));
+        Starglitter += Math.max(0, 2 * (FourStars - (WishConfig.MissingFourStarCharacters + TargetBannerInfo.PatchDiff)));
 
         let AdditionalWishesMade;
         let AdditionalFourStars;
@@ -390,7 +391,7 @@ function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
                 LostCharacter5050s++;
                 CapturingRadiancePity++;
 
-                if (WishConfig.UsingStarglitter && (LostCharacter5050s > WishConfig.MissingFiveStars)){
+                if (WishConfig.UsingStarglitter && (LostCharacter5050s > WishConfig.MissingStandardFiveStarCharacters)){
                     Wishes -= 2 // You get enough starglitter from five star cons to make two additional wishes.
                 };
             };
