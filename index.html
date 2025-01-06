@@ -711,7 +711,6 @@
             UpdateCalculateButton();
             $('#CharacterGoal, #WeaponGoal, #ChronicledGoal, #WishMode').on('input', UpdateCalculateButton)
 
-            // TODO: Disable the button when clicked and reenable once its done processing.
             $("#Calculate").on('click', function() {
                 $('.WishResults').hide();
 
@@ -722,6 +721,8 @@
                     $('html, body').animate({scrollTop: $(`#${InvalidFields[0]}`).offset().top-100, easing: 'linear'}, 250);
                 }
                 else {
+                    setTimeout(function () {$("#Calculate").hide()}, 0);
+
                     $('#LoadingGroup').show();
 
                     $('html, body').animate({scrollTop: $("#LoadingGroup").offset().top, easing: 'linear'}, 100);
@@ -735,6 +736,8 @@
                         $('#LoadingGroup').hide();
 
                         $('html, body').animate({scrollTop: $("#WishResultsAnchor").offset().top, easing: 'linear'}, 250);
+
+                        $("#Calculate").show();
                     }, 500);
                 };
             });
