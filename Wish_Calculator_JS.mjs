@@ -1,5 +1,9 @@
-// North America region's start date for version 5 in est. Since almost all patches are exactly six weeks, we can use this date to calculate the start and end dates for other patches.
-const v5StartDate = moment('2024-8-27', "YYYY-MM-DD").toDate();
+// North America region's datetime for launching version 5, in UTC. Since almost all patches are exactly six weeks long, we can use this date to calculate the start and end dates for other patches.
+// We are currently only factoring in the dates of when banners end, not the time, but we still need to check if the the time zone offset would result in a date change.
+let v5StartDate = moment('2024-8-28 3:00:00', "YYYY-MM-DD HH:mm:ss").toDate();
+v5StartDate.setHours(v5StartDate.getHours() - v5StartDate.getTimezoneOffset()/60);
+v5StartDate.setHours(0, 0, 0, 0);
+
 let BannerInfo = [];
 let TargetBannerInfo;
 const Trials = 10**6;
