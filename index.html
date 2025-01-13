@@ -125,7 +125,7 @@
             }
         </style>
 
-        <center><h1>Genshin Wish And Gacha Calculator</h1><center>
+        <center><h1>Genshin Wish And Gacha Calculator</h1></center>
         <center><h2 style="color: #800000;">This site is still under construction. Certain features and functionality may not be fully implemented yet.</h2></center><br>
         <br>
 
@@ -145,409 +145,407 @@
                                 <label for="ImportState" class="form-label">
                                     You can click the <b>Export</b> button below to copy all your wish info for future use. When you are ready to use the calculator again, you can paste that info into the text box below and click <b>Import</b> or <b>Import and Run</b>.
                                 </label><br>
-                                <textarea id="ImportState" class="form-control" style="border-color: black;"></textarea><br>
-                                <p id="InvalidImportMessage" style="color: red; display: none;">Invalid Import.</p>
-                                
-                                <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=false);">
-                                    Import
-                                </a>
-                                <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Export();">
-                                    Export
-                                </a>
-                                <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=true);">
-                                    Import and Run
-                                </a>
-                                <br>
+                                <center>
+                                    <textarea id="ImportState" class="form-control" style="border-color: black;"></textarea><br>
+                                    <p id="InvalidImportMessage" style="color: red; display: none;">Invalid Import.</p>
+                                    
+                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=false);">
+                                        Import
+                                    </a>
+                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Export();">
+                                        Export
+                                    </a>
+                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=true);">
+                                        Import and Run
+                                    </a>
+                                    <br>
+                                </center>
                             </div>
                         </div>
                     </div>
                 </div>
                 <br>
 
-                <label for="WishMode" class="form-label">Wish Mode</label>
-                <a data-toggle="tooltip"
-                    title="
-                        <ul>
-                            <li><b>Simple Mode:</b> Allows you to run the calculator with just your current resources.</li>
-                            <li><b>Normal Mode:</b> Allows you to specify how many characters, weapons, and chronicled wish items you will be wishing for and when you will complete your wishing by.</li>
-                            <li><b>Advanced Mode:</b> Allows you to specify which items you want to wish for, when you will wish for them by, and in what order.</li>
-                        </ul>
-                    "
-                >
-                    <i class="bi bi-question-circle"></i>
-                </a>
-                <select id="WishMode" class="form-select" style="max-width: 125px;"></select>
-                <script type="text/javascript">
-                    for (const [Key, Mode] of Object.entries(WishModes)) {
-                        $('#WishMode').append($('<option>', Mode));
-                    };
-                    $(`#WishMode option[value=${WishModes.ADVANCED.value}]`).prop('selected', true); // We want advanced to be selected by default but also the last option.
-                </script>
-                <br>
-
-                <div class="SimpleModeSkipGroup form-check form-check-inline form-switch">
-                    <input type="checkbox" id="EnableEventCalcs" class="form-check-input">
-                    <label for="EnableEventCalcs" class="form-label">Factor in events</label>
+                <center>
+                    <label for="WishMode" class="form-label">Wish Mode</label>
                     <a data-toggle="tooltip"
-                        title="If checked, then the calculator will assume that each patch there will be 1 flagship event, awarding <b>900 Primogems</b> and 3 secondary events, each awarding <b>420 Primogems</b>."
+                        title="
+                            <ul>
+                                <li><b>Simple Mode:</b> Allows you to run the calculator with just your current resources.</li>
+                                <li><b>Normal Mode:</b> Allows you to specify how many characters, weapons, and chronicled wish items you will be wishing for and when you will complete your wishing by.</li>
+                                <li><b>Advanced Mode:</b> Allows you to specify which items you want to wish for, when you will wish for them by, and in what order.</li>
+                            </ul>
+                        "
                     >
                         <i class="bi bi-question-circle"></i>
                     </a>
-                </div>
-
-                <a id="CalculatorHeaderAnchor"></a>
-
-                <div class="WishSection">
-                    <hr><center><h2>Currency</h2></center><br>
-
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <label for="Primos" class="form-label">Primogems</label><br>
-                            <input type="number" id="Primos" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
-                        </div>
-                    
-                        <div class="col-sm-4">
-                            <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
-                            <input type="number" id="IntertwinedFates" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
-                        </div>
-
-                        <div class="col-sm-4 SimpleModeSkipGroup">
-                            <label for="Stardust" class="form-label">Masterless Stardust</label>
-                            <a data-toggle="tooltip"
-                                title="This will be used to calculate how many of the available <b>Intertwined Fates</b> you can purchase from the <b>Stardust Exchange</b> between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month's Intertwined Fates have already been purchased."
-                            >
-                                <i class="bi bi-question-circle"></i>
-                            </a>
-                            <br>
-                            <input type="number" id="Stardust" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-min="0" min="0"><br>
-                        </div>
-                    </div>
+                    <select id="WishMode" class="form-select" style="max-width: 125px;"></select>
+                    <script type="text/javascript">
+                        for (const [Key, Mode] of Object.entries(WishModes)) {
+                            $('#WishMode').append($('<option>', Mode));
+                        };
+                        $(`#WishMode option[value=${WishModes.ADVANCED.value}]`).prop('selected', true); // We want advanced to be selected by default but also the last option.
+                    </script>
                     <br>
 
-                    <div class="form-check form-check-inline form-switch">
-                        <input type="checkbox" id="UsingStarglitter" class="form-check-input">
-                        <label for="UsingStarglitter" class="form-label">Using Masterless Starglitter</label><br>
+                    <div class="SimpleModeSkipGroup form-check form-check-inline form-switch">
+                        <input type="checkbox" id="EnableEventCalcs" class="form-check-input">
+                        <label for="EnableEventCalcs" class="form-label">Factor in events</label>
+                        <a data-toggle="tooltip"
+                            title="If checked, then the calculator will assume that each patch there will be 1 flagship event, awarding <b>900 Primogems</b> and 3 secondary events, each awarding <b>420 Primogems</b>."
+                        >
+                            <i class="bi bi-question-circle"></i>
+                        </a>
                     </div>
 
-                    <div class="row" id="StarglitterSkipGroup" style="display: none;">
-                        <div class="col-sm-4">
-                            <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
-                            <input type="number" id="Starglitter" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
-                        </div>
-                    
-                        <div class="col-sm-4">
-                            <label for="MissingFourStarCharacters" class="form-label">Missing 4&#9733; Characters</label>
-                            <a data-toggle="tooltip"
-                                title="If all 4&#9733; characters have been acquired then every 4&#9733; pulled should give at least 2 Masterless Starglitter. The calculator will assume that a 4&#9733; is given once every 10 wishes, and so if all 4&#9733;s are acquired before or during the wishing process then 2 additional Masterless Starglitter will be awarded per subsequent wish."
-                            >
-                                <i class="bi bi-question-circle"></i>
-                            </a>
-                            <br>
-                            <input type="number" id="MissingFourStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="40"><br>
-                        </div>
+                    <a id="CalculatorHeaderAnchor"></a>
 
-                        <div class="col-sm-4">
-                            <label for="MissingStandardFiveStarCharacters" class="form-label">Missing Standard Banner 5&#9733; Characters</label>
-                            <a data-toggle="tooltip"
-                                title="5&#9733; character constellations will award 10 Masterless Starglitter and so if all standard banner 5&#9733;s are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you pull a standard banner 5&#9733;. Additional wishes gained from this won't be reflected in the <b>Max Number of Wishes</b>."
-                            >
-                                <i class="bi bi-question-circle"></i>
-                            </a>
-                            <br>
-                            <input type="number" id="MissingStandardFiveStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="8"><br>
-                        </div>
-                    </div>
-                </div>
+                    <div class="WishSection">
+                        <hr><h2>Currency</h2><br>
 
-                <div class="WishSection">
-                    <hr><center><h2>Wishing Info</h2></center><br>
-
-                    <div class="justify-content-md-center SimpleModeSkipGroup BasicWishPlanningSkipGroup">
-                        <center>
-                            <div style="align-content: center;">
-                                <label for="EndPatch" class="form-label">Wishing End Date</label>
-                                <select id="BannerEnd" class="form-select" style="max-width: 300px;"></select>
-                                <script type="text/javascript">
-                                    $(function() {
-                                        for (let i = CurrentBannerVal; i < BannerInfo.length; i++) {
-                                            $('#BannerEnd').append($('<option>', {
-                                                value: i,
-                                                text: `${BannerInfo[i].Patch} Phase ${BannerInfo[i].Phase} (Ends on ${moment(BannerInfo[i].BannerEndDate, "YYYY-MM-DD").format('L')})`,
-                                            }));
-                                        };
-                                    });
-                                </script>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label for="Primos" class="form-label">Primogems</label><br>
+                                <input type="number" id="Primos" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
                             </div>
-                        </center>
-                    </div>
-                    <br>
+                        
+                            <div class="col-sm-4">
+                                <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
+                                <input type="number" id="IntertwinedFates" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                            </div>
 
-                    <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 100%;">
-                        <thead>
-                            <tr>
-                                <td></td>
-                                <td><b>Character Banner</b></td>
-                                <td><b>Weapon Banner</b></td>
-                                <td><b>Chronicled Wish</b></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class='BasicWishPlanningSkipGroup'>
-                                <td style="vertical-align: middle;"><b>Number of 5&#9733;s Wishing For</b></td>
-                                <td>
-                                    <input type="number" id="CharacterGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
-                                </td>
-                                <td>
-                                    <input type="number" id="WeaponGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
-                                </td>
-                                <td>
-                                    <input type="number" id="ChronicledGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align: middle;"><b>Pity</b></td>
-                                <td>
-                                    <input type="number" id="CharacterPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
-                                </td>
-                                <td>
-                                    <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
-                                </td>
-                                <td>
-                                    <input type="number" id="ChronicledPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align: middle;"><b>Guarantee</b></td>
-                                <td class="td-label">
-                                    <label class="td-label">
-                                        <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput align-middle">
-                                    </label>
-                                </td>
-                                <td class="td-label">
-                                    <label class="td-label">
-                                        <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput align-middle">
-                                    </label>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align: middle;"><b>Fate Points</b></td>
-                                <td></td>
-                                <td>
-                                    <input type="number" id="WeaponFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
-                                </td>
-                                <td>
-                                    <input type="number" id="ChronicledFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align: middle;">
-                                    <b id="CapturingRadianceLabel">Capturing Radiance Pity</b>
-                                    <a data-toggle="tooltip"
-                                        title="
-                                            When pulling on a character banner, if you obtain a 5&#9733; character and they are not the event character, you will gain one <b>Capturing Radiance Pity</b>. If you obtain the event character without the <b>Guarantee</b>, then your <b>Capturing Radiance Pity</b> will be reset to 0. Your <b>Capturing Radiance Pity</b> will alter your chances of obtaining the event character, without the <b>Guarantee</b>, as follows:
-                                            <br><br>
-                                            <ul>
-                                                <li> 0 Pity: 50% Chance   </li>
-                                                <li> 1 Pity: 52.5% Chance </li>
-                                                <li> 2 Pity: 75% Chance   </li>
-                                                <li> 3 Pity: 100% Chance  </li>
-                                            </ul>
-                                            These numbers come from a speculative model, based on wish results observed following this mechanics addition to the game, and as such may not be entirely accurate.
-                                        "
-                                    >
-                                        <i class="bi bi-question-circle" style="color: black;"></i>
-                                    </a>
-                                    <br>
-                                    <div class="form-check form-check-inline form-switch">
-                                        <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableInput">
-                                        <label for="EnableCapturingRadiance" class="form-label">Enable</label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div id="CapturingRadiancePitySkipGroup">
-                                        <input type="number" id="CapturingRadiancePity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
-                                    </div>
-                                </td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div style="overflow-x: auto;">
-                    <table id="WishPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%;">
-                                    <!-- Veritcal Grip -->
-                                </th>
-                                <th style="width: 30%; min-width: 175px;">
-                                    Name
-                                </th>
-                                <th style="width: 15%; min-width: 155px;">
-                                    Banner Type
-                                </th>
-                                <th style="width: 30%; min-width: 125px;">
-                                    Wishing End Date
-                                </th>
-                                <th style="width: 10%; min-width: 80px;">
-                                    Copies
-                                </th>
-                                <th style="width: 5%;">
-                                    Enabled
-                                </th>
-                                <th style="width: 5%;">
-                                    <!-- Remove Button -->
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="WishPlanningTableBody">
-                            <!--- Rows will be added by the script below. --->
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="7">
-                                    <button id="AddRowButton" type="button" style="width: 100%" class="btn btn-add">
-                                        <b><i class="bi bi-plus-lg" style="font-size: 30px; font-weight: bold; color: white;"></i></b>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-                <script type="text/javascript">
-                    function AddWishPlanRow() {
-                        let NewRow = $(
-                            `<tr id="WishPlanRow${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}">`+
-                                `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
-                                `<td>`+
-                                    `<input id="WishPlanItem${NewWishPlanRowID}" type="text" class="form-control TableInput" style="width: 100%;">`+
-                                `</td>`+
-                                `<td>`+
-                                    `<center>`+
-                                        `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableInput">`+
-                                            `<option value=${BannerTypeDropdownOptions['CHARACTER'].value}>       ${BannerTypeDropdownOptions['CHARACTER'].text}       </option>`+
-                                            `<option value=${BannerTypeDropdownOptions['WEAPON'].value}>          ${BannerTypeDropdownOptions['WEAPON'].text}          </option>`+
-                                            `<option value=${BannerTypeDropdownOptions['CHRONICLED_WISH'].value}> ${BannerTypeDropdownOptions['CHRONICLED_WISH'].text} </option>`+
-                                        `</select>`+
-                                    `</center>`+
-                                `</td>`+
-                                `<td>`+
-                                    `<center>`+
-                                        `<select id="WishPlanBannerEnd${NewWishPlanRowID}" class="form-select TableInput WishPlanBannerEnd" style="max-width: 300px;"></select>`+
-                                    `</center>`+
-                                `</td>`+
-                                `<td>`+
-                                    `<center>`+
-                                        `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
-                                    `</center>`+
-                                `</td>`+
-                                `<td class="td-label">`+
-                                    `<label class="td-label">`+
-                                        `<input id="WishPlanEnabled${NewWishPlanRowID}" type="checkbox" class="form-check-input TableInput align-middle" onchange="ToggleWishPlanRow(this); UpdateCalculateButton();" checked>`+
-                                    `</label>`+
-                                `</td>`+
-                                `<td>`+
-                                    `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove(); UpdateCalculateButton();">`+
-                                        `<i class="bi bi-x-lg" style=" font-weight: bold;"></i>`+
-                                    `</button>`+
-                                `</td>`+
-                            `</tr>`
-                        );
-
-                        $('#WishPlanningTableBody').append(NewRow);
-                        $('#WishPlanningTableBody').sortable("refresh");
-
-                        $(`#WishPlanBannerEnd${NewWishPlanRowID}`).html($('#BannerEnd').html());
-                        $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).attr('data-wishplan-rowid', NewWishPlanRowID)
-
-                        NewWishPlanRowID++;
-                    };
-
-                    $(function() {
-                        NewWishPlanRowID = 0;
-
-                        $('#WishPlanningTableBody').sortable({handle: ".handle"});
-
-                        $("#AddRowButton").click(function() {AddWishPlanRow(); UpdateCalculateButton();});
-
-                        // We want the table to load with 3 rows by default.
-                        for (let i = 0; i < 3; i++) AddWishPlanRow();
-                    });
-                </script>
-
-                <div class="WishSection SimpleModeSkipGroup">
-                    <hr><center><h2>Spiral Abyss</h2></center><br>
-                    <center><h3>Expected Stars:</h3></center>
-
-                    <!-- TODO: See if there is a way to generate these iteratively since they are basically all the same. -->
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label>
-                            <select id="ExpectedStarsFloor9" class="form-select" style="max-width: 300px;">
-                                <option value="0"> 0-2&#x2736; </option>
-                                <option value="1"> 3-5&#x2736; </option>
-                                <option value="2"> 6-8&#x2736; </option>
-                                <option value="3"> 9&#x2736; </option>
-                            </select>
+                            <div class="col-sm-4 SimpleModeSkipGroup">
+                                <label for="Stardust" class="form-label">Masterless Stardust</label>
+                                <a data-toggle="tooltip"
+                                    title="This will be used to calculate how many of the available <b>Intertwined Fates</b> you can purchase from the <b>Stardust Exchange</b> between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month's Intertwined Fates have already been purchased."
+                                >
+                                    <i class="bi bi-question-circle"></i>
+                                </a>
+                                <br>
+                                <input type="number" id="Stardust" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-min="0" min="0"><br>
+                            </div>
                         </div>
-                    
-                        <div class="col-sm-3">
-                            <label for="ExpectedStarsFloor10" class="form-label">Floor 10</label>
-                            <select id="ExpectedStarsFloor10" class="form-select" style="max-width: 300px;">
-                                <option value="0"> 0-2&#x2736; </option>
-                                <option value="1"> 3-5&#x2736; </option>
-                                <option value="2"> 6-8&#x2736; </option>
-                                <option value="3"> 9&#x2736; </option>
-                            </select>
+                        <br>
+
+                        <div class="form-check form-check-inline form-switch">
+                            <input type="checkbox" id="UsingStarglitter" class="form-check-input">
+                            <label for="UsingStarglitter" class="form-label">Using Masterless Starglitter</label><br>
                         </div>
 
-                        <div class="col-sm-3">
-                            <label for="ExpectedStarsFloor11" class="form-label">Floor 11</label>
-                            <select id="ExpectedStarsFloor11" class="form-select" style="max-width: 300px;">
-                                <option value="0"> 0-2&#x2736; </option>
-                                <option value="1"> 3-5&#x2736; </option>
-                                <option value="2"> 6-8&#x2736; </option>
-                                <option value="3"> 9&#x2736; </option>
-                            </select>
+                        <div class="row" id="StarglitterSkipGroup" style="display: none;">
+                            <div class="col-sm-4">
+                                <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
+                                <input type="number" id="Starglitter" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                            </div>
+                        
+                            <div class="col-sm-4">
+                                <label for="MissingFourStarCharacters" class="form-label">Missing 4&#9733; Characters</label>
+                                <a data-toggle="tooltip"
+                                    title="If all 4&#9733; characters have been acquired then every 4&#9733; pulled should give at least 2 Masterless Starglitter. The calculator will assume that a 4&#9733; is given once every 10 wishes, and so if all 4&#9733;s are acquired before or during the wishing process then 2 additional Masterless Starglitter will be awarded per subsequent wish."
+                                >
+                                    <i class="bi bi-question-circle"></i>
+                                </a>
+                                <br>
+                                <input type="number" id="MissingFourStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="40"><br>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <label for="MissingStandardFiveStarCharacters" class="form-label">Missing Standard Banner 5&#9733; Characters</label>
+                                <a data-toggle="tooltip"
+                                    title="5&#9733; character constellations will award 10 Masterless Starglitter and so if all standard banner 5&#9733;s are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you pull a standard banner 5&#9733;. Additional wishes gained from this won't be reflected in the <b>Max Number of Wishes</b>."
+                                >
+                                    <i class="bi bi-question-circle"></i>
+                                </a>
+                                <br>
+                                <input type="number" id="MissingStandardFiveStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="8"><br>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="col-sm-3">
-                            <label for="ExpectedStarsFloor12" class="form-label">Floor 12</label>
-                            <select id="ExpectedStarsFloor12" class="form-select" style="max-width: 300px;">
-                                <option value="0"> 0-2&#x2736; </option>
-                                <option value="1"> 3-5&#x2736; </option>
-                                <option value="2"> 6-8&#x2736; </option>
-                                <option value="3"> 9&#x2736; </option>
-                            </select>
+                    <div class="WishSection">
+                        <hr><h2>Wishing Info</h2><br>
+
+                        <div class="SimpleModeSkipGroup BasicWishPlanningSkipGroup">
+                            <label for="EndPatch" class="form-label">Wishing End Date</label>
+                            <select id="BannerEnd" class="form-select" style="max-width: 300px;"></select>
+                            <script type="text/javascript">
+                                $(function() {
+                                    for (let i = CurrentBannerVal; i < BannerInfo.length; i++) {
+                                        $('#BannerEnd').append($('<option>', {
+                                            value: i,
+                                            text: `${BannerInfo[i].Patch} Phase ${BannerInfo[i].Phase} (Ends on ${moment(BannerInfo[i].BannerEndDate, "YYYY-MM-DD").format('L')})`,
+                                        }));
+                                    };
+                                });
+                            </script>
+                        </div>
+                        <br>
+
+                        <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 100%;">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td><b>Character Banner</b></td>
+                                    <td><b>Weapon Banner</b></td>
+                                    <td><b>Chronicled Wish</b></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class='BasicWishPlanningSkipGroup'>
+                                    <td style="vertical-align: middle;"><b>Number of 5&#9733;s Wishing For</b></td>
+                                    <td>
+                                        <input type="number" id="CharacterGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" id="WeaponGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" id="ChronicledGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;"><b>Pity</b></td>
+                                    <td>
+                                        <input type="number" id="CharacterPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" id="ChronicledPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;"><b>Guarantee</b></td>
+                                    <td class="td-label">
+                                        <label class="td-label">
+                                            <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput align-middle">
+                                        </label>
+                                    </td>
+                                    <td class="td-label">
+                                        <label class="td-label">
+                                            <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput align-middle">
+                                        </label>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;"><b>Fate Points</b></td>
+                                    <td></td>
+                                    <td>
+                                        <input type="number" id="WeaponFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" id="ChronicledFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: middle;">
+                                        <b id="CapturingRadianceLabel">Capturing Radiance Pity</b>
+                                        <a data-toggle="tooltip"
+                                            title="
+                                                When pulling on a character banner, if you obtain a 5&#9733; character and they are not the event character, you will gain one <b>Capturing Radiance Pity</b>. If you obtain the event character without the <b>Guarantee</b>, then your <b>Capturing Radiance Pity</b> will be reset to 0. Your <b>Capturing Radiance Pity</b> will alter your chances of obtaining the event character, without the <b>Guarantee</b>, as follows:
+                                                <br><br>
+                                                <ul>
+                                                    <li> 0 Pity: 50% Chance   </li>
+                                                    <li> 1 Pity: 52.5% Chance </li>
+                                                    <li> 2 Pity: 75% Chance   </li>
+                                                    <li> 3 Pity: 100% Chance  </li>
+                                                </ul>
+                                                These numbers come from a speculative model, based on wish results observed following this mechanics addition to the game, and as such may not be entirely accurate.
+                                            "
+                                        >
+                                            <i class="bi bi-question-circle" style="color: black;"></i>
+                                        </a>
+                                        <br>
+                                        <div class="form-check form-check-inline form-switch">
+                                            <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableInput">
+                                            <label for="EnableCapturingRadiance" class="form-label">Enable</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="CapturingRadiancePitySkipGroup">
+                                            <input type="number" id="CapturingRadiancePity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table id="WishPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;">
+                                        <!-- Veritcal Grip -->
+                                    </th>
+                                    <th style="width: 30%; min-width: 175px;">
+                                        Name
+                                    </th>
+                                    <th style="width: 15%; min-width: 155px;">
+                                        Banner Type
+                                    </th>
+                                    <th style="width: 30%; min-width: 125px;">
+                                        Wishing End Date
+                                    </th>
+                                    <th style="width: 10%; min-width: 80px;">
+                                        Copies
+                                    </th>
+                                    <th style="width: 5%;">
+                                        Enabled
+                                    </th>
+                                    <th style="width: 5%;">
+                                        <!-- Remove Button -->
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="WishPlanningTableBody">
+                                <!--- Rows will be added by the script below. --->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7">
+                                        <button id="AddRowButton" type="button" style="width: 100%" class="btn btn-add">
+                                            <b><i class="bi bi-plus-lg" style="font-size: 30px; font-weight: bold; color: white;"></i></b>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <script type="text/javascript">
+                        function AddWishPlanRow() {
+                            let NewRow = $(
+                                `<tr id="WishPlanRow${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}">`+
+                                    `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
+                                    `<td>`+
+                                        `<input id="WishPlanItem${NewWishPlanRowID}" type="text" class="form-control TableInput" style="width: 100%;">`+
+                                    `</td>`+
+                                    `<td>`+
+                                        `<center>`+
+                                            `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableInput">`+
+                                                `<option value=${BannerTypeDropdownOptions['CHARACTER'].value}>       ${BannerTypeDropdownOptions['CHARACTER'].text}       </option>`+
+                                                `<option value=${BannerTypeDropdownOptions['WEAPON'].value}>          ${BannerTypeDropdownOptions['WEAPON'].text}          </option>`+
+                                                `<option value=${BannerTypeDropdownOptions['CHRONICLED_WISH'].value}> ${BannerTypeDropdownOptions['CHRONICLED_WISH'].text} </option>`+
+                                            `</select>`+
+                                        `</center>`+
+                                    `</td>`+
+                                    `<td>`+
+                                        `<center>`+
+                                            `<select id="WishPlanBannerEnd${NewWishPlanRowID}" class="form-select TableInput WishPlanBannerEnd" style="max-width: 300px;"></select>`+
+                                        `</center>`+
+                                    `</td>`+
+                                    `<td>`+
+                                        `<center>`+
+                                            `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
+                                        `</center>`+
+                                    `</td>`+
+                                    `<td class="td-label">`+
+                                        `<label class="td-label">`+
+                                            `<input id="WishPlanEnabled${NewWishPlanRowID}" type="checkbox" class="form-check-input TableInput align-middle" onchange="ToggleWishPlanRow(this); UpdateCalculateButton();" checked>`+
+                                        `</label>`+
+                                    `</td>`+
+                                    `<td>`+
+                                        `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove(); UpdateCalculateButton();">`+
+                                            `<i class="bi bi-x-lg" style=" font-weight: bold;"></i>`+
+                                        `</button>`+
+                                    `</td>`+
+                                `</tr>`
+                            );
+
+                            $('#WishPlanningTableBody').append(NewRow);
+                            $('#WishPlanningTableBody').sortable("refresh");
+
+                            $(`#WishPlanBannerEnd${NewWishPlanRowID}`).html($('#BannerEnd').html());
+                            $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).attr('data-wishplan-rowid', NewWishPlanRowID)
+
+                            NewWishPlanRowID++;
+                        };
+
+                        $(function() {
+                            NewWishPlanRowID = 0;
+
+                            $('#WishPlanningTableBody').sortable({handle: ".handle"});
+
+                            $("#AddRowButton").click(function() {AddWishPlanRow(); UpdateCalculateButton();});
+
+                            // We want the table to load with 3 rows by default.
+                            for (let i = 0; i < 3; i++) AddWishPlanRow();
+                        });
+                    </script>
+
+                    <div class="WishSection SimpleModeSkipGroup">
+                        <hr><h2>Spiral Abyss</h2><br>
+                        <h3>Expected Stars:</h3>
+
+                        <!-- TODO: See if there is a way to generate these iteratively since they are basically all the same. -->
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="ExpectedStarsFloor9" class="form-label">Floor 9</label>
+                                <select id="ExpectedStarsFloor9" class="form-select" style="max-width: 300px;">
+                                    <option value="0"> 0-2&#x2736; </option>
+                                    <option value="1"> 3-5&#x2736; </option>
+                                    <option value="2"> 6-8&#x2736; </option>
+                                    <option value="3"> 9&#x2736; </option>
+                                </select>
+                            </div>
+                        
+                            <div class="col-sm-3">
+                                <label for="ExpectedStarsFloor10" class="form-label">Floor 10</label>
+                                <select id="ExpectedStarsFloor10" class="form-select" style="max-width: 300px;">
+                                    <option value="0"> 0-2&#x2736; </option>
+                                    <option value="1"> 3-5&#x2736; </option>
+                                    <option value="2"> 6-8&#x2736; </option>
+                                    <option value="3"> 9&#x2736; </option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="ExpectedStarsFloor11" class="form-label">Floor 11</label>
+                                <select id="ExpectedStarsFloor11" class="form-select" style="max-width: 300px;">
+                                    <option value="0"> 0-2&#x2736; </option>
+                                    <option value="1"> 3-5&#x2736; </option>
+                                    <option value="2"> 6-8&#x2736; </option>
+                                    <option value="3"> 9&#x2736; </option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label for="ExpectedStarsFloor12" class="form-label">Floor 12</label>
+                                <select id="ExpectedStarsFloor12" class="form-select" style="max-width: 300px;">
+                                    <option value="0"> 0-2&#x2736; </option>
+                                    <option value="1"> 3-5&#x2736; </option>
+                                    <option value="2"> 6-8&#x2736; </option>
+                                    <option value="3"> 9&#x2736; </option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" id="AbyssCurrentCycleCompleted" class="form-check-input">
+                            <label for="AbyssCurrentCycleCompleted" class="form-label">Current cycle completed</label><br>
                         </div>
                     </div>
-                    <br>
 
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" id="AbyssCurrentCycleCompleted" class="form-check-input">
-                        <label for="AbyssCurrentCycleCompleted" class="form-label">Current cycle completed</label><br>
+                    <div class="WishSection SimpleModeSkipGroup">
+                        <hr><h2>Imaginarium Theater</h2><br>
+
+                        <label for="ExpectedAct" class="form-label">Expected Act</label>
+                        <input type="number" id="ExpectedAct" class="form-control" style="max-width: 100px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0">
+                        <br>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
+                            <label for="ITCurrentCycleCompleted" class="form-label">Current cycle completed</label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="WishSection SimpleModeSkipGroup">
-                    <hr><center><h2>Imaginarium Theater</h2></center><br>
-
-                    <label for="ExpectedAct" class="form-label">Expected Act</label>
-                    <input type="number" id="ExpectedAct" class="form-control" style="max-width: 100px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,10]" min="0" max="10" Value="0">
-                    <br>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" id="ITCurrentCycleCompleted" class="form-check-input">
-                        <label for="ITCurrentCycleCompleted" class="form-label">Current cycle completed</label>
-                    </div>
-                </div>
-
-                <div class="WishSection SimpleModeSkipGroup">
-                    <hr>
-                    <center>
+                    <div class="WishSection SimpleModeSkipGroup">
+                        <hr>
                         <h2>
                             Battle Pass & Welkin
                             <a data-toggle="tooltip"
@@ -556,92 +554,93 @@
                                 <i class="bi bi-question-circle"></i>
                             </a>
                         </h2>
-                    </center>
-                    <br>
+                        <br>
 
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" id="HasWelkin" class="form-check-input">
-                        <label for="HasWelkin" class="form-label">Purchasing Blessing of the Welking Moon</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" id="BPPurchased" class="form-check-input">
-                        <label for="BPPurchased" class="form-label">Purchasing Battle Pass</label>
-                    </div>
-               
-                    <div id="BPLevelSkipGroup" class="form-group" style="display: none;">
-                        <label for="BPLevel" class="form-label">Battle Pass Level</label>
-                        <select id="BPLevel" class="form-select" style="max-width: 100px;">
-                            <option value="0"> 0-9   </option>
-                            <option value="1"> 10-19 </option>
-                            <option value="2"> 20-29 </option>
-                            <option value="3"> 30-39 </option>
-                            <option value="4"> 40-49 </option>
-                            <option value="5"> 50    </option>
-                        </select>
-                    </div>
-                </div>
-
-
-                <div id="EventCalcs" class="WishSection SimpleModeSkipGroup">
-                    <hr><center><h2>Events</h2></center><br>
-
-                    <div class="row">
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-3">
-                            <label for="SecondaryEventsCompletable" class="form-label"><!-- Text generated below. --></label>
-                            <input type="number" id="SecondaryEventsCompletable" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" id="HasWelkin" class="form-check-input">
+                            <label for="HasWelkin" class="form-label">Purchasing Blessing of the Welking Moon</label>
                         </div>
-                        <div class="col-sm-3">
-                            <label for="SecondaryEventsCompleted" class="form-label">Current Patch's Secondary Events Completed</label>
-                            <input type="number" id="SecondaryEventsCompleted" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" id="BPPurchased" class="form-check-input">
+                            <label for="BPPurchased" class="form-label">Purchasing Battle Pass</label>
                         </div>
-                        <div class="col-sm-3"></div>
+                   
+                        <div id="BPLevelSkipGroup" class="form-group" style="display: none;">
+                            <label for="BPLevel" class="form-label">Battle Pass Level</label>
+                            <select id="BPLevel" class="form-select" style="max-width: 100px;">
+                                <option value="0"> 0-9   </option>
+                                <option value="1"> 10-19 </option>
+                                <option value="2"> 20-29 </option>
+                                <option value="3"> 30-39 </option>
+                                <option value="4"> 40-49 </option>
+                                <option value="5"> 50    </option>
+                            </select>
+                        </div>
                     </div>
-                    <br>
 
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" id="FlagshipEventCompletable" class="form-check-input">
-                        <label for="FlagshipEventCompletable" class="form-label"><!-- Text generated below. --></label>
-                        <a data-toggle="tooltip"
-                            title="The calculator will assume this is false, and the secondary events completable is 1, for any patches after this one."
-                        >
-                            <i class="bi bi-question-circle"></i>
-                        </a>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" id="FlagshipEventCompleted" class="form-check-input">
-                        <label for="FlagshipEventCompleted" class="form-label">Current Patch's Flagship Event Completed</label>
-                    </div>
-                    <br><br>
 
-                    <script type="text/javascript">
-                        $(function() {
-                            for (let i = CurrentBannerVal; i < BannerInfo.length; i++) {
-                                if (BannerInfo[i].Phase == 1) { // We want to use the nearest phase 1 as we assume that user's won't know this information for any further out than that.
-                                    let NearestPhase1 = BannerInfo[i];
-                                    $("label[for='FlagshipEventCompletable']").html(`${NearestPhase1.Patch} Flagship Event Completable by first half.`);
-                                    $("label[for='SecondaryEventsCompletable']").html(`${NearestPhase1.Patch} Secondary Events Completable by first half.`);
-                                    break;
+                    <div id="EventCalcs" class="WishSection SimpleModeSkipGroup">
+                        <hr><h2>Events</h2><br>
+
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-3">
+                                <label for="SecondaryEventsCompletable" class="form-label"><!-- Text generated below. --></label>
+                                <input type="number" id="SecondaryEventsCompletable" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="SecondaryEventsCompleted" class="form-label">Current Patch's Secondary Events Completed</label>
+                                <input type="number" id="SecondaryEventsCompleted" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
+                            </div>
+                            <div class="col-sm-3"></div>
+                        </div>
+                        <br>
+
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" id="FlagshipEventCompletable" class="form-check-input">
+                            <label for="FlagshipEventCompletable" class="form-label"><!-- Text generated below. --></label>
+                            <a data-toggle="tooltip"
+                                title="The calculator will assume this is false, and the secondary events completable is 1, for any patches after this one."
+                            >
+                                <i class="bi bi-question-circle"></i>
+                            </a>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" id="FlagshipEventCompleted" class="form-check-input">
+                            <label for="FlagshipEventCompleted" class="form-label">Current Patch's Flagship Event Completed</label>
+                        </div>
+                        <br><br>
+
+                        <script type="text/javascript">
+                            $(function() {
+                                for (let i = CurrentBannerVal; i < BannerInfo.length; i++) {
+                                    if (BannerInfo[i].Phase == 1) { // We want to use the nearest phase 1 as we assume that user's won't know this information for any further out than that.
+                                        let NearestPhase1 = BannerInfo[i];
+                                        $("label[for='FlagshipEventCompletable']").html(`${NearestPhase1.Patch} Flagship Event Completable by first half.`);
+                                        $("label[for='SecondaryEventsCompletable']").html(`${NearestPhase1.Patch} Secondary Events Completable by first half.`);
+                                        break;
+                                    };
                                 };
-                            };
-                        });
-                    </script>
+                            });
+                        </script>
 
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" id="UsingHoyoLabCheckin" class="form-check-input">
-                        <label for="UsingHoyoLabCheckin" class="form-label">Using <b>HoYoLAB Community Daily Check-In</b></label>
-                        <a data-toggle="tooltip"
-                            title="The check-in will award 20 <b>Primogems</b> on the 4th, 11th, & 18th of every month."
-                        >
-                            <i class="bi bi-question-circle"></i>
-                        </a>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" id="UsingHoyoLabCheckin" class="form-check-input">
+                            <label for="UsingHoyoLabCheckin" class="form-label">Using <b>HoYoLAB Community Daily Check-In</b></label>
+                            <a data-toggle="tooltip"
+                                title="The check-in will award 20 <b>Primogems</b> on the 4th, 11th, & 18th of every month."
+                            >
+                                <i class="bi bi-question-circle"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
 
-                <hr><center><h2>Wish Results</h2></center><br>
+                    <hr><h2>Wish Results</h2><br>
 
-                <center><a id="Calculate" class="btn btn-primary" style="border-width: 1px; border-color: black;"> Calculate </a></center><br>
+                    <a id="Calculate" class="btn btn-primary" style="border-width: 1px; border-color: black;">Calculate</a>
+                </center>
             </div>
+            <br>
         </form>
 
         <div class="container">
@@ -679,11 +678,9 @@
                     <tbody id="WishPlanningResultsBody"> <!--- Will be filled in by WishCalcs. ---> </tbody>
                     <tfoot id="WishPlanningResultsFoot"> <!--- Will be filled in by WishCalcs. ---> </tfoot>
                 </table>
-            </center>
 
-            <hr>
-            <p>© All rights reserved by HoYoverse. Other properties belong to their respective owners.</p>
-            <center>
+                <hr>
+                <p>© All rights reserved by HoYoverse. Other properties belong to their respective owners.</p>
                 <a href="MoreInfo.html" style="color: #054295; margin: 5px;">More info</a>
                 <a target="_blank" href="https://github.com/MattG129/Genshin-Wish-Calculator/issues" style="color: #054295; margin: 5px;">Report an issue</a>
             </center>
