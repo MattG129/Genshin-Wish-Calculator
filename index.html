@@ -200,180 +200,176 @@
 
                     <a id="CalculatorHeaderAnchor"></a>
 
-                    <div class="WishSection">
-                        <hr><h2>Currency</h2><br>
+                    <hr><h2>Currency</h2><br>
 
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <label for="Primos" class="form-label">Primogems</label><br>
-                                <input type="number" id="Primos" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
-                            </div>
-                        
-                            <div class="col-sm-4">
-                                <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
-                                <input type="number" id="IntertwinedFates" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
-                            </div>
-
-                            <div class="col-sm-4 SimpleModeSkipGroup">
-                                <label for="Stardust" class="form-label">Masterless Stardust</label>
-                                <a data-toggle="tooltip"
-                                    title="This will be used to calculate how many of the available <b>Intertwined Fates</b> you can purchase from the <b>Stardust Exchange</b> between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month's Intertwined Fates have already been purchased."
-                                >
-                                    <i class="bi bi-question-circle"></i>
-                                </a>
-                                <br>
-                                <input type="number" id="Stardust" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-min="0" min="0"><br>
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="Primos" class="form-label">Primogems</label><br>
+                            <input type="number" id="Primos" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
                         </div>
-                        <br>
-
-                        <div class="form-check form-check-inline form-switch">
-                            <input type="checkbox" id="UsingStarglitter" class="form-check-input">
-                            <label for="UsingStarglitter" class="form-label">Using Masterless Starglitter</label><br>
+                    
+                        <div class="col-sm-4">
+                            <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
+                            <input type="number" id="IntertwinedFates" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
 
-                        <div class="row" id="StarglitterSkipGroup" style="display: none;">
-                            <div class="col-sm-4">
-                                <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
-                                <input type="number" id="Starglitter" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
-                            </div>
-                        
-                            <div class="col-sm-4">
-                                <label for="MissingFourStarCharacters" class="form-label">Missing 4&#9733; Characters</label>
-                                <a data-toggle="tooltip"
-                                    title="If all 4&#9733; characters have been acquired then every 4&#9733; pulled should give at least 2 Masterless Starglitter. The calculator will assume that a 4&#9733; is given once every 10 wishes, and so if all 4&#9733;s are acquired before or during the wishing process then 2 additional Masterless Starglitter will be awarded per subsequent wish."
-                                >
-                                    <i class="bi bi-question-circle"></i>
-                                </a>
-                                <br>
-                                <input type="number" id="MissingFourStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="40"><br>
-                            </div>
+                        <div class="col-sm-4 SimpleModeSkipGroup">
+                            <label for="Stardust" class="form-label">Masterless Stardust</label>
+                            <a data-toggle="tooltip"
+                                title="This will be used to calculate how many of the available <b>Intertwined Fates</b> you can purchase from the <b>Stardust Exchange</b> between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month's Intertwined Fates have already been purchased."
+                            >
+                                <i class="bi bi-question-circle"></i>
+                            </a>
+                            <br>
+                            <input type="number" id="Stardust" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-min="0" min="0"><br>
+                        </div>
+                    </div>
+                    <br>
 
-                            <div class="col-sm-4">
-                                <label for="MissingStandardFiveStarCharacters" class="form-label">Missing Standard Banner 5&#9733; Characters</label>
-                                <a data-toggle="tooltip"
-                                    title="5&#9733; character constellations will award 10 Masterless Starglitter and so if all standard banner 5&#9733;s are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you pull a standard banner 5&#9733;. Additional wishes gained from this won't be reflected in the <b>Max Number of Wishes</b>."
-                                >
-                                    <i class="bi bi-question-circle"></i>
-                                </a>
-                                <br>
-                                <input type="number" id="MissingStandardFiveStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="8"><br>
-                            </div>
+                    <div class="form-check form-check-inline form-switch">
+                        <input type="checkbox" id="UsingStarglitter" class="form-check-input">
+                        <label for="UsingStarglitter" class="form-label">Using Masterless Starglitter</label><br>
+                    </div>
+
+                    <div class="row" id="StarglitterSkipGroup" style="display: none;">
+                        <div class="col-sm-4">
+                            <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
+                            <input type="number" id="Starglitter" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
+                        </div>
+                    
+                        <div class="col-sm-4">
+                            <label for="MissingFourStarCharacters" class="form-label">Missing 4&#9733; Characters</label>
+                            <a data-toggle="tooltip"
+                                title="If all 4&#9733; characters have been acquired then every 4&#9733; pulled should give at least 2 Masterless Starglitter. The calculator will assume that a 4&#9733; is given once every 10 wishes, and so if all 4&#9733;s are acquired before or during the wishing process then 2 additional Masterless Starglitter will be awarded per subsequent wish."
+                            >
+                                <i class="bi bi-question-circle"></i>
+                            </a>
+                            <br>
+                            <input type="number" id="MissingFourStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="40"><br>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="MissingStandardFiveStarCharacters" class="form-label">Missing Standard Banner 5&#9733; Characters</label>
+                            <a data-toggle="tooltip"
+                                title="5&#9733; character constellations will award 10 Masterless Starglitter and so if all standard banner 5&#9733;s are acquired before or during the wishing process then 10 additional Masterless Starglitter will be awarded every following time you pull a standard banner 5&#9733;. Additional wishes gained from this won't be reflected in the <b>Max Number of Wishes</b>."
+                            >
+                                <i class="bi bi-question-circle"></i>
+                            </a>
+                            <br>
+                            <input type="number" id="MissingStandardFiveStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="8"><br>
                         </div>
                     </div>
 
-                    <div class="WishSection">
-                        <hr><h2>Wishing Info</h2><br>
+                    <hr><h2>Wishing Info</h2><br>
 
-                        <div class="SimpleModeSkipGroup BasicWishPlanningSkipGroup">
-                            <label for="EndPatch" class="form-label">Wishing End Date</label>
-                            <select id="BannerEnd" class="form-select" style="max-width: 300px;"></select>
-                            <script type="text/javascript">
-                                $(function() {
-                                    for (let i = CurrentBannerVal; i < BannerInfo.length; i++) {
-                                        $('#BannerEnd').append($('<option>', {
-                                            value: i,
-                                            text: `${BannerInfo[i].Patch} Phase ${BannerInfo[i].Phase} (Ends on ${moment(BannerInfo[i].BannerEndDate, "YYYY-MM-DD").format('L')})`,
-                                        }));
-                                    };
-                                });
-                            </script>
-                        </div>
+                    <div class="SimpleModeSkipGroup BasicWishPlanningSkipGroup">
+                        <label for="EndPatch" class="form-label">Wishing End Date</label>
+                        <select id="BannerEnd" class="form-select" style="max-width: 300px;"></select>
+                        <script type="text/javascript">
+                            $(function() {
+                                for (let i = CurrentBannerVal; i < BannerInfo.length; i++) {
+                                    $('#BannerEnd').append($('<option>', {
+                                        value: i,
+                                        text: `${BannerInfo[i].Patch} Phase ${BannerInfo[i].Phase} (Ends on ${moment(BannerInfo[i].BannerEndDate, "YYYY-MM-DD").format('L')})`,
+                                    }));
+                                };
+                            });
+                        </script>
                         <br>
-
-                        <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 100%;">
-                            <thead>
-                                <tr>
-                                    <td></td>
-                                    <td><b>Character Banner</b></td>
-                                    <td><b>Weapon Banner</b></td>
-                                    <td><b>Chronicled Wish</b></td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class='BasicWishPlanningSkipGroup'>
-                                    <td style="vertical-align: middle;"><b>Number of 5&#9733;s Wishing For</b></td>
-                                    <td>
-                                        <input type="number" id="CharacterGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" id="WeaponGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" id="ChronicledGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: middle;"><b>Pity</b></td>
-                                    <td>
-                                        <input type="number" id="CharacterPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" id="ChronicledPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: middle;"><b>Guarantee</b></td>
-                                    <td class="td-label">
-                                        <label class="td-label">
-                                            <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput align-middle">
-                                        </label>
-                                    </td>
-                                    <td class="td-label">
-                                        <label class="td-label">
-                                            <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput align-middle">
-                                        </label>
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: middle;"><b>Fate Points</b></td>
-                                    <td></td>
-                                    <td>
-                                        <input type="number" id="WeaponFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" id="ChronicledFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="vertical-align: middle;">
-                                        <b id="CapturingRadianceLabel">Capturing Radiance Pity</b>
-                                        <a data-toggle="tooltip"
-                                            title="
-                                                When pulling on a character banner, if you obtain a 5&#9733; character and they are not the event character, you will gain one <b>Capturing Radiance Pity</b>. If you obtain the event character without the <b>Guarantee</b>, then your <b>Capturing Radiance Pity</b> will be reset to 0. Your <b>Capturing Radiance Pity</b> will alter your chances of obtaining the event character, without the <b>Guarantee</b>, as follows:
-                                                <br><br>
-                                                <ul>
-                                                    <li> 0 Pity: 50% Chance   </li>
-                                                    <li> 1 Pity: 52.5% Chance </li>
-                                                    <li> 2 Pity: 75% Chance   </li>
-                                                    <li> 3 Pity: 100% Chance  </li>
-                                                </ul>
-                                                These numbers come from a speculative model, based on wish results observed following this mechanics addition to the game, and as such may not be entirely accurate.
-                                            "
-                                        >
-                                            <i class="bi bi-question-circle" style="color: black;"></i>
-                                        </a>
-                                        <br>
-                                        <div class="form-check form-check-inline form-switch">
-                                            <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableInput">
-                                            <label for="EnableCapturingRadiance" class="form-label">Enable</label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div id="CapturingRadiancePitySkipGroup">
-                                            <input type="number" id="CapturingRadiancePity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
-                                        </div>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
+
+                    <table class="table table-bordered" style="font-size: min(3vw, 16px); text-align: center; border: 1px; max-width: 100%;">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td><b>Character Banner</b></td>
+                                <td><b>Weapon Banner</b></td>
+                                <td><b>Chronicled Wish</b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class='BasicWishPlanningSkipGroup'>
+                                <td style="vertical-align: middle;"><b>Number of 5&#9733;s Wishing For</b></td>
+                                <td>
+                                    <input type="number" id="CharacterGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                </td>
+                                <td>
+                                    <input type="number" id="WeaponGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                </td>
+                                <td>
+                                    <input type="number" id="ChronicledGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;"><b>Pity</b></td>
+                                <td>
+                                    <input type="number" id="CharacterPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
+                                </td>
+                                <td>
+                                    <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
+                                </td>
+                                <td>
+                                    <input type="number" id="ChronicledPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;"><b>Guarantee</b></td>
+                                <td class="td-label">
+                                    <label class="td-label">
+                                        <input type="checkbox" id="CharacterGuarantee" class="form-check-input TableInput align-middle">
+                                    </label>
+                                </td>
+                                <td class="td-label">
+                                    <label class="td-label">
+                                        <input type="checkbox" id="WeaponGuarantee" class="form-check-input TableInput align-middle">
+                                    </label>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;"><b>Fate Points</b></td>
+                                <td></td>
+                                <td>
+                                    <input type="number" id="WeaponFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                </td>
+                                <td>
+                                    <input type="number" id="ChronicledFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: middle;">
+                                    <b id="CapturingRadianceLabel">Capturing Radiance Pity</b>
+                                    <a data-toggle="tooltip"
+                                        title="
+                                            When pulling on a character banner, if you obtain a 5&#9733; character and they are not the event character, you will gain one <b>Capturing Radiance Pity</b>. If you obtain the event character without the <b>Guarantee</b>, then your <b>Capturing Radiance Pity</b> will be reset to 0. Your <b>Capturing Radiance Pity</b> will alter your chances of obtaining the event character, without the <b>Guarantee</b>, as follows:
+                                            <br><br>
+                                            <ul>
+                                                <li> 0 Pity: 50% Chance   </li>
+                                                <li> 1 Pity: 52.5% Chance </li>
+                                                <li> 2 Pity: 75% Chance   </li>
+                                                <li> 3 Pity: 100% Chance  </li>
+                                            </ul>
+                                            These numbers come from a speculative model, based on wish results observed following this mechanics addition to the game, and as such may not be entirely accurate.
+                                        "
+                                    >
+                                        <i class="bi bi-question-circle" style="color: black;"></i>
+                                    </a>
+                                    <br>
+                                    <div class="form-check form-check-inline form-switch">
+                                        <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableInput">
+                                        <label for="EnableCapturingRadiance" class="form-label">Enable</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="CapturingRadiancePitySkipGroup">
+                                        <input type="number" id="CapturingRadiancePity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                     <div style="overflow-x: auto;">
                         <table id="WishPlanningTable" class="table table-bordered table-striped" style="font-size: min(3vw, 16px); text-align: center; border: 1px;">
@@ -478,7 +474,7 @@
                         });
                     </script>
 
-                    <div class="WishSection SimpleModeSkipGroup">
+                    <div class="SimpleModeSkipGroup">
                         <hr><h2>Spiral Abyss</h2><br>
                         <h3>Expected Stars:</h3>
 
@@ -532,7 +528,7 @@
                         </div>
                     </div>
 
-                    <div class="WishSection SimpleModeSkipGroup">
+                    <div class="SimpleModeSkipGroup">
                         <hr><h2>Imaginarium Theater</h2><br>
 
                         <label for="ExpectedAct" class="form-label">Expected Act</label>
@@ -544,7 +540,7 @@
                         </div>
                     </div>
 
-                    <div class="WishSection SimpleModeSkipGroup">
+                    <div class="SimpleModeSkipGroup">
                         <hr>
                         <h2>
                             Battle Pass & Welkin
@@ -579,7 +575,7 @@
                     </div>
 
 
-                    <div id="EventCalcs" class="WishSection SimpleModeSkipGroup">
+                    <div id="EventCalcs" class="SimpleModeSkipGroup">
                         <hr><h2>Events</h2><br>
 
                         <div class="row">
