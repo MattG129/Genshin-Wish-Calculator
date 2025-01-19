@@ -517,11 +517,11 @@ function WishCalcs(WishConfig) {
 
         WishConfig.MaxWishes = SavingsCalculator(WishConfig);
 
-        $('#MaxWishes').show().html(`Max Number of Wishes: ${WishConfig.MaxWishes}`);
+        $('#MaxWishes').show().html(`Max Wishes: ${WishConfig.MaxWishes}`);
 
-        $('#WishingGoals').show().html(`Wishing for ${WishConfig.CharacterGoal} characters, ${WishConfig.WeaponGoal} weapons, and ${WishConfig.ChronicledGoal} chronicled items.`);
+        $('#WishingGoals').show().html(`Wishing for ${WishConfig.CharacterGoal} character(s), ${WishConfig.WeaponGoal} weapon(s), and ${WishConfig.ChronicledGoal} chronicled item(s).`);
 
-        $('#Chance').show().html(`Chances of reaching wish goals: ${NumericWishCalculations(WishConfig).TotalSuccessRate}`);
+        $('#Chance').show().html(`Chance of reaching all wish goals: ${NumericWishCalculations(WishConfig).TotalSuccessRate}`);
 
         return {Success: true};
     }
@@ -573,7 +573,7 @@ function WishCalcs(WishConfig) {
 
         $('#WishPlanningResultsTable tfoot').append($(
             `<tr class="WishPlanResultsRow">`+
-                `<td colspan="5"><b>Chances of reaching all wish goals: ${wishResults.TotalSuccessRate}</b></td>`+
+                `<td colspan="5"><b>Chance of reaching all wish goals: ${wishResults.TotalSuccessRate}</b></td>`+
             `</tr>`
         ));
 
