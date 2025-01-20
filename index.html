@@ -264,6 +264,11 @@
 
                     <div class="SimpleModeSkipGroup BasicWishPlanningSkipGroup">
                         <label for="EndPatch" class="form-label">Wishing End Date</label>
+                        <a data-toggle="tooltip"
+                            title="Dates are in American server time. The calculator currently assumes that banners end at 12:00 AM (0:00) on the banner end date."
+                        >
+                            <i class="bi bi-question-circle"></i>
+                        </a>
                         <select id="BannerEnd" class="form-select" style="max-width: 300px;"></select>
                         <script type="text/javascript">
                             $(function() {
@@ -386,6 +391,11 @@
                                     </th>
                                     <th style="width: 30%; min-width: 125px;">
                                         Wishing End Date
+                                        <a data-toggle="tooltip"
+                                            title="Dates are in American server time. The calculator currently assumes that banners end at 12:00 AM (0:00) on the banner end date."
+                                        >
+                                            <i class="bi bi-question-circle" style="color: black;"></i>
+                                        </a>
                                     </th>
                                     <th style="width: 10%; min-width: 80px;">
                                         Copies
