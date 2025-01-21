@@ -114,14 +114,14 @@
                 width: 75%;
             }
 
-            .DisabledWishPlanRow {
-                color: gray;
-            }
-
             @media only screen and (max-width: 600px) {
                 #WishPlanningResultsTable {
                     width: 100%;
                 }
+            }
+            
+            .DisabledWishPlanRow {
+                color: gray;
             }
         </style>
 
@@ -183,7 +183,7 @@
                         for (const [Key, Mode] of Object.entries(WishModes)) {
                             $('#WishMode').append($('<option>', Mode));
                         };
-                        $(`#WishMode option[value=${WishModes.ADVANCED.value}]`).prop('selected', true); // We want advanced to be selected by default but also the last option.
+                        $(`#WishMode option[value=${WishModes.ADVANCED.value}]`).prop('selected', true); // We want advanced to be selected by default but also be the last option.
                     </script>
                     <br>
 
@@ -215,7 +215,7 @@
                         <div class="col-sm-4 SimpleModeSkipGroup">
                             <label for="Stardust" class="form-label">Masterless Stardust</label>
                             <a data-toggle="tooltip"
-                                title="This will be used to calculate how many of the available <b>Intertwined Fates</b> you can purchase from the <b>Stardust Exchange</b> between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available Intertwined Fates can be purchased. It is assumed that this month's Intertwined Fates have already been purchased."
+                                title="This will be used to calculate how many of the available <b>Intertwined Fates</b> you can purchase from the <b>Stardust Exchange</b> between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available <b>Intertwined Fates</b> can be purchased. It is assumed that this month's <b>Intertwined Fates</b> have already been purchased."
                             >
                                 <i class="bi bi-question-circle"></i>
                             </a>
@@ -232,7 +232,7 @@
 
                     <div class="row" id="StarglitterSkipGroup" style="display: none;">
                         <div class="col-sm-4">
-                            <label for="Starglitter" class="form-label">Masterless Starglitter</label><br>
+                            <label for="Starglitter" class="form-label">Masterless Starglitter</label>
                             <input type="number" id="Starglitter" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
                     
@@ -244,7 +244,7 @@
                                 <i class="bi bi-question-circle"></i>
                             </a>
                             <br>
-                            <input type="number" id="MissingFourStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="40"><br>
+                            <input type="number" id="MissingFourStarCharacters" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="40"><br>
                         </div>
 
                         <div class="col-sm-4">
@@ -255,7 +255,7 @@
                                 <i class="bi bi-question-circle"></i>
                             </a>
                             <br>
-                            <input type="number" id="MissingStandardFiveStarCharacters" class="form-control" style="max-width: 300px;"data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="8"><br>
+                            <input type="number" id="MissingStandardFiveStarCharacters" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="8"><br>
                         </div>
                     </div>
 
@@ -365,7 +365,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div id="CapturingRadiancePitySkipGroup">
+                                    <div id="CapturingRadiancePitySkipGroup"> <!-- Wrapping this in a div so parsley validations will also be hidden. -->
                                         <input type="number" id="CapturingRadiancePity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
                                     </div>
                                 </td>
@@ -432,7 +432,7 @@
                                     `</td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableInput">`+
+                                            `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableInput">`+ // TODO: See about generating this dynamically.
                                                 `<option value=${BannerTypeDropdownOptions['CHARACTER'].value}>       ${BannerTypeDropdownOptions['CHARACTER'].text}       </option>`+
                                                 `<option value=${BannerTypeDropdownOptions['WEAPON'].value}>          ${BannerTypeDropdownOptions['WEAPON'].text}          </option>`+
                                                 `<option value=${BannerTypeDropdownOptions['CHRONICLED_WISH'].value}> ${BannerTypeDropdownOptions['CHRONICLED_WISH'].text} </option>`+
@@ -583,7 +583,6 @@
                         </div>
                     </div>
 
-
                     <div id="EventCalcs" class="SimpleModeSkipGroup">
                         <hr><h2>Events</h2><br>
 
@@ -709,7 +708,7 @@
                 if ( 
                     (
                         $('#WishMode').val() != WishModes.ADVANCED.value
-                        && ($('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 || $('#ChronicledGoal').val() > 0 )
+                        && ($('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 || $('#ChronicledGoal').val() > 0)
                     )
                     || (
                         $('#WishMode').val() == WishModes.ADVANCED.value
@@ -870,8 +869,6 @@
                 return FormValues
             };
 
-            $('#form').on('input');
-
             function Import(RunCalcs) {
                 let isValidImport = true;
                 let JSONImport;
@@ -924,14 +921,14 @@
                         }
                         else {
                             MappedImportKey = this.id
-                        }
+                        };
                         
                         if ($(this).is(':checkbox')) {
                             $(this).prop('checked', JSONImport[MappedImportKey]);
                         }
                         else {
                             $(this).val(JSONImport[MappedImportKey]);
-                        }
+                        };
                     });
 
                     let AnnounceExpiredWishPlanRows = false; // We will only set this to true when there are expired wish plan rows and advanced wish planning mode is activated.
@@ -997,7 +994,7 @@
                 }
                 else{
                     $(this).css('background-color', 'white');
-                }
+                };
             });
 
             $(document).ready(function(){
@@ -1005,7 +1002,7 @@
 
                 $('input').each(function() {
                     $(this).parsley().validate();
-                })
+                });
             });
         </script>
     </body>
