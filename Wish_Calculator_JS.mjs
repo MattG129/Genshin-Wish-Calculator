@@ -68,7 +68,8 @@ while (BannerInfo.length < 50) {
 
 function SavingsCalculator(WishConfig) {
     // Primos are a currency used to purchase intertwinded fates, which will be used to make wishes.
-    let Primos = WishConfig.Primos;
+    // Genesis Crystals are a paid currency that can be converted to Primogems at a 1:1 rate.
+    let Primos = WishConfig.Primos + WishConfig.GenesisCrystals;
 
     if(WishConfig.WishMode != WishModes.SIMPLE.value) {
         // 40 primos from character trials, every banner. Assumes that this banner's trial primos have already been claimed.
