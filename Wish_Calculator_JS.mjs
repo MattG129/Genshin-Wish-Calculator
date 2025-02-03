@@ -8,13 +8,13 @@ let BannerInfo = [];
 let TargetBannerInfo;
 const Trials = 10**6;
 
-const Today = new Date(); // TODO: Update date/banner calcs to work if day/banner changes between when the page is loaded and when calcs are run.
+const Today = new Date(); // TODO: Update date/banner calcs to factor in if day/banner has changed between when the page was loaded and when calcs are run.
 Today.setHours(0,0,0,0);
 
 const BannerTypeDropdownOptions = {
-    CHARACTER:       {value: 1, text: 'Character'},
-    WEAPON:          {value: 2, text: 'Weapon'},
-    CHRONICLED_WISH: {value: 3, text: 'Chronicled Wish'}
+    CHARACTER:       {value: 1, text: 'Character',       BaseFiveStarRate: 0.006, SoftPityIncrement: 0.06, SoftPityThreshold: 72},
+    WEAPON:          {value: 2, text: 'Weapon',          BaseFiveStarRate: 0.007, SoftPityIncrement: 0.07, SoftPityThreshold: 61},
+    CHRONICLED_WISH: {value: 3, text: 'Chronicled Wish', BaseFiveStarRate: 0.006, SoftPityIncrement: 0.06, SoftPityThreshold: 72}
 };
 
 function DateAdd(date, days) {
@@ -41,7 +41,7 @@ while (BannerInfo.length < 50) {
             CurrentBannerVal = BannerInfo.length;
         };
 
-        // We need to have banner info have consistent values since import values could have been exported during a previous banner.
+        // BannerInfo will start with 5.0 phase 1, rather than the current patch, as it needs to have consistent values because of the import.
         BannerInfo.push({
             'Patch': (Patch/10).toFixed(1),
             'PatchDiff': PatchDiff,
@@ -54,7 +54,7 @@ while (BannerInfo.length < 50) {
     };
 
     PatchStartDate = DateAdd(PatchStartDate, 42);
-    if ((Patch % 10) == 8) { // Almost all patches end after x.8 so we will go with this assumption.
+    if ((Patch % 10) == 8) { // Almost all versions end after x.8 so we will go with this assumption.
         Patch += 2;
     }
     else {
@@ -75,7 +75,8 @@ function SavingsCalculator(WishConfig) {
         // 40 primos from character trials, every banner. Assumes that this banner's trial primos have already been claimed.
         Primos += 40*(TargetBannerInfo.PhaseDiff);
         
-        Primos += DateDiff(Today, TargetBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) ); // 60 primos for dailies plus 90 for welkin, if purchased.
+        // 60 primos for dailies plus 90 for welkin, if purchased.
+        Primos += DateDiff(Today, TargetBannerInfo.BannerEndDate) * ( 60 + (WishConfig.HasWelkin ? 90 : 0) );
 
         // Abyss (Spiral Abyss) - A challenge that will give you a star ranking for how fast you beat each floor and the higher your star ranking the more primos awarded.
         let ExpectedAbyssPrimos = 0;
@@ -101,7 +102,7 @@ function SavingsCalculator(WishConfig) {
         };
         Primos += ExpectedAbyssPrimos * AbyssCycles;
 
-        // Theater (Imaginarium Theater) - A monthly challenge where you can earn primos for the amount of acts, that you complete.
+        // Theater (Imaginarium Theater) - A monthly challenge where you can earn primos for the amount of acts that you complete.
         let ExpectedTheaterPrimos = 0;
         switch (WishConfig.ExpectedAct) {
             case 0:  ExpectedTheaterPrimos = 0;   break;
@@ -124,7 +125,7 @@ function SavingsCalculator(WishConfig) {
         if (DateDiff(BannerInfo[CurrentBannerVal].PatchStartDate, Today) >= 31) {
             Primos -= 300;
         };
-        // Subtract primos from the last patch if the target banner is in the first phase, as then the ls primos wouldn't be claimable.
+        // Subtract primos from the last patch if the target banner is in the first phase, as then the LS primos wouldn't be claimable.
         if (TargetBannerInfo.Phase == 1) {
             Primos -= 300
         };
@@ -213,15 +214,15 @@ function SavingsCalculator(WishConfig) {
 
     let WishesMade = Math.floor(Primos/160) + IntertwinedFates;
 
-    // Adds starglitter for four stars that were pulled. Assumes that we would earn one four star every ten wishes.
-    // For simplicity this won't account for whether the four stars have a rate up. Assumes 2 starglitter for four star.
-    // TODO: Shouldn't factor in missing four star characters beyond the maximum possible number of character wishes.
+    // Adds starglitter for four-stars that were pulled. Assumes that we would earn one four-star every ten wishes.
+    // For simplicity this won't account for whether the four-stars have a rate up. Assumes 2 starglitter for four-star.
+    // TODO: Shouldn't factor in missing four-star characters beyond the maximum possible number of character wishes.
     if (WishConfig.UsingStarglitter) {
         let FourStars = Math.floor(WishesMade/10);
         let FourStarPity = WishesMade % 10;
 
-        // Won't get starglitter for newly acquired four stars. Adds up the number of currently missing four stars plus those that may be added in future patches. 
-        // Assumes that one will be added per patch to err on the side of caution, although this often won't be the case.
+        // Won't get starglitter for newly acquired four-stars. Adds up the number of currently missing four-stars plus those that may be added in future patches. 
+        // Assumes that one four-star will be added per patch, to err on the side of caution, although this often won't be the case.
         Starglitter += Math.max(0, 2 * (FourStars - (WishConfig.MissingFourStarCharacters + TargetBannerInfo.PatchDiff)));
 
         let AdditionalWishesMade;
@@ -231,7 +232,7 @@ function SavingsCalculator(WishConfig) {
             Starglitter %= 5;
             AdditionalFourStars = Math.floor((AdditionalWishesMade + FourStarPity)/10);
             FourStarPity = (AdditionalWishesMade + FourStarPity) % 10;
-            Starglitter += 2 * AdditionalFourStars; // Missing four stars don't factor in here since this code wouldn't run if we were still missing any.
+            Starglitter += 2 * AdditionalFourStars; // Missing four-stars don't factor in here since this code block wouldn't run if we were still missing any at this point.
 
             WishesMade += AdditionalWishesMade;
         };
@@ -242,20 +243,23 @@ function SavingsCalculator(WishConfig) {
 
 // Declaring variables outside the function scope so they can be used by both NumericWishCalculations and the wish sim functions.
 let Wishes;
-let LostCharacter5050s; // A "50:50" is the unofficial term for when you pull a five star without having a 100% chance of getting the desired five star.
-let CapturingRadiancePity; // Explained in a tool tip on the calculator's site.
+let LostCharacter5050s; // When pulling on the character banner, if you get a five-star without an event item guarantee, you will have a 50:50 chance for it to be your desired five-star.
+let CapturingRadiancePity; // Explained in a tool tip.
 
-// Pity: Builds up as you wish for an item and increases your chance of success after reaching a certain amount. Resets when you get a five star.
-// Guarantee: Chance of getting an event item.
-// Rate: Current chance of success for an individual pull.
-// Fate points: Builds when you get a five star other than the one you wanted. Will guarantee you get the one you want once it reaches a certain amount. Resets when you get the one you want.
+// Pity: Builds up as you make wishes and once it reaches a certain amount it will increase your chances of getting a five-star. Once you get a five-star it will reset to 0.
+
+// Rate: Chance of getting a five-star on the next pull.
+
+// Fate points: You will get one fate point everytime you pull a five-star that isn't your current target. 
+// Once you reach the maximum amount of fate points, your next five-star is guaranteed to be your desired one.
+// Pulling your desired five-star will reset your fate points to 0.
 
 let CharacterPity;
-let CharacterGuarantee;
+let EventCharacterGuarantee;
 let CharacterRate;
 
 let WeaponPity;
-let WeaponGuarantee;
+let EventWeaponGuarantee;
 let WeaponFatePoints;
 let WeaponRate;
 
@@ -282,18 +286,18 @@ function NumericWishCalculations(WishConfig) {
         LostCharacter5050s = 0;
 
         CharacterPity = WishConfig.CharacterPity;
-        CharacterGuarantee = WishConfig.CharacterGuarantee;
-        CharacterRate = 0.006 + Math.max(0, .06*(CharacterPity-73));
+        EventCharacterGuarantee = WishConfig.EventCharacterGuarantee;
+        CharacterRate = BannerTypeDropdownOptions['CHARACTER'].BaseFiveStarRate + Math.max(0, BannerTypeDropdownOptions['CHARACTER'].SoftPityIncrement*(CharacterPity-BannerTypeDropdownOptions['CHARACTER'].SoftPityThreshold));
         CapturingRadiancePity = WishConfig.CapturingRadiancePity;
 
         WeaponPity = WishConfig.WeaponPity;
-        WeaponGuarantee = WishConfig.WeaponGuarantee;
+        EventWeaponGuarantee = WishConfig.EventWeaponGuarantee;
         WeaponFatePoints = WishConfig.WeaponFatePoints;
-        WeaponRate = 0.007 + Math.max(.07*(WeaponPity-61), 0);
+        WeaponRate = BannerTypeDropdownOptions['WEAPON'].BaseFiveStarRate + Math.max(0, BannerTypeDropdownOptions['WEAPON'].SoftPityIncrement*(WeaponPity-BannerTypeDropdownOptions['WEAPON'].SoftPityThreshold));
 
         ChronicledPity = WishConfig.ChronicledPity;
         ChronicledFatePoints = WishConfig.ChronicledFatePoints;
-        ChronicledRate = 0.006 + Math.max(0, .06*(ChronicledPity-73));
+        ChronicledRate = BannerTypeDropdownOptions['CHRONICLED_WISH'].BaseFiveStarRate + Math.max(0, BannerTypeDropdownOptions['CHRONICLED_WISH'].SoftPityIncrement*(ChronicledPity-BannerTypeDropdownOptions['CHRONICLED_WISH'].SoftPityThreshold));
 
         if (WishConfig.WishMode != WishModes.ADVANCED.value) {
             let CharactersWon = CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
@@ -369,35 +373,36 @@ function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
         Wishes++;
         CharacterPity++;
 
-        if (CharacterPity >= 74) {
-            CharacterRate += 0.06;
+        NonFiveStarChance *= (1 - CharacterRate);
+        
+        if (CharacterPity > BannerTypeDropdownOptions['CHARACTER'].SoftPityThreshold) {
+            CharacterRate += BannerTypeDropdownOptions['CHARACTER'].SoftPityIncrement;
         };
 
-        NonFiveStarChance *= (1 - CharacterRate);
 
         if (FiveStarChance > NonFiveStarChance) {
-            CharacterRate = 0.006;
+            CharacterRate = BannerTypeDropdownOptions['CHARACTER'].BaseFiveStarRate;
             CharacterPity = 0;
 
-            if (CharacterGuarantee || (Math.random() < CharacterFiveStarWinRates[ (WishConfig.EnableCapturingRadiance ? CapturingRadiancePity : 0) ])) {
-                if (!CharacterGuarantee) {
+            if (EventCharacterGuarantee || (Math.random() < CharacterFiveStarWinRates[ (WishConfig.EnableCapturingRadiance ? CapturingRadiancePity : 0) ])) {
+                if (!EventCharacterGuarantee) {
                     CapturingRadiancePity = 0;
                 };
 
                 Characters++;
-                CharacterGuarantee = 0;
+                EventCharacterGuarantee = 0;
 
                 if (Characters >= CharacterGoal) {
                     return true;
                 };
             }
             else {
-                CharacterGuarantee = 1;
+                EventCharacterGuarantee = 1;
                 LostCharacter5050s++;
                 CapturingRadiancePity++;
 
                 if (WishConfig.UsingStarglitter && (LostCharacter5050s > WishConfig.MissingStandardFiveStarCharacters)){
-                    Wishes -= 2 // You get enough starglitter from five star cons to make two additional wishes.
+                    Wishes -= 2 // You get enough starglitter from five-star cons to make two additional wishes.
                 };
             };
 
@@ -418,39 +423,40 @@ function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
         Wishes++;
         WeaponPity++;
 
-        if (WeaponPity >= 63) {
-            WeaponRate += 0.07;
+        NonFiveStarChance *= (1 - WeaponRate);
+        
+        if (WeaponPity > BannerTypeDropdownOptions['WEAPON'].SoftPityThreshold) {
+            WeaponRate += BannerTypeDropdownOptions['WEAPON'].SoftPityIncrement;
         };
 
-        NonFiveStarChance *= (1 - WeaponRate);
 
         if (FiveStarChance > NonFiveStarChance) {
-            WeaponRate = 0.007;
+            WeaponRate = BannerTypeDropdownOptions['WEAPON'].BaseFiveStarRate;
             WeaponPity = 0;
 
             if (WishConfig.UsingStarglitter) {
-                Wishes -= 2 // You get enough starglitter from five star weapons to make two additional wishes.
+                Wishes -= 2 // You get enough starglitter from five-star weapons to make two additional wishes.
             };
 
             let r = Math.random();
             // 1 fate point will get you your desired weapon, while having the guarantee will make it a 50:50 between your desired weapon and the other event weapon, while having neither will make it a 3/8 chance.
-            if (WeaponFatePoints === 1 || (WeaponGuarantee && r <= 0.5) || (r <= 0.375)) {
+            if (WeaponFatePoints === 1 || (EventWeaponGuarantee && r <= 0.5) || (r <= 0.375)) {
                 Weapons++;
-                WeaponGuarantee = 0;
+                EventWeaponGuarantee = 0;
                 WeaponFatePoints = 0;
 
                 if (Weapons >= WeaponGoal) {
                     return true;
                 };
             }
-            // If you got an event weapon, either through the guarantee or the 75% chance, but didn't get your desired weapon then you must have gotten the other event weapon.
-            else if (WeaponGuarantee || (r <= 0.75)) {
-                WeaponGuarantee = 0;
+            // If you got an event weapon, either through the guarantee or the 75% chance, but didn't get your desired weapon, then you must have gotten the other event weapon.
+            else if (EventWeaponGuarantee || (r <= 0.75)) {
+                EventWeaponGuarantee = 0;
                 WeaponFatePoints++;
             }
             // 25% chance to have gotten a standard banner weapon.
             else {
-                WeaponGuarantee = 1;
+                EventWeaponGuarantee = 1;
                 WeaponFatePoints++;
             };
 
@@ -471,14 +477,15 @@ function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
         Wishes++;
         ChronicledPity++;
 
-        if (ChronicledPity >= 74) {
-            ChronicledRate += 0.06;
+        NonFiveStarChance *= (1 - ChronicledRate);
+        
+        if (ChronicledPity > BannerTypeDropdownOptions['CHRONICLED_WISH'].SoftPityThreshold) {
+            ChronicledRate += BannerTypeDropdownOptions['CHRONICLED_WISH'].SoftPityIncrement;
         };
 
-        NonFiveStarChance *= (1 - ChronicledRate);
 
         if (FiveStarChance > NonFiveStarChance) {
-            ChronicledRate = 0.006;
+            ChronicledRate = BannerTypeDropdownOptions['CHRONICLED_WISH'].BaseFiveStarRate;
             ChronicledPity = 0;
 
             if (ChronicledFatePoints >= 1 || (Math.random() < 0.5)) {
@@ -507,7 +514,7 @@ function WishCalcs(WishConfig) {
         TargetBannerInfo = BannerInfo[WishConfig.BannerEnd];
 
         if (WishConfig.WishMode != WishModes.SIMPLE.value) {
-            // While the Banner End dropdown should prevent the user from selecting an end date that is in the past, we will leave it here for any edge cases that may occur.
+            // While the Banner End dropdown should prevent the user from selecting an end date that is in the past, we will leave this validation here for any edge cases that may occur.
             if (TargetBannerInfo.BannerEndDate < Today) {
                 $('#WishError').show().html('Banner has already ended.');
                 return {Success: false}
