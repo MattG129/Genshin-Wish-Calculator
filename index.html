@@ -202,22 +202,22 @@
                     <hr><h2>Currency</h2><br>
 
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="CurrencyTopRow">
                             <label for="Primos" class="form-label">Primogems</label><br>
                             <input type="number" id="Primos" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" Value="0"><br>
                         </div>
                     
-                        <div class="col-sm-3">
+                        <div class="CurrencyTopRow">
                             <label for="IntertwinedFates" class="form-label">Intertwined Fates</label><br>
                             <input type="number" id="IntertwinedFates" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
 
-                        <div class="col-sm-3">
+                        <div class="CurrencyTopRow">
                             <label for="GenesisCrystals" class="form-label">Genesis Crystals</label><br>
                             <input type="number" id="GenesisCrystals" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0"><br>
                         </div>
 
-                        <div class="col-sm-3 SimpleModeSkipGroup">
+                        <div class="CurrencyTopRow SimpleModeSkipGroup">
                             <label for="Stardust" class="form-label">Masterless Stardust</label>
                             <a data-toggle="tooltip"
                                 title="This will be used to calculate how many of the available <b>Intertwined Fates</b> you can purchase from the <b>Stardust Exchange</b> between now and the <b>Wishing End Date</b>. If left empty then the calculator will assume all available <b>Intertwined Fates</b> can be purchased. It is assumed that this month's <b>Intertwined Fates</b> have already been purchased."
@@ -788,12 +788,14 @@
             });
 
             $('#WishMode').on('change', function () {
+                $('.CurrencyTopRow').removeClass('col-sm-4').addClass('col-sm-3');
                 $('.SimpleModeSkipGroup').show();
                 $('.BasicWishPlanningSkipGroup').show();
                 $('#WishPlanningTable').hide();
 
                 if ($('#WishMode').val() == WishModes.SIMPLE.value) {
                     $('.SimpleModeSkipGroup').hide();
+                    $('.CurrencyTopRow').removeClass('col-sm-3').addClass('col-sm-4');
                 }
                 else if ($('#WishMode').val() == WishModes.ADVANCED.value) {
                     $('.BasicWishPlanningSkipGroup').hide();
