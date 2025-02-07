@@ -72,7 +72,7 @@
                 color: white;
             }
 
-            .TableInput {
+            .TableField {
                 border-color: black;
                 font-size: min(3vw, 16px);
             }
@@ -300,37 +300,37 @@
                             <tr class='BasicWishPlanningSkipGroup'>
                                 <td style="vertical-align: middle;"><b>Number of 5&#9733;s Wishing For</b></td>
                                 <td>
-                                    <input type="number" id="CharacterGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    <input type="number" id="CharacterGoal" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
                                 </td>
                                 <td>
-                                    <input type="number" id="WeaponGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    <input type="number" id="WeaponGoal" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
                                 </td>
                                 <td>
-                                    <input type="number" id="ChronicledGoal" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
+                                    <input type="number" id="ChronicledGoal" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="0" min="0" Value="0">
                                 </td>
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;"><b>Pity</b></td>
                                 <td>
-                                    <input type="number" id="CharacterPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
+                                    <input type="number" id="CharacterPity" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
                                 </td>
                                 <td>
-                                    <input type="number" id="WeaponPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
+                                    <input type="number" id="WeaponPity" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 79]" min="0" max="79" Value="0">
                                 </td>
                                 <td>
-                                    <input type="number" id="ChronicledPity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
+                                    <input type="number" id="ChronicledPity" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 89]" min="0" max="89" Value="0">
                                 </td>
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;"><b>Event 5&#9733; Guarantee</b></td>
                                 <td class="td-label">
                                     <label class="td-label">
-                                        <input type="checkbox" id="EventCharacterGuarantee" class="form-check-input TableInput align-middle">
+                                        <input type="checkbox" id="EventCharacterGuarantee" class="form-check-input TableField align-middle">
                                     </label>
                                 </td>
                                 <td class="td-label">
                                     <label class="td-label">
-                                        <input type="checkbox" id="EventWeaponGuarantee" class="form-check-input TableInput align-middle">
+                                        <input type="checkbox" id="EventWeaponGuarantee" class="form-check-input TableField align-middle">
                                     </label>
                                 </td>
                                 <td></td>
@@ -339,10 +339,10 @@
                                 <td style="vertical-align: middle;"><b>Fate Points</b></td>
                                 <td></td>
                                 <td>
-                                    <input type="number" id="WeaponFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                    <input type="number" id="WeaponFatePoints" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
                                 </td>
                                 <td>
-                                    <input type="number" id="ChronicledFatePoints" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
+                                    <input type="number" id="ChronicledFatePoints" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 1]" min="0" max="1" Value="0">
                                 </td>
                             </tr>
                             <tr>
@@ -365,13 +365,13 @@
                                     </a>
                                     <br>
                                     <div class="form-check form-check-inline form-switch">
-                                        <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableInput">
+                                        <input type="checkbox" id="EnableCapturingRadiance" class="form-check-input TableField">
                                         <label for="EnableCapturingRadiance" class="form-label">Enable</label>
                                     </div>
                                 </td>
                                 <td>
                                     <div id="CapturingRadiancePitySkipGroup"> <!-- Wrapping this in a div so parsley validations will also be hidden. -->
-                                        <input type="number" id="CapturingRadiancePity" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
+                                        <input type="number" id="CapturingRadiancePity" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0, 3]" min="0" max="3" Value="0">
                                     </div>
                                 </td>
                                 <td></td>
@@ -433,11 +433,11 @@
                                 `<tr id="WishPlanRow${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}">`+
                                     `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
                                     `<td>`+
-                                        `<input id="WishPlanItem${NewWishPlanRowID}" type="text" class="form-control TableInput" style="width: 100%;">`+
+                                        `<input id="WishPlanItem${NewWishPlanRowID}" type="text" class="form-control TableField" style="width: 100%;">`+
                                     `</td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableInput">`+ // TODO: See about generating this dynamically.
+                                            `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableField">`+ // TODO: See about generating this dynamically.
                                                 `<option value=${BannerTypes['Character'].value}>      ${BannerTypes['Character'].text}      </option>`+
                                                 `<option value=${BannerTypes['Weapon'].value}>         ${BannerTypes['Weapon'].text}         </option>`+
                                                 `<option value=${BannerTypes['ChronicledWish'].value}> ${BannerTypes['ChronicledWish'].text} </option>`+
@@ -446,17 +446,17 @@
                                     `</td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<select id="WishPlanBannerEnd${NewWishPlanRowID}" class="form-select TableInput WishPlanBannerEnd" style="max-width: 300px;"></select>`+
+                                            `<select id="WishPlanBannerEnd${NewWishPlanRowID}" class="form-select TableField WishPlanBannerEnd" style="max-width: 300px;"></select>`+
                                         `</center>`+
                                     `</td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableInput" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
+                                            `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
                                         `</center>`+
                                     `</td>`+
                                     `<td class="td-label">`+
                                         `<label class="td-label">`+
-                                            `<input id="WishPlanEnabled${NewWishPlanRowID}" type="checkbox" class="form-check-input TableInput align-middle" onchange="ToggleWishPlanRow(this); UpdateCalculateButton();" checked>`+
+                                            `<input id="WishPlanEnabled${NewWishPlanRowID}" type="checkbox" class="form-check-input TableField align-middle" onchange="ToggleWishPlanRow(this); UpdateCalculateButton();" checked>`+
                                         `</label>`+
                                     `</td>`+
                                     `<td>`+
