@@ -473,6 +473,8 @@
                             $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] .WishPlanBannerEnd`).html($('#BannerEnd').html());
                             $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).addClass('WishPlanField TableField');
 
+                            SetParsleyValidations();
+
                             NewWishPlanRowID++;
                         };
 
@@ -992,21 +994,25 @@
                 });
             });
 
-            $('input:not([type="checkbox"])').on('input', function(){
-                if (!$(this).parsley().isValid()) {
-                    $(this).css('background-color', '#E55451');
-                }
-                else{
-                    $(this).css('background-color', 'white');
-                };
-            });
-
-            $(document).ready(function(){
-                $('input, select').change().trigger('input');
+            function SetParsleyValidations() {
+                $('input:not([type="checkbox"])').on('input', function(){
+                    if (!$(this).parsley().isValid()) {
+                        $(this).css('background-color', '#E55451');
+                    }
+                    else{
+                        $(this).css('background-color', 'white');
+                    };
+                });
 
                 $('input:not([type="checkbox"])').each(function() {
                     $(this).parsley().validate();
                 });
+            };
+
+            $(function(){
+                SetParsleyValidations();
+
+                $('input, select').change().trigger('input');
             });
         </script>
     </body>
