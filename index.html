@@ -433,11 +433,11 @@
                                 `<tr id="WishPlanRow${NewWishPlanRowID}" data-wishplan-rowid="${NewWishPlanRowID}">`+
                                     `<td class="handle" style="vertical-align: middle;"><i class="bi bi-arrows-move" style="font-size: 20px"></i></td>`+
                                     `<td>`+
-                                        `<input id="WishPlanItem${NewWishPlanRowID}" type="text" class="form-control TableField" style="width: 100%;">`+
+                                        `<input type="text" class="WishPlanItem form-control" style="width: 100%;">`+
                                     `</td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<select id="WishPlanType${NewWishPlanRowID}" class="form-select TableField">`+ // TODO: See about generating this dynamically.
+                                            `<select class="WishPlanType form-select">`+ // TODO: See about generating this dynamically.
                                                 `<option value=${BannerTypes['Character'].value}>      ${BannerTypes['Character'].text}      </option>`+
                                                 `<option value=${BannerTypes['Weapon'].value}>         ${BannerTypes['Weapon'].text}         </option>`+
                                                 `<option value=${BannerTypes['ChronicledWish'].value}> ${BannerTypes['ChronicledWish'].text} </option>`+
@@ -446,17 +446,17 @@
                                     `</td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<select id="WishPlanBannerEnd${NewWishPlanRowID}" class="form-select TableField WishPlanBannerEnd" style="max-width: 300px;"></select>`+
+                                            `<select class="WishPlanBannerEnd form-select" style="max-width: 300px;"></select>`+
                                         `</center>`+
                                     `</td>`+
                                     `<td>`+
                                         `<center>`+
-                                            `<input id="WishPlanGoal${NewWishPlanRowID}" type="number" class="form-control TableField" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
+                                            `<input type="number" class="WishPlanGoal form-control" data-parsley-trigger="input" data-parsley-required="true" data-parsley-min="1" min="1" Value="1">`+
                                         `</center>`+
                                     `</td>`+
                                     `<td class="td-label">`+
                                         `<label class="td-label">`+
-                                            `<input id="WishPlanEnabled${NewWishPlanRowID}" type="checkbox" class="form-check-input TableField align-middle" onchange="ToggleWishPlanRow(this); UpdateCalculateButton();" checked>`+
+                                            `<input type="checkbox" class="WishPlanEnabled form-check-input align-middle" onchange="ToggleWishPlanRow(this, ${NewWishPlanRowID}); UpdateCalculateButton();" checked>`+
                                         `</label>`+
                                     `</td>`+
                                     `<td>`+
@@ -470,8 +470,8 @@
                             $('#WishPlanningTableBody').append(NewRow);
                             $('#WishPlanningTableBody').sortable("refresh");
 
-                            $(`#WishPlanBannerEnd${NewWishPlanRowID}`).html($('#BannerEnd').html());
-                            $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).attr('data-wishplan-rowid', NewWishPlanRowID)
+                            $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] .WishPlanBannerEnd`).html($('#BannerEnd').html());
+                            $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).addClass('WishPlanField TableField');
 
                             NewWishPlanRowID++;
                         };
@@ -697,7 +697,7 @@
             function getInvalidFields() {
                 let InvalidFields = [];
                 
-                $('input').each(function() {
+                $('input:not([type="checkbox"])').each(function() {
                     if (!$(this).parsley().isValid() && $(this).is(":visible")) {
                         InvalidFields.push($(this).attr('id'));
                     };
@@ -803,14 +803,12 @@
                 };
             });
 
-            function ToggleWishPlanRow(caller) {
-                let WishPlanRowID = $(caller).attr('data-wishplan-rowid');
-
+            function ToggleWishPlanRow(caller, WishPlanRowID) {
                 if ($(caller).is(':checked')) {
-                    $(`tr[data-wishplan-rowid=${WishPlanRowID}], input[data-wishplan-rowid=${WishPlanRowID}], select[data-wishplan-rowid=${WishPlanRowID}]`).removeClass('DisabledWishPlanRow');
+                    $(`tr[data-wishplan-rowid=${WishPlanRowID}], tr[data-wishplan-rowid=${WishPlanRowID}] input, tr[data-wishplan-rowid=${WishPlanRowID}] select`).removeClass('DisabledWishPlanRow');
                 }
                 else {
-                    $(`tr[data-wishplan-rowid=${WishPlanRowID}], input[data-wishplan-rowid=${WishPlanRowID}], select[data-wishplan-rowid=${WishPlanRowID}]`).addClass('DisabledWishPlanRow');
+                    $(`tr[data-wishplan-rowid=${WishPlanRowID}], tr[data-wishplan-rowid=${WishPlanRowID}] input, tr[data-wishplan-rowid=${WishPlanRowID}] select`).addClass('DisabledWishPlanRow');
                 };
             };
 
@@ -855,7 +853,7 @@
             function CompileForm(){
                 let FormValues = {};
 
-                $('#form input, #form select').each(function() {
+                $('#form input:not(.WishPlanField), #form select:not(.WishPlanField)').each(function() {
                     if ($(this).is(':checkbox')) {
                         FormValues[this.id] = $(this).is(':checked')
                     }
@@ -867,10 +865,15 @@
                     }
                 });
 
-                // TODO: Wish plan fields should not all be thrown into the wish config on their own but instead each row should be grouped into a struct. These structs should all be added to an array so we can hopefully get rid of wish plan mapping.
-                FormValues['wishPlanMapper'] = [];
-                $('#WishPlanningTable tr[data-wishplan-rowid]').each(function() {
-                    FormValues['wishPlanMapper'].push($(this).attr('data-wishplan-rowid'));
+                FormValues.WishPlanArray = [];
+                $('tr[data-wishplan-rowid]').each(function() {
+                    FormValues.WishPlanArray.push({
+                        WishPlanItem:             $(this).find('td .WishPlanItem').val(),
+                        WishPlanType:      Number($(this).find('td .WishPlanType').val()),
+                        WishPlanBannerEnd: Number($(this).find('td .WishPlanBannerEnd').val()),
+                        WishPlanGoal:      Number($(this).find('td .WishPlanGoal').val()),
+                        WishPlanEnabled:          $(this).find('td .WishPlanEnabled').is(':checked')
+                    });
                 });
 
                 return FormValues
@@ -884,12 +887,12 @@
                     JSONImport = JSON.parse($('#ImportState').val());
 
                     // Since some of the import code explicitly references the wish plan mapper it needs to be defined.
-                    if (JSONImport['wishPlanMapper'] == undefined) {
+                    if (JSONImport['WishPlanArray'] == undefined) {
                         isValidImport = false;
-                    }
+                    };
                 } catch (error) {
                     isValidImport = false;
-                }
+                };
 
                 if (!isValidImport) {
                     $('#InvalidImportMessage').show();
@@ -912,46 +915,40 @@
                         JSONImport['BannerEnd'] = CurrentBannerVal;
                     };
 
+                    $('#form input:not(.WishPlanField), #form select:not(.WishPlanField)').each(function() {
+                        if ($(this).is(':checkbox')) {
+                            $(this).prop('checked', JSONImport[this.id]);
+                        }
+                        else {
+                            $(this).val(JSONImport[this.id]);
+                        };
+                    });
+
                     // We will remove the existing wish planning rows to avoid any potential conflicts with the imported ones.
                     $('#WishPlanningTable tr[data-wishplan-rowid]').remove();
                     NewWishPlanRowID = 0;
 
-                    for(let i = 0; i < JSONImport['wishPlanMapper'].length; i++) AddWishPlanRow();
-
-                    $('#form input, #form select').each(function() {
-                        // Wish plan fields will need to have their import field's id mapped since the wish plan fields won't always be ordered numerically when the export is generated.
-                        let MappedImportKey;
-                        if ($(this).attr('data-wishplan-rowid') !== undefined) {
-                            WishPlanRowID = $(this).attr('data-wishplan-rowid');
-
-                            MappedImportKey = this.id.replace(WishPlanRowID, JSONImport['wishPlanMapper'][WishPlanRowID]);
-                        }
-                        else {
-                            MappedImportKey = this.id
-                        };
-                        
-                        if ($(this).is(':checkbox')) {
-                            $(this).prop('checked', JSONImport[MappedImportKey]);
-                        }
-                        else {
-                            $(this).val(JSONImport[MappedImportKey]);
-                        };
-                    });
-
                     let AnnounceExpiredWishPlanRows = false; // We will only set this to true when there are expired wish plan rows and advanced wish planning mode is activated.
-                    $(`.WishPlanBannerEnd`).each(function() {
-                        if ($(this).val() == null) {
-                            let WishPlanRowID = $(this).attr('data-wishplan-rowid');
+                    for (let i = 0; i < JSONImport.WishPlanArray.length; i++) {
+                        AddWishPlanRow();
 
-                            $(`#WishPlanEnabled${WishPlanRowID}`).prop('checked', false);
+                        $(`tr[data-wishplan-rowid=${i}] td .WishPlanItem`).val(JSONImport.WishPlanArray[i].WishPlanItem);
+                        $(`tr[data-wishplan-rowid=${i}] td .WishPlanType`).val(JSONImport.WishPlanArray[i].WishPlanType);
+                        $(`tr[data-wishplan-rowid=${i}] td .WishPlanGoal`).val(JSONImport.WishPlanArray[i].WishPlanGoal);
 
-                            $(this).val(CurrentBannerVal);
+                        if (JSONImport.WishPlanArray[i].WishPlanBannerEnd >= CurrentBannerVal) {
+                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanBannerEnd`).val(JSONImport.WishPlanArray[i].WishPlanBannerEnd);
+                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', JSONImport.WishPlanArray[i].WishPlanEnabled);
+                        }
+                        else {
+                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanBannerEnd`).val(CurrentBannerVal);
+                            $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
 
-                            if (JSONImport['WishMode'] == WishModes.ADVANCED.value) {
+                            if (JSONImport.WishMode == WishModes.ADVANCED.value) {
                                 AnnounceExpiredWishPlanRows = true;
-                            };
+                            }
                         };
-                    });
+                    };
                     
                     if (AnnounceExpiredWishPlanRows) {
                         swal({icon: 'info', text: 'Expired wish plan row(s) were detected in the import. These row(s) have been automatically set to inactive. All other information has been successfully imported.'});
@@ -1007,7 +1004,7 @@
             $(document).ready(function(){
                 $('input, select').change().trigger('input');
 
-                $('input').each(function() {
+                $('input:not([type="checkbox"])').each(function() {
                     $(this).parsley().validate();
                 });
             });

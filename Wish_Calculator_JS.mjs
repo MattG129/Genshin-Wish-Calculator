@@ -271,14 +271,7 @@ function NumericWishCalculations(WishConfig) {
     const Start = Date.now();
     let Successes = 0;
 
-    let wishPlanResults = {};
-    let ModifiedWishPlanMapper = [];
-    for (const i of WishConfig.wishPlanMapper) {
-        if (WishConfig[`WishPlanEnabled${i}`]) {
-            wishPlanResults[i] = 0;
-            ModifiedWishPlanMapper.push(i);
-        };
-    };
+    let WishPlanResults = new Array(WishConfig.EnabledWishPlanArray.length).fill(0);
 
     let TrialCount;
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
@@ -312,30 +305,30 @@ function NumericWishCalculations(WishConfig) {
         }
         else {
             let MissedFiveStars = false;
-            let WishGroupMaxWishes = WishConfig[`WishPlanMaxWishes${ModifiedWishPlanMapper[0]}`];
-            for (const i of ModifiedWishPlanMapper) {
-                if (WishGroupMaxWishes < WishConfig[`WishPlanMaxWishes${i}`]) {
-                    WishGroupMaxWishes = WishConfig[`WishPlanMaxWishes${i}`];
+            let WishGroupMaxWishes = WishConfig.EnabledWishPlanArray[0].WishPlanMaxWishes;
+            for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
+                if (WishGroupMaxWishes < WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes) {
+                    WishGroupMaxWishes = WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes;
                     
                     WeaponFatePoints = 0;
                     ChronicledFatePoints = 0;
                 };
 
                 let WishItemsWon;
-                switch (WishConfig[`WishPlanType${i}`]) {
+                switch (WishConfig.EnabledWishPlanArray[i].WishPlanType) {
                     case BannerTypes['Character'].value:
-                        WishItemsWon = CharacterWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishGroupMaxWishes);
+                        WishItemsWon = CharacterWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
                         break;
                     case BannerTypes['Weapon'].value: 
-                        WishItemsWon = WeaponWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishGroupMaxWishes);
+                        WishItemsWon = WeaponWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
                         break;
                     case BannerTypes['ChronicledWish'].value: 
-                        WishItemsWon = ChronicledWishSim(WishConfig, WishConfig[`WishPlanGoal${i}`], WishGroupMaxWishes);
+                        WishItemsWon = ChronicledWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
                         break;
                 };
 
                 if (WishItemsWon) {
-                    wishPlanResults[i]++;
+                    WishPlanResults[i]++;
                 }
                 else {
                     MissedFiveStars = true;
@@ -353,13 +346,13 @@ function NumericWishCalculations(WishConfig) {
         };
     };
 
-    for (const i of ModifiedWishPlanMapper) {
-        wishPlanResults[i] = ((wishPlanResults[i] / TrialCount)*100).toFixed(1)+'%';
+    for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
+        WishPlanResults[i] = ((WishPlanResults[i] / TrialCount)*100).toFixed(1)+'%';
     };
 
     return ({
         TotalSuccessRate: ((Successes / TrialCount)*100).toFixed(1)+'%', 
-        wishPlanResults: wishPlanResults
+        WishPlanResults: WishPlanResults
     });
 };
 
@@ -536,52 +529,52 @@ function WishCalcs(WishConfig) {
     else {
         let ixMaxWishes;
         let ixBannerEnd = -1;
-        for (const i of WishConfig.wishPlanMapper) {
-            if (WishConfig[`WishPlanEnabled${i}`]) {
-
-                if (WishConfig[`WishPlanBannerEnd${i}`] > ixBannerEnd) {
-                    ixBannerEnd = WishConfig[`WishPlanBannerEnd${i}`];
+        WishConfig.EnabledWishPlanArray = [];
+        for (let i = 0; i < WishConfig.WishPlanArray.length; i++) {
+            if (WishConfig.WishPlanArray[i].WishPlanEnabled) {
+                if (WishConfig.WishPlanArray[i].WishPlanBannerEnd > ixBannerEnd) {
+                    ixBannerEnd = WishConfig.WishPlanArray[i].WishPlanBannerEnd;
                     TargetBannerInfo = BannerInfo[ixBannerEnd];
 
-                    WishConfig[`WishPlanMaxWishes${i}`] = SavingsCalculator(WishConfig);
-                    ixMaxWishes = WishConfig[`WishPlanMaxWishes${i}`]
+                    WishConfig.WishPlanArray[i].WishPlanMaxWishes = SavingsCalculator(WishConfig);
+                    ixMaxWishes = WishConfig.WishPlanArray[i].WishPlanMaxWishes;
                 }
-                else if (WishConfig[`WishPlanBannerEnd${i}`] == ixBannerEnd) {
-                    WishConfig[`WishPlanMaxWishes${i}`] = ixMaxWishes
+                else if (WishConfig.WishPlanArray[i].WishPlanBannerEnd == ixBannerEnd) {
+                    WishConfig.WishPlanArray[i].WishPlanMaxWishes = ixMaxWishes
                 }
                 else {
                     $('#WishError').show().html('Banner end dates must be in ascending order.');
                     return {Success: false};
                 };
+
+                WishConfig.EnabledWishPlanArray.push(WishConfig.WishPlanArray[i]);
             };
         };
 
-        wishResults = NumericWishCalculations(WishConfig);
+        WishResults = NumericWishCalculations(WishConfig);
 
         $('#WishPlanningResultsTable .WishPlanResultsRow').remove();
 
-        for (const i of WishConfig.wishPlanMapper) {
-            if (WishConfig[`WishPlanEnabled${i}`]) {
-                let BannerEndVal = WishConfig[`WishPlanBannerEnd${i}`];
-                let BannerEndText = $(`#BannerEnd option[value=${BannerEndVal}]`).text();
+        for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
+            let BannerEndVal = WishConfig.EnabledWishPlanArray[i].WishPlanBannerEnd;
+            let BannerEndText = $(`#BannerEnd option[value=${BannerEndVal}]`).text();
 
-                let NewRow = $(
-                    `<tr class="WishPlanResultsRow">`+
-                        `<td>${WishConfig[`WishPlanItem${i}`]}</td>`+
-                        `<td>${BannerEndText}</td>`+
-                        `<td>${WishConfig[`WishPlanGoal${i}`]}</td>`+
-                        `<td>${WishConfig['WishPlanMaxWishes'+i]}</td>`+
-                        `<td>${wishResults.wishPlanResults[i]}</td>`+
-                    `</tr>`
-                );
+            let NewRow = $(
+                `<tr class="WishPlanResultsRow">`+
+                    `<td>${WishConfig.EnabledWishPlanArray[i].WishPlanItem}</td>`+
+                    `<td>${BannerEndText}</td>`+
+                    `<td>${WishConfig.EnabledWishPlanArray[i].WishPlanGoal}</td>`+
+                    `<td>${WishConfig.EnabledWishPlanArray[i].WishPlanMaxWishes}</td>`+
+                    `<td>${WishResults.WishPlanResults[i]}</td>`+
+                `</tr>`
+            );
 
-                $('#WishPlanningResultsBody').append(NewRow);
-            };
+            $('#WishPlanningResultsBody').append(NewRow);
         };
 
         $('#WishPlanningResultsTable tfoot').append($(
             `<tr class="WishPlanResultsRow">`+
-                `<td colspan="5"><b>Chance of reaching all wish goals: ${wishResults.TotalSuccessRate}</b></td>`+
+                `<td colspan="5"><b>Chance of reaching all wish goals: ${WishResults.TotalSuccessRate}</b></td>`+
             `</tr>`
         ));
 
