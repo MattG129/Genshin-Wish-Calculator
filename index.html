@@ -717,7 +717,7 @@
                     )
                     || (
                         $('#WishMode').val() == WishModes.ADVANCED.value
-                        && $('#WishPlanningTable tr[data-wishplan-rowid]:not(.DisabledWishPlanRow)').length > 0
+                        && $('tr[data-wishplan-rowid]:not(.DisabledWishPlanRow)').length > 0
                     )
                 ) {
                     $("#Calculate").html(CalculateText);
@@ -925,7 +925,7 @@
                     });
 
                     // We will remove the existing wish planning rows to avoid any potential conflicts with the imported ones.
-                    $('#WishPlanningTable tr[data-wishplan-rowid]').remove();
+                    $('tr[data-wishplan-rowid]').remove();
                     NewWishPlanRowID = 0;
 
                     let AnnounceExpiredWishPlanRows = false; // We will only set this to true when there are expired wish plan rows and advanced wish planning mode is activated.
