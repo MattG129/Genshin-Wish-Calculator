@@ -438,9 +438,9 @@
                                     `<td>`+
                                         `<center>`+
                                             `<select class="WishPlanType form-select">`+ // TODO: See about generating this dynamically.
-                                                `<option value=${BannerTypes['Character'].value}>      ${BannerTypes['Character'].text}      </option>`+
-                                                `<option value=${BannerTypes['Weapon'].value}>         ${BannerTypes['Weapon'].text}         </option>`+
-                                                `<option value=${BannerTypes['ChronicledWish'].value}> ${BannerTypes['ChronicledWish'].text} </option>`+
+                                                `<option value=${BannerTypes.Character.value}>      ${BannerTypes.Character.text}      </option>`+
+                                                `<option value=${BannerTypes.Weapon.value}>         ${BannerTypes.Weapon.text}         </option>`+
+                                                `<option value=${BannerTypes.ChronicledWish.value}> ${BannerTypes.ChronicledWish.text} </option>`+
                                             `</select>`+
                                         `</center>`+
                                     `</td>`+
@@ -889,7 +889,7 @@
                     JSONImport = JSON.parse($('#ImportState').val());
 
                     // Since some of the import code explicitly references the wish plan mapper it needs to be defined.
-                    if (JSONImport['WishPlanArray'] == undefined) {
+                    if (JSONImport.WishPlanArray == undefined) {
                         isValidImport = false;
                     };
                 } catch (error) {
@@ -902,19 +902,19 @@
                 else {
                     $('#InvalidImportMessage').hide();
 
-                    if (JSONImport['BannerEnd'] < CurrentBannerVal) {
-                        if (JSONImport['WishMode'] != WishModes.ADVANCED.value) {
+                    if (JSONImport.BannerEnd < CurrentBannerVal) {
+                        if (JSONImport.WishMode != WishModes.ADVANCED.value) {
                             swal({icon: 'info', text: 'Banner end date was not imported as it has already passed. All other fields have been successfully imported.'});
                         };
 
-                        JSONImport['BannerEnd'] = CurrentBannerVal;
+                        JSONImport.BannerEnd = CurrentBannerVal;
                     }
-                    else if (JSONImport['BannerEnd'] >= BannerInfo.length) {
-                        if (JSONImport['WishMode'] != WishModes.ADVANCED.value) {
+                    else if (JSONImport.BannerEnd >= BannerInfo.length) {
+                        if (JSONImport.WishMode != WishModes.ADVANCED.value) {
                             swal({icon: 'info', text: 'Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.'});
                         };
 
-                        JSONImport['BannerEnd'] = CurrentBannerVal;
+                        JSONImport.BannerEnd = CurrentBannerVal;
                     };
 
                     $('#form input:not(.WishPlanField), #form select:not(.WishPlanField)').each(function() {

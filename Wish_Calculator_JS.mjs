@@ -14,7 +14,7 @@ Today.setHours(0,0,0,0);
 const BannerTypes = {
     Character:       {value: 1, text: 'Character',       BaseFiveStarRate: 0.006, SoftPityIncrement: 0.06, SoftPityThreshold: 72},
     Weapon:          {value: 2, text: 'Weapon',          BaseFiveStarRate: 0.007, SoftPityIncrement: 0.07, SoftPityThreshold: 61},
-    ChronicledWish: {value: 3, text: 'Chronicled Wish', BaseFiveStarRate: 0.006, SoftPityIncrement: 0.06, SoftPityThreshold: 72}
+    ChronicledWish:  {value: 3, text: 'Chronicled Wish', BaseFiveStarRate: 0.006, SoftPityIncrement: 0.06, SoftPityThreshold: 72}
 };
 
 function DateAdd(date, days) {
@@ -280,17 +280,17 @@ function NumericWishCalculations(WishConfig) {
 
         CharacterPity = WishConfig.CharacterPity;
         EventCharacterGuarantee = WishConfig.EventCharacterGuarantee;
-        CharacterRate = BannerTypes['Character'].BaseFiveStarRate + Math.max(0, BannerTypes['Character'].SoftPityIncrement*(CharacterPity-BannerTypes['Character'].SoftPityThreshold));
+        CharacterRate = BannerTypes.Character.BaseFiveStarRate + Math.max(0, BannerTypes.Character.SoftPityIncrement*(CharacterPity-BannerTypes.Character.SoftPityThreshold));
         CapturingRadiancePity = WishConfig.CapturingRadiancePity;
 
         WeaponPity = WishConfig.WeaponPity;
         EventWeaponGuarantee = WishConfig.EventWeaponGuarantee;
         WeaponFatePoints = WishConfig.WeaponFatePoints;
-        WeaponRate = BannerTypes['Weapon'].BaseFiveStarRate + Math.max(0, BannerTypes['Weapon'].SoftPityIncrement*(WeaponPity-BannerTypes['Weapon'].SoftPityThreshold));
+        WeaponRate = BannerTypes.Weapon.BaseFiveStarRate + Math.max(0, BannerTypes.Weapon.SoftPityIncrement*(WeaponPity-BannerTypes.Weapon.SoftPityThreshold));
 
         ChronicledPity = WishConfig.ChronicledPity;
         ChronicledFatePoints = WishConfig.ChronicledFatePoints;
-        ChronicledRate = BannerTypes['ChronicledWish'].BaseFiveStarRate + Math.max(0, BannerTypes['ChronicledWish'].SoftPityIncrement*(ChronicledPity-BannerTypes['ChronicledWish'].SoftPityThreshold));
+        ChronicledRate = BannerTypes.ChronicledWish.BaseFiveStarRate + Math.max(0, BannerTypes.ChronicledWish.SoftPityIncrement*(ChronicledPity-BannerTypes.ChronicledWish.SoftPityThreshold));
 
         if (WishConfig.WishMode != WishModes.ADVANCED.value) {
             let CharactersWon = CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
@@ -316,13 +316,13 @@ function NumericWishCalculations(WishConfig) {
 
                 let WishItemsWon;
                 switch (WishConfig.EnabledWishPlanArray[i].WishPlanType) {
-                    case BannerTypes['Character'].value:
+                    case BannerTypes.Character.value:
                         WishItemsWon = CharacterWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
                         break;
-                    case BannerTypes['Weapon'].value: 
+                    case BannerTypes.Weapon.value: 
                         WishItemsWon = WeaponWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
                         break;
-                    case BannerTypes['ChronicledWish'].value: 
+                    case BannerTypes.ChronicledWish.value: 
                         WishItemsWon = ChronicledWishSim(WishConfig, WishConfig.EnabledWishPlanArray[i].WishPlanGoal, WishGroupMaxWishes);
                         break;
                 };
@@ -368,13 +368,13 @@ function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
 
         NonFiveStarChance *= (1 - CharacterRate);
         
-        if (CharacterPity > BannerTypes['Character'].SoftPityThreshold) {
-            CharacterRate += BannerTypes['Character'].SoftPityIncrement;
+        if (CharacterPity > BannerTypes.Character.SoftPityThreshold) {
+            CharacterRate += BannerTypes.Character.SoftPityIncrement;
         };
 
 
         if (FiveStarChance > NonFiveStarChance) {
-            CharacterRate = BannerTypes['Character'].BaseFiveStarRate;
+            CharacterRate = BannerTypes.Character.BaseFiveStarRate;
             CharacterPity = 0;
 
             if (EventCharacterGuarantee || (Math.random() < CharacterFiveStarWinRates[ (WishConfig.EnableCapturingRadiance ? CapturingRadiancePity : 0) ])) {
@@ -418,13 +418,13 @@ function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
 
         NonFiveStarChance *= (1 - WeaponRate);
         
-        if (WeaponPity > BannerTypes['Weapon'].SoftPityThreshold) {
-            WeaponRate += BannerTypes['Weapon'].SoftPityIncrement;
+        if (WeaponPity > BannerTypes.Weapon.SoftPityThreshold) {
+            WeaponRate += BannerTypes.Weapon.SoftPityIncrement;
         };
 
 
         if (FiveStarChance > NonFiveStarChance) {
-            WeaponRate = BannerTypes['Weapon'].BaseFiveStarRate;
+            WeaponRate = BannerTypes.Weapon.BaseFiveStarRate;
             WeaponPity = 0;
 
             if (WishConfig.UsingStarglitter) {
@@ -472,13 +472,13 @@ function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
 
         NonFiveStarChance *= (1 - ChronicledRate);
         
-        if (ChronicledPity > BannerTypes['ChronicledWish'].SoftPityThreshold) {
-            ChronicledRate += BannerTypes['ChronicledWish'].SoftPityIncrement;
+        if (ChronicledPity > BannerTypes.ChronicledWish.SoftPityThreshold) {
+            ChronicledRate += BannerTypes.ChronicledWish.SoftPityIncrement;
         };
 
 
         if (FiveStarChance > NonFiveStarChance) {
-            ChronicledRate = BannerTypes['ChronicledWish'].BaseFiveStarRate;
+            ChronicledRate = BannerTypes.ChronicledWish.BaseFiveStarRate;
             ChronicledPity = 0;
 
             if (ChronicledFatePoints >= 1 || (Math.random() < 0.5)) {
