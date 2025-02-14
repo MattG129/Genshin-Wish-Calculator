@@ -1014,6 +1014,18 @@
                 SetParsleyValidations();
 
                 $('input, select').change().trigger('input');
+
+                let Unsaved = false;
+                
+                $("input, select").on('change', function() {
+                    Unsaved = true;
+                });
+
+                window.onbeforeunload = function() {
+                    if(Unsaved){
+                        return "You have unsaved changes on this page. If you wish to save your changes, then please export them before leaving this page.";
+                    };
+                };
             });
         </script>
     </body>
