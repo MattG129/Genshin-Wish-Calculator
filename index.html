@@ -779,7 +779,7 @@
 
             $('#SecondaryEventsCompletable').on('change', function() {
                 let SecondaryEventsMax;
-                if (BannerInfo[CurrentBannerVal].Phase == 1) {
+                if (BannerInfo[CurrentBannerVal].Phase == 1 && $('#SecondaryEventsCompletable').parsley().isValid()) {
                     SecondaryEventsMax = $('#SecondaryEventsCompletable').val();
                 }
                 else {
