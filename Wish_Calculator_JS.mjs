@@ -362,6 +362,10 @@ function NumericWishCalculations(WishConfig) {
 function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
     let Characters = 0;
 
+    if (Characters >= CharacterGoal) {
+        return true;
+    };
+
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
     const CharacterFiveStarWinRates = [0.5, 0.525, 0.75, 1];
@@ -412,6 +416,10 @@ function CharacterWishSim(WishConfig, CharacterGoal, MaxWishes) {
 
 function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
     let Weapons = 0;
+
+    if (Weapons >= WeaponGoal) {
+        return true;
+    };
 
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
@@ -466,6 +474,10 @@ function WeaponWishSim(WishConfig, WeaponGoal, MaxWishes) {
 
 function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
     let ChronicledItems = 0;
+
+    if (ChronicledItems >= ChronicledGoal) {
+        return true;
+    };
 
     let FiveStarChance = Math.random();
     let NonFiveStarChance = 1;
