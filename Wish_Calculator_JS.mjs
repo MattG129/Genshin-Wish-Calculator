@@ -71,7 +71,7 @@ function SavingsCalculator(WishConfig) {
     // Genesis Crystals are a paid currency that can be converted to Primogems at a 1:1 rate.
     let Primos = WishConfig.Primos + WishConfig.GenesisCrystals;
 
-    if(WishConfig.WishMode != WishModes.SIMPLE.value) {
+    if(WishConfig.WishMode != WishModes.Simple.value) {
         // 40 primos from character trials, every banner. Assumes that this banner's trial primos have already been claimed.
         Primos += 40*(TargetBannerInfo.PhaseDiff);
         
@@ -181,7 +181,7 @@ function SavingsCalculator(WishConfig) {
         Starglitter = WishConfig.Starglitter % 5;
     }
     
-    if (WishConfig.WishMode != WishModes.SIMPLE.value) {
+    if (WishConfig.WishMode != WishModes.Simple.value) {
         // Up to five Intertwined Fates can be purchased every month from the Stardust Exchange.
         // Assumes that the current month's supply has already been purchased.
         // If the Stardust field is left empty then it will be assumed that all available Intertwined Fates can be purchased.
@@ -272,7 +272,7 @@ function NumericWishCalculations(WishConfig) {
     let Successes = 0;
 
     let WishPlanResults = [];
-    if (WishConfig.WishMode == WishModes.ADVANCED.value) {
+    if (WishConfig.WishMode == WishModes.Advanced.value) {
         WishPlanResults = new Array(WishConfig.EnabledWishPlanArray.length).fill(0);
     };
 
@@ -295,7 +295,7 @@ function NumericWishCalculations(WishConfig) {
         ChronicledFatePoints = WishConfig.ChronicledFatePoints;
         ChronicledRate = BannerTypes.ChronicledWish.BaseFiveStarRate + Math.max(0, BannerTypes.ChronicledWish.SoftPityIncrement*(ChronicledPity-BannerTypes.ChronicledWish.SoftPityThreshold));
 
-        if (WishConfig.WishMode != WishModes.ADVANCED.value) {
+        if (WishConfig.WishMode != WishModes.Advanced.value) {
             let CharactersWon = CharacterWishSim(WishConfig, WishConfig.CharacterGoal, WishConfig.MaxWishes);
 
             let WeaponsWon = WeaponWishSim(WishConfig, WishConfig.WeaponGoal, WishConfig.MaxWishes);
@@ -517,11 +517,11 @@ function ChronicledWishSim(WishConfig, ChronicledGoal, MaxWishes) {
 };
 
 function WishCalcs(WishConfig) {
-    if (WishConfig.WishMode != WishModes.ADVANCED.value) {
+    if (WishConfig.WishMode != WishModes.Advanced.value) {
         
         TargetBannerInfo = BannerInfo[WishConfig.BannerEnd];
 
-        if (WishConfig.WishMode != WishModes.SIMPLE.value) {
+        if (WishConfig.WishMode != WishModes.Simple.value) {
             // While the Banner End dropdown should prevent the user from selecting an end date that is in the past, we will leave this validation here for any edge cases that may occur.
             if (TargetBannerInfo.BannerEndDate < Today) {
                 $('#WishError').show().html('Banner has already ended.');

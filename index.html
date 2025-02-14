@@ -26,9 +26,9 @@
             let NewWishPlanRowID; // Initializing here so it can be used throughout the whole code and kept consistent.
 
             const WishModes = {
-                'SIMPLE':   {value: 1, text: 'Simple'},
-                'NORMAL':   {value: 2, text: 'Normal'},
-                'ADVANCED': {value: 3, text: 'Advanced'}
+                'Simple':   {value: 1, text: 'Simple'},
+                'Normal':   {value: 2, text: 'Normal'},
+                'Advanced': {value: 3, text: 'Advanced'}
             };
         </script>
     </head>
@@ -184,7 +184,7 @@
                         for (const [Key, Mode] of Object.entries(WishModes)) {
                             $('#WishMode').append($('<option>', Mode));
                         };
-                        $(`#WishMode option[value=${WishModes.ADVANCED.value}]`).prop('selected', true); // We want advanced to be selected by default but also be the last option.
+                        $(`#WishMode option[value=${WishModes.Advanced.value}]`).prop('selected', true); // We want advanced to be selected by default but also be the last option.
                     </script>
                     <br>
 
@@ -715,11 +715,11 @@
 
                 if ( 
                     (
-                        $('#WishMode').val() != WishModes.ADVANCED.value
+                        $('#WishMode').val() != WishModes.Advanced.value
                         && ($('#CharacterGoal').val() > 0 || $('#WeaponGoal').val() > 0 || $('#ChronicledGoal').val() > 0)
                     )
                     || (
-                        $('#WishMode').val() == WishModes.ADVANCED.value
+                        $('#WishMode').val() == WishModes.Advanced.value
                         && $('tr[data-wishplan-rowid]:not(.DisabledWishPlanRow)').length > 0
                     )
                 ) {
@@ -796,11 +796,11 @@
                 $('.BasicWishPlanningSkipGroup').show();
                 $('#WishPlanningTable').hide();
 
-                if ($('#WishMode').val() == WishModes.SIMPLE.value) {
+                if ($('#WishMode').val() == WishModes.Simple.value) {
                     $('.SimpleModeSkipGroup').hide();
                     $('.CurrencyTopRow').removeClass('col-sm-3').addClass('col-sm-4');
                 }
-                else if ($('#WishMode').val() == WishModes.ADVANCED.value) {
+                else if ($('#WishMode').val() == WishModes.Advanced.value) {
                     $('.BasicWishPlanningSkipGroup').hide();
                     $('#WishPlanningTable').show();
                 };
@@ -816,7 +816,7 @@
             };
 
             $('#EnableEventCalcs').on('change', function () {
-                if ($('#EnableEventCalcs').is(':checked') && $('#WishMode').val() != WishModes.SIMPLE.value) {
+                if ($('#EnableEventCalcs').is(':checked') && $('#WishMode').val() != WishModes.Simple.value) {
                     $('#EventCalcs').show();
                 }
                 else {
@@ -904,14 +904,14 @@
                     $('#InvalidImportMessage').hide();
 
                     if (JSONImport.BannerEnd < CurrentBannerVal) {
-                        if (JSONImport.WishMode != WishModes.ADVANCED.value) {
+                        if (JSONImport.WishMode != WishModes.Advanced.value) {
                             swal({icon: 'info', text: 'Banner end date was not imported as it has already passed. All other fields have been successfully imported.'});
                         };
 
                         JSONImport.BannerEnd = CurrentBannerVal;
                     }
                     else if (JSONImport.BannerEnd >= BannerInfo.length) {
-                        if (JSONImport.WishMode != WishModes.ADVANCED.value) {
+                        if (JSONImport.WishMode != WishModes.Advanced.value) {
                             swal({icon: 'info', text: 'Banner end date was not imported as it is too far in the future. All other fields have been successfully imported.'});
                         };
 
@@ -947,7 +947,7 @@
                             $(`tr[data-wishplan-rowid=${i}] td .WishPlanBannerEnd`).val(CurrentBannerVal);
                             $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
 
-                            if (JSONImport.WishMode == WishModes.ADVANCED.value) {
+                            if (JSONImport.WishMode == WishModes.Advanced.value) {
                                 AnnounceExpiredWishPlanRows = true;
                             }
                         };
