@@ -271,7 +271,10 @@ function NumericWishCalculations(WishConfig) {
     const Start = Date.now();
     let Successes = 0;
 
-    let WishPlanResults = new Array(WishConfig.EnabledWishPlanArray.length).fill(0);
+    let WishPlanResults = [];
+    if (WishConfig.WishMode == WishModes.ADVANCED.value) {
+        WishPlanResults = new Array(WishConfig.EnabledWishPlanArray.length).fill(0);
+    };
 
     let TrialCount;
     for (TrialCount = 0; TrialCount < Trials; TrialCount++) {
@@ -346,7 +349,7 @@ function NumericWishCalculations(WishConfig) {
         };
     };
 
-    for (let i = 0; i < WishConfig.EnabledWishPlanArray.length; i++) {
+    for (let i = 0; i < WishPlanResults.length; i++) {
         WishPlanResults[i] = ((WishPlanResults[i] / TrialCount)*100).toFixed(1)+'%';
     };
 
