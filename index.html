@@ -816,7 +816,7 @@
             };
 
             $('#EnableEventCalcs').on('change', function () {
-                if ($('#EnableEventCalcs').is(':checked') && !$('#SimpleMode').is(':checked')) {
+                if ($('#EnableEventCalcs').is(':checked') && $('#WishMode').val() != WishModes.SIMPLE.value) {
                     $('#EventCalcs').show();
                 }
                 else {
