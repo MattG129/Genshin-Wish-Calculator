@@ -931,7 +931,7 @@
                     $('tr[data-wishplan-rowid]').remove();
                     NewWishPlanRowID = 0;
 
-                    let AnnounceExpiredWishPlanRows = false; // We will only set this to true when there are expired wish plan rows and advanced wish planning mode is activated.
+                    let AnnounceExpiredWishPlanRows = false; // We will only set this to true when there are active expired wish plan rows and advanced wish planning mode is activated.
                     for (let i = 0; i < JSONImport.WishPlanArray.length; i++) {
                         AddWishPlanRow();
 
@@ -947,9 +947,9 @@
                             $(`tr[data-wishplan-rowid=${i}] td .WishPlanBannerEnd`).val(CurrentBannerVal);
                             $(`tr[data-wishplan-rowid=${i}] td .WishPlanEnabled`).prop('checked', false);
 
-                            if (JSONImport.WishMode == WishModes.Advanced.value) {
+                            if (JSONImport.WishMode == WishModes.Advanced.value && JSONImport.WishPlanArray[i].WishPlanEnabled) {
                                 AnnounceExpiredWishPlanRows = true;
-                            }
+                            };
                         };
                     };
                     
