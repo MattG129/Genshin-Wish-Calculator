@@ -141,17 +141,17 @@ function SavingsCalculator(WishConfig) {
             Primos -= WishConfig.FlagshipEventCompleted ? 900 : 0;
             Primos -= 420*WishConfig.SecondaryEventsCompleted;
 
-            // Subtracts unclaimable event primos.
-            if (TargetBannerInfo.Phase != 2) { // All events will be completable if the banner ends in the second half.
-                // User's should only know the events schedule as far out as the end of the next banner. 
-                // For phase 1 banners farther out than that we will assume that only one secondary event can be completed and the flagship event cannot be completed.
-                if (TargetBannerInfo.PhaseDiff > 1) {
-                    Primos -= 900;
-                    Primos -= 2*420;
-                }
-                else {
+            // Subtracts unclaimable event primos as not all events will be completable in the first half.
+            if (TargetBannerInfo.Phase == 1) { 
+                // If the target banner is the current patch's phase 1, then the user can specify which events can be completed.
+                if (TargetBannerInfo.PatchDiff == 0) {
                     Primos -= WishConfig.FlagshipEventCompletable ? 0 : 900;
                     Primos -= 420*(3-WishConfig.SecondaryEventsCompletable);
+                }
+                // If the target banner is any farther out, then we will assume that the flagship event is not completable and only one secondary event is completable.
+                else {
+                    Primos -= 900;
+                    Primos -= 2*420;
                 };
             };
         

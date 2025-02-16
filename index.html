@@ -596,21 +596,21 @@
 
                         <div class="row">
                             <div class="col-sm-3"></div>
-                            <div class="col-sm-3">
-                                <label for="SecondaryEventsCompletable" class="form-label"><!-- Text generated below. --></label>
+                            <div class="col-sm-3 SecondaryEventsCompletableSkipGroup">
+                                <label for="SecondaryEventsCompletable" class="form-label">Secondary Events Completable in First Half</label>
                                 <input type="number" id="SecondaryEventsCompletable" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
                             </div>
-                            <div class="col-sm-3">
-                                <label for="SecondaryEventsCompleted" class="form-label">Current Patch's Secondary Events Completed</label>
+                            <div class="col-sm-3 SecondaryEventsCompletedCtrlGroup">
+                                <label for="SecondaryEventsCompleted" class="form-label">Secondary Events Completed</label>
                                 <input type="number" id="SecondaryEventsCompleted" class="form-control" style="max-width: 300px;" data-parsley-trigger="input" data-parsley-required="true" data-parsley-range="[0,3]" min="0" max="3" Value="0">
                             </div>
                             <div class="col-sm-3"></div>
                         </div>
                         <br>
 
-                        <div class="form-check form-check-inline">
+                        <div class="form-check form-check-inline FlagshipEventCompletableSkipGroup">
                             <input type="checkbox" id="FlagshipEventCompletable" class="form-check-input">
-                            <label for="FlagshipEventCompletable" class="form-label"><!-- Text generated below. --></label>
+                            <label for="FlagshipEventCompletable" class="form-label">Flagship Event Completable in First Half</label>
                             <a data-toggle="tooltip"
                                 title="The calculator will assume this is false, and the secondary events completable is 1, for any patches after this one."
                             >
@@ -619,22 +619,9 @@
                         </div>
                         <div class="form-check form-check-inline">
                             <input type="checkbox" id="FlagshipEventCompleted" class="form-check-input">
-                            <label for="FlagshipEventCompleted" class="form-label">Current Patch's Flagship Event Completed</label>
+                            <label for="FlagshipEventCompleted" class="form-label">Flagship Event Completed</label>
                         </div>
                         <br><br>
-
-                        <script type="text/javascript">
-                            $(function() {
-                                for (let i = CurrentBannerVal; i < BannerInfo.length; i++) {
-                                    if (BannerInfo[i].Phase == 1) { // We want to use the nearest phase 1 as we assume that user's won't know this information for any further out than that.
-                                        let NearestPhase1 = BannerInfo[i];
-                                        $("label[for='FlagshipEventCompletable']").html(`${NearestPhase1.Patch} Flagship Event Completable by first half.`);
-                                        $("label[for='SecondaryEventsCompletable']").html(`${NearestPhase1.Patch} Secondary Events Completable by first half.`);
-                                        break;
-                                    };
-                                };
-                            });
-                        </script>
 
                         <div class="form-check form-check-inline">
                             <input type="checkbox" id="UsingHoyoLabCheckin" class="form-check-input">
@@ -764,6 +751,14 @@
                         $("#Calculate").show();
                     }, 500);
                 };
+            });
+
+            $(function() { // All events will be completable by the second half of the patch.
+                if (BannerInfo[CurrentBannerVal].Phase == 2) {
+                    $('.FlagshipEventCompletableSkipGroup').hide();
+                    $('.SecondaryEventsCompletableSkipGroup').hide();
+                    $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-3').addClass('col-sm-6');
+                }
             });
 
             $('#FlagshipEventCompletable').on('change', function () {
