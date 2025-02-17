@@ -590,7 +590,7 @@
                         </div>
                     </div>
 
-                    <div id="EventCalcs" class="SimpleModeSkipGroup">
+                    <div id="EventCalcs">
                         <hr><h2>Events</h2><br>
 
                         <div class="row">
@@ -809,7 +809,7 @@
                 };
             };
 
-            $('#EnableEventCalcs').on('change', function () {
+            $('#EnableEventCalcs, #WishMode').on('change', function () {
                 if ($('#EnableEventCalcs').is(':checked') && $('#WishMode').val() != WishModes.Simple.value) {
                     $('#EventCalcs').show();
                 }
