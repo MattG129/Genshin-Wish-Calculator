@@ -852,14 +852,11 @@
 
                 $('#form input:not(.WishPlanField), #form select:not(.WishPlanField)').each(function() {
                     if ($(this).is(':checkbox')) {
-                        FormValues[this.id] = $(this).is(':checked')
-                    }
-                    else if ($(this).is(':text')) {
-                        FormValues[this.id] = $(this).val();
+                        FormValues[this.id] = $(this).is(':checked');
                     }
                     else {
                         FormValues[this.id] = this.value == '' ? '' : Number(this.value);
-                    }
+                    };
                 });
 
                 FormValues.WishPlanArray = [];
