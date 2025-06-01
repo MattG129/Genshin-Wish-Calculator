@@ -148,13 +148,13 @@
                                     <textarea id="ImportState" class="form-control" style="border-color: black;" rows="5"></textarea><br>
                                     <p id="InvalidImportMessage" style="color: red; display: none;">Invalid Import.</p>
                                     
-                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=false);">
+                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=false, ImportState=$('#ImportState').val());">
                                         Import
                                     </a>
                                     <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Export();">
                                         Export
                                     </a>
-                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=true);">
+                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=true, ImportState=$('#ImportState').val());">
                                         Import and Run
                                     </a>
                                     <br>
@@ -873,12 +873,12 @@
                 return FormValues
             };
 
-            function Import(RunCalcs) {
+            function Import(RunCalcs, ImportState) {
                 let isValidImport = true;
                 let JSONImport;
 
                 try {
-                    JSONImport = JSON.parse($('#ImportState').val());
+                    JSONImport = JSON.parse(ImportState);
 
                     // Since some of the import code explicitly references the wish plan mapper it needs to be defined.
                     if (JSONImport.WishPlanArray == undefined) {
@@ -962,6 +962,13 @@
                 };
             };
 
+            let SessionState = localStorage.getItem("SessionState");
+            $(function() {
+                if (SessionState != null) {
+                    Import(RunCalcs=false, ImportState=SessionState);
+                };
+            });
+
             function Export(){
                 if (getInvalidFields().length != 0) {
                     swal({icon: 'error', text: 'Invalid information detected. Cannot generate export.'});
@@ -1013,6 +1020,8 @@
                 });
 
                 window.onbeforeunload = function() {
+                    localStorage.setItem("SessionState", JSON.stringify(CompileForm()));
+
                     if(Unsaved){
                         return "You have unsaved changes on this page. If you wish to save your changes, then please export them before leaving this page.";
                     };
