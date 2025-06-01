@@ -196,6 +196,12 @@
                             <i class="bi bi-question-circle"></i>
                         </a>
                     </div>
+                    <br>
+
+                    <div class="form-check form-check-inline form-switch">
+                        <input type="checkbox" id="DisableUnsavedChangesWarning" class="form-check-input">
+                        <label for="DisableUnsavedChangesWarning" class="form-label">Disable unsaved changes warning</label>
+                    </div>
 
                     <a id="CalculatorHeaderAnchor"></a>
 
@@ -1022,7 +1028,7 @@
                 window.onbeforeunload = function() {
                     localStorage.setItem("SessionState", JSON.stringify(CompileForm()));
 
-                    if(Unsaved){
+                    if (Unsaved && !$('#DisableUnsavedChangesWarning').is(':checked')) {
                         return "You have unsaved changes on this page. If you wish to save your changes, then please export them before leaving this page.";
                     };
                 };
