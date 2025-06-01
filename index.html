@@ -148,13 +148,13 @@
                                     <textarea id="ImportState" class="form-control" style="border-color: black;" rows="5"></textarea><br>
                                     <p id="InvalidImportMessage" style="color: red; display: none;">Invalid Import.</p>
                                     
-                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=false, ImportState=$('#ImportState').val());">
+                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=false, ImportState=$('#ImportState').val(), Scroll=true);">
                                         Import
                                     </a>
                                     <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Export();">
                                         Export
                                     </a>
-                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=true, ImportState=$('#ImportState').val());">
+                                    <a class="btn btn-primary" style="border-color: black; margin-bottom: 3px;" onclick="Import(RunCalcs=true, ImportState=$('#ImportState').val(), Scroll=true);">
                                         Import and Run
                                     </a>
                                     <br>
@@ -879,7 +879,7 @@
                 return FormValues
             };
 
-            function Import(RunCalcs, ImportState) {
+            function Import(RunCalcs, ImportState, Scroll) {
                 let isValidImport = true;
                 let JSONImport;
 
@@ -959,7 +959,7 @@
                     if (RunCalcs == true) {
                         $('#Calculate').trigger('click');
                     }
-                    else {
+                    else if (Scroll == true) {
                         $('html, body').animate({
                             scrollTop: $("#CalculatorHeaderAnchor").offset().top,
                             easing: 'linear'
@@ -971,7 +971,7 @@
             let SessionState = localStorage.getItem("SessionState");
             $(function() {
                 if (SessionState != null) {
-                    Import(RunCalcs=false, ImportState=SessionState);
+                    Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
                 };
             });
 
