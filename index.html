@@ -689,6 +689,19 @@
         </div>
 
         <script type="text/javascript">
+            // When leaving the page, we will save the users form inputs to local storage so that we can import them again after the page has been refreshed. This is needed to reconstruct the wish planning table.
+            window.onunload = function() {
+                localStorage.setItem("SessionState", JSON.stringify(CompileForm()));
+            };
+
+            $(function() {
+                let SessionState = localStorage.getItem("SessionState");
+
+                if (SessionState != null) {
+                    Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
+                };
+            });
+
             function getInvalidFields() {
                 let InvalidFields = [];
                 
@@ -968,13 +981,6 @@
                 };
             };
 
-            let SessionState = localStorage.getItem("SessionState");
-            $(function() {
-                if (SessionState != null) {
-                    Import(RunCalcs=false, ImportState=SessionState, Scroll=false);
-                };
-            });
-
             function Export(){
                 if (getInvalidFields().length != 0) {
                     swal({icon: 'error', text: 'Invalid information detected. Cannot generate export.'});
@@ -1026,8 +1032,6 @@
                 });
 
                 window.onbeforeunload = function() {
-                    localStorage.setItem("SessionState", JSON.stringify(CompileForm()));
-
                     if (Unsaved && !$('#DisableUnsavedChangesWarning').is(':checked')) {
                         return "You have unsaved changes on this page. If you wish to save your changes, then please export them before leaving this page.";
                     };
