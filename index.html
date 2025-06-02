@@ -690,9 +690,9 @@
 
         <script type="text/javascript">
             // When leaving the page, we will save the users form inputs to local storage so that we can import them again after the page has been refreshed. This is needed to reconstruct the wish planning table.
-            window.onunload = function() {
+            $(document).on('visibilitychange', function() {
                 localStorage.setItem("SessionState", JSON.stringify(CompileForm()));
-            };
+            });
 
             $(function() {
                 let SessionState = localStorage.getItem("SessionState");
