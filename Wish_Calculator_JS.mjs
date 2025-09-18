@@ -119,6 +119,13 @@ function SavingsCalculator(WishConfig) {
         };
         Primos += ExpectedTheaterPrimos * (TargetBannerInfo.MonthDiff + (WishConfig.ITCurrentCycleCompleted ? 0 : 1));
 
+        // Stygian Onslaught - A challenge that renews every patch and will provide 150 primos for each difficulty level completed, up to the third.
+        let ExpectedStygianPrimos = 150 * WishConfig.StygianLevel;
+        Primos += ExpectedStygianPrimos * TargetBannerInfo.PatchDiff;
+        if (DateDiff(BannerInfo[CurrentBannerVal].PatchStartDate, Today) < 8 || !WishConfig.StygianCurrentCycleCompleted) { // Stygian is closed during the first 8 days of a patch.
+            Primos += ExpectedStygianPrimos
+        };
+
         // Live Stream Primos - Every patch there is a live stream that will give away 300 primos to viewers.
         Primos += 300 * (TargetBannerInfo.PatchDiff + 1); // +1 for current patch.
         // Subtracting primos for current patch, if claimed. Live streams generally air 31 days into the patch so we will assume the primos are claimed on that date.
