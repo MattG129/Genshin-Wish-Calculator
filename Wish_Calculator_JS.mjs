@@ -103,19 +103,21 @@ function SavingsCalculator(WishConfig) {
         Primos += ExpectedAbyssPrimos * AbyssCycles;
 
         // Theater (Imaginarium Theater) - A monthly challenge where you can earn primos for the amount of acts that you complete.
-        let ExpectedTheaterPrimos = 0;
+
+        // The highest difficulty of this challenge will allow you to take on two special acts that each give 100 primos. I am not sure if completing act 10 is required to claim these rewards.
+        let ExpectedTheaterPrimos = 100 * WishConfig.ExpectedArcanumAct;
         switch (WishConfig.ExpectedAct) {
-            case 0:  ExpectedTheaterPrimos = 0;   break;
-            case 1:  ExpectedTheaterPrimos = 60;  break;
-            case 2:  ExpectedTheaterPrimos = 120; break;
-            case 3:  ExpectedTheaterPrimos = 220; break;
-            case 4:  ExpectedTheaterPrimos = 280; break;
-            case 5:  ExpectedTheaterPrimos = 340; break;
-            case 6:  ExpectedTheaterPrimos = 440; break;
-            case 7:  ExpectedTheaterPrimos = 500; break;
-            case 8:  ExpectedTheaterPrimos = 620; break;
-            case 9:  ExpectedTheaterPrimos = 680; break;
-            case 10: ExpectedTheaterPrimos = 800; break;
+            case 0:  ExpectedTheaterPrimos += 0;   break;
+            case 1:  ExpectedTheaterPrimos += 60;  break;
+            case 2:  ExpectedTheaterPrimos += 120; break;
+            case 3:  ExpectedTheaterPrimos += 220; break;
+            case 4:  ExpectedTheaterPrimos += 280; break;
+            case 5:  ExpectedTheaterPrimos += 340; break;
+            case 6:  ExpectedTheaterPrimos += 440; break;
+            case 7:  ExpectedTheaterPrimos += 500; break;
+            case 8:  ExpectedTheaterPrimos += 620; break;
+            case 9:  ExpectedTheaterPrimos += 680; break;
+            case 10: ExpectedTheaterPrimos += 800; break;
         };
         Primos += ExpectedTheaterPrimos * (TargetBannerInfo.MonthDiff + (WishConfig.ITCurrentCycleCompleted ? 0 : 1));
 
