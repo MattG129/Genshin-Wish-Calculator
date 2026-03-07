@@ -803,22 +803,27 @@
 
             let FirstPhaseEventFieldsActive = AreFirstPhaseEventFieldsActive();
 
+            let ToggleFirstPhaseEventFieldsTimeOut;
             function ToggleFirstPhaseEventFields() {
-                FirstPhaseEventFieldsActive = AreFirstPhaseEventFieldsActive();
+                clearTimeout(ToggleFirstPhaseEventFieldsTimeOut);
 
-                if (FirstPhaseEventFieldsActive) {
-                    $('.FlagshipEventCompletableSkipGroup').show();
-                    $('.SecondaryEventsCompletableSkipGroup').show();
-                    $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-6').addClass('col-sm-3');
-                }
-                else {
-                    $('.FlagshipEventCompletableSkipGroup').hide();
-                    $('.SecondaryEventsCompletableSkipGroup').hide();
-                    $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-3').addClass('col-sm-6');
-                };
+                ToggleFirstPhaseEventFieldsTimeOut = setTimeout(function() {
+                    FirstPhaseEventFieldsActive = AreFirstPhaseEventFieldsActive();
 
-                $('#FlagshipEventCompletable').change();
-                $('#SecondaryEventsCompletable').change();
+                    if (FirstPhaseEventFieldsActive) {
+                        $('.FlagshipEventCompletableSkipGroup').show();
+                        $('.SecondaryEventsCompletableSkipGroup').show();
+                        $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-6').addClass('col-sm-3');
+                    }
+                    else {
+                        $('.FlagshipEventCompletableSkipGroup').hide();
+                        $('.SecondaryEventsCompletableSkipGroup').hide();
+                        $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-3').addClass('col-sm-6');
+                    };
+
+                    $('#FlagshipEventCompletable').change();
+                    $('#SecondaryEventsCompletable').change();
+                }, 100);
             };
 
             ToggleFirstPhaseEventFields();
