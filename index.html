@@ -16,6 +16,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha384-DRe+1gYJauFEenXeWS8TmYdBmDUqnR5Rcw7ax4KTqOxXWd4NAMP2VPU5H69U7yP9" crossorigin="anonymous"></script>
         <script src="Wish_Calculator_JS.mjs" type="text/javascript"></script>
+        <script src="Scripts/Events.js" type="text/javascript"></script>
 
         <script src="https://parsleyjs.org/dist/parsley.js" integrity="sha384-0HmdHQBHe/sSM1qEobdZMf43ZJs6BLvTd73EqZSM6VrXo2ICjuQ5aYrka2MbVt9U" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js" integrity="sha384-RIQuldGV8mnjGdob13cay/K1AJa+LR7VKHqSXrrB5DPGryn4pMUXRLh92Ev8KlGF" crossorigin="anonymous"></script>
@@ -466,7 +467,7 @@
                                         `</label>`+
                                     `</td>`+
                                     `<td>`+
-                                        `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove(); UpdateCalculateButton();">`+
+                                        `<button type="button" class="btn btn-danger" onclick="$('#WishPlanRow${NewWishPlanRowID}').remove(); UpdateCalculateButton(); ToggleFirstPhaseEventFields();">`+
                                             `<i class="bi bi-x-lg" style=" font-weight: bold;"></i>`+
                                         `</button>`+
                                     `</td>`+
@@ -480,6 +481,7 @@
                             $(`tr[data-wishplan-rowid=${NewWishPlanRowID}] input, tr[data-wishplan-rowid=${NewWishPlanRowID}] select`).addClass('WishPlanField TableField');
 
                             SetParsleyValidations();
+                            $('.WishPlanBannerEnd, .WishPlanEnabled').change(function() {ToggleFirstPhaseEventFields()});
 
                             NewWishPlanRowID++;
                         };
@@ -489,7 +491,7 @@
 
                             $('#WishPlanningTableBody').sortable({handle: ".handle"});
 
-                            $("#AddRowButton").click(function() {AddWishPlanRow(); UpdateCalculateButton();});
+                            $("#AddRowButton").click(function() {AddWishPlanRow(); UpdateCalculateButton(); ToggleFirstPhaseEventFields();});
 
                             // We want the table to load with 3 rows by default.
                             for (let i = 0; i < 3; i++) AddWishPlanRow();
@@ -799,16 +801,35 @@
                 };
             });
 
-            $(function() { // All events will be completable by the second half of the patch.
-                if (BannerInfo[CurrentBannerVal].Phase == 2) {
-                    $('.FlagshipEventCompletableSkipGroup').hide();
-                    $('.SecondaryEventsCompletableSkipGroup').hide();
-                    $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-3').addClass('col-sm-6');
-                }
-            });
+            let FirstPhaseEventFieldsActive = AreFirstPhaseEventFieldsActive();
+
+            let ToggleFirstPhaseEventFieldsTimeOut;
+            function ToggleFirstPhaseEventFields() {
+                clearTimeout(ToggleFirstPhaseEventFieldsTimeOut);
+
+                ToggleFirstPhaseEventFieldsTimeOut = setTimeout(function() {
+                    FirstPhaseEventFieldsActive = AreFirstPhaseEventFieldsActive();
+
+                    if (FirstPhaseEventFieldsActive) {
+                        $('.FlagshipEventCompletableSkipGroup').show();
+                        $('.SecondaryEventsCompletableSkipGroup').show();
+                        $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-6').addClass('col-sm-3');
+                    }
+                    else {
+                        $('.FlagshipEventCompletableSkipGroup').hide();
+                        $('.SecondaryEventsCompletableSkipGroup').hide();
+                        $('.SecondaryEventsCompletedCtrlGroup').removeClass('col-sm-3').addClass('col-sm-6');
+                    };
+
+                    $('#FlagshipEventCompletable').change();
+                    $('#SecondaryEventsCompletable').change();
+                }, 100);
+            };
+
+            ToggleFirstPhaseEventFields();
 
             $('#FlagshipEventCompletable').on('change', function () {
-                if (BannerInfo[CurrentBannerVal].Phase == 1 && !$('#FlagshipEventCompletable').is(':checked')) {
+                if (FirstPhaseEventFieldsActive && !$('#FlagshipEventCompletable').is(':checked')) {
                     $('#FlagshipEventCompleted').attr('disabled', true).prop('checked', false);
                     $('label[for="FlagshipEventCompleted"]').css('color', '#505050');
                 }
@@ -820,7 +841,7 @@
 
             $('#SecondaryEventsCompletable').on('change', function() {
                 let SecondaryEventsMax;
-                if (BannerInfo[CurrentBannerVal].Phase == 1 && $('#SecondaryEventsCompletable').parsley().isValid()) {
+                if (FirstPhaseEventFieldsActive && $('#SecondaryEventsCompletable').parsley().isValid() && FirstPhaseEventFieldsActive) {
                     SecondaryEventsMax = $('#SecondaryEventsCompletable').val();
                 }
                 else {
@@ -845,6 +866,8 @@
                     $('.BasicWishPlanningSkipGroup').hide();
                     $('#WishPlanningTable').show();
                 };
+
+                ToggleFirstPhaseEventFields();
             });
 
             function ToggleWishPlanRow(caller, WishPlanRowID) {
