@@ -211,7 +211,9 @@ function SavingsCalculator(WishConfig) {
 
             // 680 primos are awarded at level 50.
             Primos += 680 * ((TargetBannerInfo.Phase === 2 ? 1 : 0) + TargetBannerInfo.PatchDiff); // Assumes that the user won't reach level 50 in the first phase.
-            if (WishConfig.BPLevel === 5) { // Subtracts if the primos have already been claimed for this pass.
+            // Subtracts if the primos have already been claimed for this pass.
+            // We will only subtract if the target banner is in the second half or at least one patch away as otherwise the 680 primos won't have been accounted for.
+            if (WishConfig.BPLevel === 5 && (TargetBannerInfo.Phase == 2 || TargetBannerInfo.PatchDiff > 0)) {
                 Primos -= 680;
             };
         };
