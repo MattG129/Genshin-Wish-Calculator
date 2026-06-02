@@ -54,7 +54,10 @@ while (BannerInfo.length < 50) {
     };
 
     PatchStartDate = DateAdd(PatchStartDate, 42);
-    if ((Patch % 10) == 8) { // Almost all versions end after x.8 so we will go with this assumption.
+    if (Patch == 67) { // No 6.8.
+        Patch += 3;
+    }
+    else if ((Patch % 10) == 8) { // Almost all versions end after x.8 so we will go with this assumption.
         Patch += 2;
     }
     else {
